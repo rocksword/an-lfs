@@ -1,0 +1,472 @@
+[2014-07-17 18:50:24,787][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@1ac0bc3a: startup date [Thu Jul 17 18:50:24 CST 2014]; root of context hierarchy
+[2014-07-17 18:50:24,824][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 18:50:25,107][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 18:50:25,107][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 18:50:25,110][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 18:50:25,226][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 18:50:25,226][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 18:50:25,253][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 18:50:25,260][INFO][LfsMain.java:32][main]: Starting application.
+[2014-07-17 18:51:46,719][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@267fbe19: startup date [Thu Jul 17 18:51:46 CST 2014]; root of context hierarchy
+[2014-07-17 18:51:46,757][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 18:51:47,039][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 18:51:47,040][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 18:51:47,043][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 18:51:47,158][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 18:51:47,159][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 18:51:47,185][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 18:51:47,193][INFO][LfsMain.java:32][main]: Starting application.
+[2014-07-17 18:59:39,601][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@3ced3512: startup date [Thu Jul 17 18:59:39 CST 2014]; root of context hierarchy
+[2014-07-17 18:59:39,639][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 18:59:39,928][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 18:59:39,929][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 18:59:39,932][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 18:59:40,050][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 18:59:40,050][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 18:59:40,077][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 18:59:40,085][INFO][LfsMain.java:32][main]: Starting application.
+[2014-07-17 19:03:27,686][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@3ced3512: startup date [Thu Jul 17 19:03:27 CST 2014]; root of context hierarchy
+[2014-07-17 19:03:27,724][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 19:03:28,010][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 19:03:28,010][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 19:03:28,014][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 19:03:28,128][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 19:03:28,128][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 19:03:28,155][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 19:03:28,163][INFO][LfsMain.java:32][main]: Starting application.
+[2014-07-17 19:03:41,325][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@2586ebf5: startup date [Thu Jul 17 19:03:41 CST 2014]; root of context hierarchy
+[2014-07-17 19:03:41,361][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 19:03:41,643][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 19:03:41,643][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 19:03:41,647][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 19:03:41,760][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 19:03:41,760][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 19:03:41,787][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 19:03:41,795][INFO][LfsMain.java:32][main]: Starting application.
+[2014-07-17 19:51:31,624][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@10ee36ee: startup date [Thu Jul 17 19:51:31 CST 2014]; root of context hierarchy
+[2014-07-17 19:51:31,661][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 19:51:31,943][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 19:51:31,943][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 19:51:31,946][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 19:51:32,058][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 19:51:32,059][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 19:51:32,086][ERROR][LfsConfMgr.java:41][main]: Error: org.codehaus.jackson.map.exc.UnrecognizedPropertyException: Unrecognized field "拜仁慕尼黑" (Class com.an.lfs.LfsConf), not marked as ignorable
+ at [Source: D:\github\an-lfs\conf\lfs.txt; line: 2, column: 25] (through reference chain: com.an.lfs.LfsConf["拜仁慕尼黑"])
+[2014-07-17 19:51:32,087][ERROR][LfsMain.java:27][main]: Error: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'lfsConfMgr' defined in file [D:\github\an-lfs\target\classes\com\an\lfs\LfsConfMgr.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Could not instantiate bean class [com.an.lfs.LfsConfMgr]: Constructor threw exception; nested exception is java.lang.RuntimeException: Failed to initialize configuration, error: org.codehaus.jackson.map.exc.UnrecognizedPropertyException: Unrecognized field "拜仁慕尼黑" (Class com.an.lfs.LfsConf), not marked as ignorable
+ at [Source: D:\github\an-lfs\conf\lfs.txt; line: 2, column: 25] (through reference chain: com.an.lfs.LfsConf["拜仁慕尼黑"])
+[2014-07-17 19:52:13,860][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@1d508393: startup date [Thu Jul 17 19:52:13 CST 2014]; root of context hierarchy
+[2014-07-17 19:52:13,898][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 19:52:14,180][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 19:52:14,180][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 19:52:14,183][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 19:52:14,298][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 19:52:14,298][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 19:52:14,324][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 19:52:14,331][INFO][LfsMain.java:34][main]: Starting application.
+[2014-07-17 19:52:14,333][INFO][InputParser.java:23][main]: [Ljava.lang.String;@6682d439
+[2014-07-17 19:52:14,334][INFO][InputParser.java:23][main]: [Ljava.lang.String;@75831760
+[2014-07-17 19:52:14,334][INFO][InputParser.java:23][main]: [Ljava.lang.String;@7173dbe5
+[2014-07-17 19:52:14,334][INFO][InputParser.java:23][main]: [Ljava.lang.String;@6d69d193
+[2014-07-17 19:52:14,334][INFO][InputParser.java:23][main]: [Ljava.lang.String;@3e3e4203
+[2014-07-17 19:52:14,334][INFO][InputParser.java:23][main]: [Ljava.lang.String;@695ff2e1
+[2014-07-17 19:52:14,335][INFO][InputParser.java:23][main]: [Ljava.lang.String;@1a42c7d3
+[2014-07-17 19:52:14,336][INFO][InputParser.java:23][main]: [Ljava.lang.String;@4349cbf4
+[2014-07-17 19:52:14,336][INFO][InputParser.java:23][main]: [Ljava.lang.String;@21ed22af
+[2014-07-17 19:52:14,336][INFO][InputParser.java:23][main]: [Ljava.lang.String;@5780208f
+[2014-07-17 19:52:14,336][INFO][InputParser.java:25][main]: Invalid line 
+[2014-07-17 19:52:14,336][INFO][InputParser.java:23][main]: [Ljava.lang.String;@1cd9b92a
+[2014-07-17 19:52:14,336][INFO][InputParser.java:23][main]: [Ljava.lang.String;@1a0b8332
+[2014-07-17 19:52:14,337][INFO][InputParser.java:23][main]: [Ljava.lang.String;@69d254f9
+[2014-07-17 19:52:14,337][INFO][InputParser.java:23][main]: [Ljava.lang.String;@6fc8ddb5
+[2014-07-17 19:52:14,337][INFO][InputParser.java:23][main]: [Ljava.lang.String;@6c53cf68
+[2014-07-17 19:52:14,337][INFO][InputParser.java:23][main]: [Ljava.lang.String;@7255ec67
+[2014-07-17 19:52:14,337][INFO][InputParser.java:23][main]: [Ljava.lang.String;@671398d5
+[2014-07-17 19:52:14,337][INFO][InputParser.java:23][main]: [Ljava.lang.String;@3796fcd1
+[2014-07-17 19:52:14,337][INFO][InputParser.java:23][main]: [Ljava.lang.String;@19b019da
+[2014-07-17 19:52:14,337][INFO][LfsUtil.java:116][main]: Total size: 18
+[2014-07-17 19:52:14,338][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-10 02:30, host=BaiRen, guest=MenXing, score=3-1, even=[1.13, 7.55, 17.77], ]
+[2014-07-17 19:52:14,338][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-10 21:30, host=AoGeSiBao, guest=DuoTeMengDe, score=0-4, even=[1.51, 4.05, 6.04], ]
+[2014-07-17 19:52:14,338][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-10 21:30, host=LeWoKuSeng, guest=FuLaiBao, score=3-1, even=[1.44, 4.31, 6.59], ]
+[2014-07-17 19:52:14,338][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-10 21:30, host=HanNuoWei, guest=AoErFuSiBao, score=2-0, even=[2.48, 3.32, 2.67], ]
+[2014-07-17 19:52:14,338][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-10 21:30, host=HeFenHaiMu, guest=NiuLunBao, score=2-2, even=[2.09, 3.31, 3.32], ]
+[2014-07-17 19:52:14,339][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-10 21:30, host=BoLinHeTa, guest=FaLanKeFu, score=6-1, even=[2.33, 3.29, 2.88], ]
+[2014-07-17 19:52:14,339][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-11 00:30, host=BuLunSiWeiKe, guest=YunDaBuLaiMei, score=0-1, even=[6.49, 4.11, 1.47], ]
+[2014-07-17 19:52:14,339][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-11 21:30, host=MeiYinCi, guest=SiTuJiaTe, score=3-2, even=[2.79, 3.33, 2.37], ]
+[2014-07-17 19:52:14,339][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-11 23:30, host=ShaErKe, guest=HanBao, score=3-3, even=[2.27, 3.3, 2.95], ]
+[2014-07-17 19:52:14,339][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-17 21:30, host=SiTuJiaTe, guest=LeWoKuSeng, score=0-1, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:52:14,339][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-17 21:30, host=AoErFuSiBao, guest=ShaErKe, score=4-0, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:52:14,339][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-17 21:30, host=YunDaBuLaiMei, guest=AoGeSiBao, score=1-0, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:52:14,339][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-17 21:30, host=FuLaiBao, guest=MeiYinCi, score=1-2, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:52:14,340][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-17 21:30, host=HanBao, guest=HeFenHaiMu, score=1-5, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:52:14,340][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-17 21:30, host=FaLanKeFu, guest=BaiRen, score=0-1, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:52:14,340][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-18 00:30, host=MenXing, guest=HanNuoWei, score=3-0, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:52:14,340][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-18 21:30, host=NiuLunBao, guest=BoLinHeTa, score=2-2, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:52:14,340][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-18 23:30, host=DuoTeMengDe, guest=BuLunSiWeiKe, score=2-1, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:54:42,938][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@40f6dcc7: startup date [Thu Jul 17 19:54:42 CST 2014]; root of context hierarchy
+[2014-07-17 19:54:42,974][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 19:54:43,256][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 19:54:43,257][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 19:54:43,260][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 19:54:43,374][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 19:54:43,374][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 19:54:43,400][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 19:54:43,407][INFO][LfsMain.java:34][main]: Starting application.
+[2014-07-17 19:54:43,410][INFO][InputParser.java:54][main]: 1, 201308-10 02:30, BaiRen, 3-1, MenXing, 1.13, 7.55, 17.77
+[2014-07-17 19:54:43,410][INFO][InputParser.java:54][main]: 1, 201308-10 21:30, AoGeSiBao, 0-4, DuoTeMengDe, 1.51, 4.05, 6.04
+[2014-07-17 19:54:43,410][INFO][InputParser.java:54][main]: 1, 201308-10 21:30, LeWoKuSeng, 3-1, FuLaiBao, 1.44, 4.31, 6.59
+[2014-07-17 19:54:43,410][INFO][InputParser.java:54][main]: 1, 201308-10 21:30, HanNuoWei, 2-0, AoErFuSiBao, 2.48, 3.32, 2.67
+[2014-07-17 19:54:43,411][INFO][InputParser.java:54][main]: 1, 201308-10 21:30, HeFenHaiMu, 2-2, NiuLunBao, 2.09, 3.31, 3.32
+[2014-07-17 19:54:43,411][INFO][InputParser.java:54][main]: 1, 201308-10 21:30, BoLinHeTa, 6-1, FaLanKeFu, 2.33, 3.29, 2.88
+[2014-07-17 19:54:43,411][INFO][InputParser.java:54][main]: 1, 201308-11 00:30, BuLunSiWeiKe, 0-1, YunDaBuLaiMei, 6.49, 4.11, 1.47
+[2014-07-17 19:54:43,412][INFO][InputParser.java:54][main]: 1, 201308-11 21:30, MeiYinCi, 3-2, SiTuJiaTe, 2.79, 3.33, 2.37
+[2014-07-17 19:54:43,412][INFO][InputParser.java:54][main]: 1, 201308-11 23:30, ShaErKe, 3-3, HanBao, 2.27, 3.3, 2.95
+[2014-07-17 19:54:43,412][INFO][InputParser.java:54][main]: 2, 201308-17 21:30, SiTuJiaTe, 0-1, LeWoKuSeng, 4.71, 3.72, 1.76
+[2014-07-17 19:54:43,413][INFO][InputParser.java:54][main]: 2, 201308-17 21:30, AoErFuSiBao, 4-0, ShaErKe, 4.71, 3.72, 1.76
+[2014-07-17 19:54:43,413][INFO][InputParser.java:54][main]: 2, 201308-17 21:30, YunDaBuLaiMei, 1-0, AoGeSiBao, 4.71, 3.72, 1.76
+[2014-07-17 19:54:43,413][INFO][InputParser.java:54][main]: 2, 201308-17 21:30, FuLaiBao, 1-2, MeiYinCi, 4.71, 3.72, 1.76
+[2014-07-17 19:54:43,413][INFO][InputParser.java:54][main]: 2, 201308-17 21:30, HanBao, 1-5, HeFenHaiMu, 4.71, 3.72, 1.76
+[2014-07-17 19:54:43,413][INFO][InputParser.java:54][main]: 2, 201308-17 21:30, FaLanKeFu, 0-1, BaiRen, 4.71, 3.72, 1.76
+[2014-07-17 19:54:43,413][INFO][InputParser.java:54][main]: 2, 201308-18 00:30, MenXing, 3-0, HanNuoWei, 4.71, 3.72, 1.76
+[2014-07-17 19:54:43,414][INFO][InputParser.java:54][main]: 2, 201308-18 21:30, NiuLunBao, 2-2, BoLinHeTa, 4.71, 3.72, 1.76
+[2014-07-17 19:54:43,414][INFO][InputParser.java:54][main]: 2, 201308-18 23:30, DuoTeMengDe, 2-1, BuLunSiWeiKe, 4.71, 3.72, 1.76
+[2014-07-17 19:54:43,414][INFO][LfsUtil.java:116][main]: Total size: 18
+[2014-07-17 19:54:43,414][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-10 02:30, host=BaiRen, guest=MenXing, score=3-1, even=[1.13, 7.55, 17.77], ]
+[2014-07-17 19:54:43,414][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-10 21:30, host=AoGeSiBao, guest=DuoTeMengDe, score=0-4, even=[1.51, 4.05, 6.04], ]
+[2014-07-17 19:54:43,414][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-10 21:30, host=LeWoKuSeng, guest=FuLaiBao, score=3-1, even=[1.44, 4.31, 6.59], ]
+[2014-07-17 19:54:43,414][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-10 21:30, host=HanNuoWei, guest=AoErFuSiBao, score=2-0, even=[2.48, 3.32, 2.67], ]
+[2014-07-17 19:54:43,415][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-10 21:30, host=HeFenHaiMu, guest=NiuLunBao, score=2-2, even=[2.09, 3.31, 3.32], ]
+[2014-07-17 19:54:43,415][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-10 21:30, host=BoLinHeTa, guest=FaLanKeFu, score=6-1, even=[2.33, 3.29, 2.88], ]
+[2014-07-17 19:54:43,415][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-11 00:30, host=BuLunSiWeiKe, guest=YunDaBuLaiMei, score=0-1, even=[6.49, 4.11, 1.47], ]
+[2014-07-17 19:54:43,415][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-11 21:30, host=MeiYinCi, guest=SiTuJiaTe, score=3-2, even=[2.79, 3.33, 2.37], ]
+[2014-07-17 19:54:43,415][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=201308-11 23:30, host=ShaErKe, guest=HanBao, score=3-3, even=[2.27, 3.3, 2.95], ]
+[2014-07-17 19:54:43,415][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-17 21:30, host=SiTuJiaTe, guest=LeWoKuSeng, score=0-1, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:54:43,415][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-17 21:30, host=AoErFuSiBao, guest=ShaErKe, score=4-0, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:54:43,416][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-17 21:30, host=YunDaBuLaiMei, guest=AoGeSiBao, score=1-0, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:54:43,416][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-17 21:30, host=FuLaiBao, guest=MeiYinCi, score=1-2, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:54:43,416][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-17 21:30, host=HanBao, guest=HeFenHaiMu, score=1-5, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:54:43,416][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-17 21:30, host=FaLanKeFu, guest=BaiRen, score=0-1, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:54:43,416][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-18 00:30, host=MenXing, guest=HanNuoWei, score=3-0, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:54:43,416][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-18 21:30, host=NiuLunBao, guest=BoLinHeTa, score=2-2, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:54:43,416][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=201308-18 23:30, host=DuoTeMengDe, guest=BuLunSiWeiKe, score=2-1, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:13,788][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@1d508393: startup date [Thu Jul 17 19:55:13 CST 2014]; root of context hierarchy
+[2014-07-17 19:55:13,826][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 19:55:14,116][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 19:55:14,117][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 19:55:14,120][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 19:55:14,237][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 19:55:14,237][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 19:55:14,264][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 19:55:14,273][INFO][LfsMain.java:34][main]: Starting application.
+[2014-07-17 19:55:14,275][INFO][InputParser.java:54][main]: 1, 2013 08-10 02:30, BaiRen, 3-1, MenXing, 1.13, 7.55, 17.77
+[2014-07-17 19:55:14,275][INFO][InputParser.java:54][main]: 1, 2013 08-10 21:30, AoGeSiBao, 0-4, DuoTeMengDe, 1.51, 4.05, 6.04
+[2014-07-17 19:55:14,275][INFO][InputParser.java:54][main]: 1, 2013 08-10 21:30, LeWoKuSeng, 3-1, FuLaiBao, 1.44, 4.31, 6.59
+[2014-07-17 19:55:14,275][INFO][InputParser.java:54][main]: 1, 2013 08-10 21:30, HanNuoWei, 2-0, AoErFuSiBao, 2.48, 3.32, 2.67
+[2014-07-17 19:55:14,276][INFO][InputParser.java:54][main]: 1, 2013 08-10 21:30, HeFenHaiMu, 2-2, NiuLunBao, 2.09, 3.31, 3.32
+[2014-07-17 19:55:14,276][INFO][InputParser.java:54][main]: 1, 2013 08-10 21:30, BoLinHeTa, 6-1, FaLanKeFu, 2.33, 3.29, 2.88
+[2014-07-17 19:55:14,276][INFO][InputParser.java:54][main]: 1, 2013 08-11 00:30, BuLunSiWeiKe, 0-1, YunDaBuLaiMei, 6.49, 4.11, 1.47
+[2014-07-17 19:55:14,277][INFO][InputParser.java:54][main]: 1, 2013 08-11 21:30, MeiYinCi, 3-2, SiTuJiaTe, 2.79, 3.33, 2.37
+[2014-07-17 19:55:14,278][INFO][InputParser.java:54][main]: 1, 2013 08-11 23:30, ShaErKe, 3-3, HanBao, 2.27, 3.3, 2.95
+[2014-07-17 19:55:14,278][INFO][InputParser.java:54][main]: 2, 2013 08-17 21:30, SiTuJiaTe, 0-1, LeWoKuSeng, 4.71, 3.72, 1.76
+[2014-07-17 19:55:14,278][INFO][InputParser.java:54][main]: 2, 2013 08-17 21:30, AoErFuSiBao, 4-0, ShaErKe, 4.71, 3.72, 1.76
+[2014-07-17 19:55:14,278][INFO][InputParser.java:54][main]: 2, 2013 08-17 21:30, YunDaBuLaiMei, 1-0, AoGeSiBao, 4.71, 3.72, 1.76
+[2014-07-17 19:55:14,278][INFO][InputParser.java:54][main]: 2, 2013 08-17 21:30, FuLaiBao, 1-2, MeiYinCi, 4.71, 3.72, 1.76
+[2014-07-17 19:55:14,278][INFO][InputParser.java:54][main]: 2, 2013 08-17 21:30, HanBao, 1-5, HeFenHaiMu, 4.71, 3.72, 1.76
+[2014-07-17 19:55:14,279][INFO][InputParser.java:54][main]: 2, 2013 08-17 21:30, FaLanKeFu, 0-1, BaiRen, 4.71, 3.72, 1.76
+[2014-07-17 19:55:14,279][INFO][InputParser.java:54][main]: 2, 2013 08-18 00:30, MenXing, 3-0, HanNuoWei, 4.71, 3.72, 1.76
+[2014-07-17 19:55:14,279][INFO][InputParser.java:54][main]: 2, 2013 08-18 21:30, NiuLunBao, 2-2, BoLinHeTa, 4.71, 3.72, 1.76
+[2014-07-17 19:55:14,279][INFO][InputParser.java:54][main]: 2, 2013 08-18 23:30, DuoTeMengDe, 2-1, BuLunSiWeiKe, 4.71, 3.72, 1.76
+[2014-07-17 19:55:14,279][INFO][LfsUtil.java:116][main]: Total size: 18
+[2014-07-17 19:55:14,279][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013 08-10 02:30, host=BaiRen, guest=MenXing, score=3-1, even=[1.13, 7.55, 17.77], ]
+[2014-07-17 19:55:14,280][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013 08-10 21:30, host=AoGeSiBao, guest=DuoTeMengDe, score=0-4, even=[1.51, 4.05, 6.04], ]
+[2014-07-17 19:55:14,280][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013 08-10 21:30, host=LeWoKuSeng, guest=FuLaiBao, score=3-1, even=[1.44, 4.31, 6.59], ]
+[2014-07-17 19:55:14,280][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013 08-10 21:30, host=HanNuoWei, guest=AoErFuSiBao, score=2-0, even=[2.48, 3.32, 2.67], ]
+[2014-07-17 19:55:14,280][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013 08-10 21:30, host=HeFenHaiMu, guest=NiuLunBao, score=2-2, even=[2.09, 3.31, 3.32], ]
+[2014-07-17 19:55:14,280][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013 08-10 21:30, host=BoLinHeTa, guest=FaLanKeFu, score=6-1, even=[2.33, 3.29, 2.88], ]
+[2014-07-17 19:55:14,280][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013 08-11 00:30, host=BuLunSiWeiKe, guest=YunDaBuLaiMei, score=0-1, even=[6.49, 4.11, 1.47], ]
+[2014-07-17 19:55:14,280][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013 08-11 21:30, host=MeiYinCi, guest=SiTuJiaTe, score=3-2, even=[2.79, 3.33, 2.37], ]
+[2014-07-17 19:55:14,280][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013 08-11 23:30, host=ShaErKe, guest=HanBao, score=3-3, even=[2.27, 3.3, 2.95], ]
+[2014-07-17 19:55:14,280][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013 08-17 21:30, host=SiTuJiaTe, guest=LeWoKuSeng, score=0-1, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:14,281][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013 08-17 21:30, host=AoErFuSiBao, guest=ShaErKe, score=4-0, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:14,281][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013 08-17 21:30, host=YunDaBuLaiMei, guest=AoGeSiBao, score=1-0, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:14,281][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013 08-17 21:30, host=FuLaiBao, guest=MeiYinCi, score=1-2, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:14,281][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013 08-17 21:30, host=HanBao, guest=HeFenHaiMu, score=1-5, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:14,281][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013 08-17 21:30, host=FaLanKeFu, guest=BaiRen, score=0-1, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:14,281][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013 08-18 00:30, host=MenXing, guest=HanNuoWei, score=3-0, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:14,281][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013 08-18 21:30, host=NiuLunBao, guest=BoLinHeTa, score=2-2, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:14,281][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013 08-18 23:30, host=DuoTeMengDe, guest=BuLunSiWeiKe, score=2-1, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:33,919][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@1d508393: startup date [Thu Jul 17 19:55:33 CST 2014]; root of context hierarchy
+[2014-07-17 19:55:33,957][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 19:55:34,246][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 19:55:34,246][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 19:55:34,250][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 19:55:34,367][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 19:55:34,367][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 19:55:34,394][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 19:55:34,402][INFO][LfsMain.java:34][main]: Starting application.
+[2014-07-17 19:55:34,404][INFO][InputParser.java:54][main]: 1, 2013-08-10 02:30, BaiRen, 3-1, MenXing, 1.13, 7.55, 17.77
+[2014-07-17 19:55:34,404][INFO][InputParser.java:54][main]: 1, 2013-08-10 21:30, AoGeSiBao, 0-4, DuoTeMengDe, 1.51, 4.05, 6.04
+[2014-07-17 19:55:34,405][INFO][InputParser.java:54][main]: 1, 2013-08-10 21:30, LeWoKuSeng, 3-1, FuLaiBao, 1.44, 4.31, 6.59
+[2014-07-17 19:55:34,405][INFO][InputParser.java:54][main]: 1, 2013-08-10 21:30, HanNuoWei, 2-0, AoErFuSiBao, 2.48, 3.32, 2.67
+[2014-07-17 19:55:34,405][INFO][InputParser.java:54][main]: 1, 2013-08-10 21:30, HeFenHaiMu, 2-2, NiuLunBao, 2.09, 3.31, 3.32
+[2014-07-17 19:55:34,405][INFO][InputParser.java:54][main]: 1, 2013-08-10 21:30, BoLinHeTa, 6-1, FaLanKeFu, 2.33, 3.29, 2.88
+[2014-07-17 19:55:34,405][INFO][InputParser.java:54][main]: 1, 2013-08-11 00:30, BuLunSiWeiKe, 0-1, YunDaBuLaiMei, 6.49, 4.11, 1.47
+[2014-07-17 19:55:34,407][INFO][InputParser.java:54][main]: 1, 2013-08-11 21:30, MeiYinCi, 3-2, SiTuJiaTe, 2.79, 3.33, 2.37
+[2014-07-17 19:55:34,407][INFO][InputParser.java:54][main]: 1, 2013-08-11 23:30, ShaErKe, 3-3, HanBao, 2.27, 3.3, 2.95
+[2014-07-17 19:55:34,407][INFO][InputParser.java:54][main]: 2, 2013-08-17 21:30, SiTuJiaTe, 0-1, LeWoKuSeng, 4.71, 3.72, 1.76
+[2014-07-17 19:55:34,407][INFO][InputParser.java:54][main]: 2, 2013-08-17 21:30, AoErFuSiBao, 4-0, ShaErKe, 4.71, 3.72, 1.76
+[2014-07-17 19:55:34,407][INFO][InputParser.java:54][main]: 2, 2013-08-17 21:30, YunDaBuLaiMei, 1-0, AoGeSiBao, 4.71, 3.72, 1.76
+[2014-07-17 19:55:34,408][INFO][InputParser.java:54][main]: 2, 2013-08-17 21:30, FuLaiBao, 1-2, MeiYinCi, 4.71, 3.72, 1.76
+[2014-07-17 19:55:34,408][INFO][InputParser.java:54][main]: 2, 2013-08-17 21:30, HanBao, 1-5, HeFenHaiMu, 4.71, 3.72, 1.76
+[2014-07-17 19:55:34,408][INFO][InputParser.java:54][main]: 2, 2013-08-17 21:30, FaLanKeFu, 0-1, BaiRen, 4.71, 3.72, 1.76
+[2014-07-17 19:55:34,408][INFO][InputParser.java:54][main]: 2, 2013-08-18 00:30, MenXing, 3-0, HanNuoWei, 4.71, 3.72, 1.76
+[2014-07-17 19:55:34,408][INFO][InputParser.java:54][main]: 2, 2013-08-18 21:30, NiuLunBao, 2-2, BoLinHeTa, 4.71, 3.72, 1.76
+[2014-07-17 19:55:34,408][INFO][InputParser.java:54][main]: 2, 2013-08-18 23:30, DuoTeMengDe, 2-1, BuLunSiWeiKe, 4.71, 3.72, 1.76
+[2014-07-17 19:55:34,409][INFO][LfsUtil.java:116][main]: Total size: 18
+[2014-07-17 19:55:34,409][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013-08-10 02:30, host=BaiRen, guest=MenXing, score=3-1, even=[1.13, 7.55, 17.77], ]
+[2014-07-17 19:55:34,409][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=AoGeSiBao, guest=DuoTeMengDe, score=0-4, even=[1.51, 4.05, 6.04], ]
+[2014-07-17 19:55:34,409][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=LeWoKuSeng, guest=FuLaiBao, score=3-1, even=[1.44, 4.31, 6.59], ]
+[2014-07-17 19:55:34,409][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=HanNuoWei, guest=AoErFuSiBao, score=2-0, even=[2.48, 3.32, 2.67], ]
+[2014-07-17 19:55:34,409][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=HeFenHaiMu, guest=NiuLunBao, score=2-2, even=[2.09, 3.31, 3.32], ]
+[2014-07-17 19:55:34,409][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=BoLinHeTa, guest=FaLanKeFu, score=6-1, even=[2.33, 3.29, 2.88], ]
+[2014-07-17 19:55:34,409][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013-08-11 00:30, host=BuLunSiWeiKe, guest=YunDaBuLaiMei, score=0-1, even=[6.49, 4.11, 1.47], ]
+[2014-07-17 19:55:34,409][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013-08-11 21:30, host=MeiYinCi, guest=SiTuJiaTe, score=3-2, even=[2.79, 3.33, 2.37], ]
+[2014-07-17 19:55:34,410][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=1, time=2013-08-11 23:30, host=ShaErKe, guest=HanBao, score=3-3, even=[2.27, 3.3, 2.95], ]
+[2014-07-17 19:55:34,410][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=SiTuJiaTe, guest=LeWoKuSeng, score=0-1, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:34,410][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=AoErFuSiBao, guest=ShaErKe, score=4-0, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:34,410][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=YunDaBuLaiMei, guest=AoGeSiBao, score=1-0, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:34,410][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=FuLaiBao, guest=MeiYinCi, score=1-2, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:34,410][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=HanBao, guest=HeFenHaiMu, score=1-5, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:34,410][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=FaLanKeFu, guest=BaiRen, score=0-1, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:34,410][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013-08-18 00:30, host=MenXing, guest=HanNuoWei, score=3-0, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:34,411][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013-08-18 21:30, host=NiuLunBao, guest=BoLinHeTa, score=2-2, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 19:55:34,411][INFO][LfsUtil.java:118][main]: MatchItem [id=0, index=2, time=2013-08-18 23:30, host=DuoTeMengDe, guest=BuLunSiWeiKe, score=2-1, even=[4.71, 3.72, 1.76], ]
+[2014-07-17 20:20:01,462][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@10ee36ee: startup date [Thu Jul 17 20:20:01 CST 2014]; root of context hierarchy
+[2014-07-17 20:20:01,500][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 20:20:01,780][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 20:20:01,780][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 20:20:01,784][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 20:20:01,895][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 20:20:01,896][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 20:20:01,923][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 20:20:01,930][INFO][LfsMain.java:34][main]: Starting application.
+[2014-07-17 20:20:01,932][INFO][InputParser.java:55][main]: 2013_ 0_Bai_Men
+[2014-07-17 20:20:01,932][INFO][InputParser.java:55][main]: 2013_ 0_AoGe_Duo
+[2014-07-17 20:20:01,933][INFO][InputParser.java:55][main]: 2013_ 0_Le_Fu
+[2014-07-17 20:20:01,933][INFO][InputParser.java:55][main]: 2013_ 0_HanNuo_AoEr
+[2014-07-17 20:20:01,933][INFO][InputParser.java:55][main]: 2013_ 0_He_Niu
+[2014-07-17 20:20:01,933][INFO][InputParser.java:55][main]: 2013_ 0_Bo_Fa
+[2014-07-17 20:20:01,934][INFO][InputParser.java:55][main]: 2013_ 0_Bu_Yun
+[2014-07-17 20:20:01,935][INFO][InputParser.java:55][main]: 2013_ 0_Mei_Si
+[2014-07-17 20:20:01,935][INFO][InputParser.java:55][main]: 2013_ 0_Sha_HanBao
+[2014-07-17 20:20:01,935][INFO][InputParser.java:55][main]: 2013_ 0_Si_Le
+[2014-07-17 20:20:01,935][INFO][InputParser.java:55][main]: 2013_ 0_AoEr_Sha
+[2014-07-17 20:20:01,936][INFO][InputParser.java:55][main]: 2013_ 0_Yun_AoGe
+[2014-07-17 20:20:01,936][INFO][InputParser.java:55][main]: 2013_ 0_Fu_Mei
+[2014-07-17 20:20:01,936][INFO][InputParser.java:55][main]: 2013_ 0_HanBao_He
+[2014-07-17 20:20:01,937][INFO][InputParser.java:55][main]: 2013_ 0_Fa_Bai
+[2014-07-17 20:20:01,937][INFO][InputParser.java:55][main]: 2013_ 0_Men_HanNuo
+[2014-07-17 20:20:01,937][INFO][InputParser.java:55][main]: 2013_ 0_Niu_Bo
+[2014-07-17 20:20:01,937][INFO][InputParser.java:55][main]: 2013_ 0_Duo_Bu
+[2014-07-17 20:20:01,937][INFO][LfsUtil.java:115][main]: Total size: 18
+[2014-07-17 20:20:01,938][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 02:30, host=Bai, guest=Men, score=3-1, even=[1.13, 7.55, 17.77]]
+[2014-07-17 20:20:01,938][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=AoGe, guest=Duo, score=0-4, even=[1.51, 4.05, 6.04]]
+[2014-07-17 20:20:01,938][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=Le, guest=Fu, score=3-1, even=[1.44, 4.31, 6.59]]
+[2014-07-17 20:20:01,938][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=HanNuo, guest=AoEr, score=2-0, even=[2.48, 3.32, 2.67]]
+[2014-07-17 20:20:01,938][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=He, guest=Niu, score=2-2, even=[2.09, 3.31, 3.32]]
+[2014-07-17 20:20:01,938][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=Bo, guest=Fa, score=6-1, even=[2.33, 3.29, 2.88]]
+[2014-07-17 20:20:01,939][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 00:30, host=Bu, guest=Yun, score=0-1, even=[6.49, 4.11, 1.47]]
+[2014-07-17 20:20:01,939][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 21:30, host=Mei, guest=Si, score=3-2, even=[2.79, 3.33, 2.37]]
+[2014-07-17 20:20:01,939][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 23:30, host=Sha, guest=HanBao, score=3-3, even=[2.27, 3.3, 2.95]]
+[2014-07-17 20:20:01,939][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Si, guest=Le, score=0-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:01,939][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=AoEr, guest=Sha, score=4-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:01,939][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Yun, guest=AoGe, score=1-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:01,939][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Fu, guest=Mei, score=1-2, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:01,939][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=HanBao, guest=He, score=1-5, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:01,939][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Fa, guest=Bai, score=0-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:01,940][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 00:30, host=Men, guest=HanNuo, score=3-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:01,940][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 21:30, host=Niu, guest=Bo, score=2-2, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:01,940][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 23:30, host=Duo, guest=Bu, score=2-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:40,854][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@1d508393: startup date [Thu Jul 17 20:20:40 CST 2014]; root of context hierarchy
+[2014-07-17 20:20:40,893][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 20:20:41,184][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 20:20:41,185][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 20:20:41,188][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 20:20:41,306][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 20:20:41,306][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 20:20:41,333][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 20:20:41,341][INFO][LfsMain.java:34][main]: Starting application.
+[2014-07-17 20:20:41,343][INFO][InputParser.java:55][main]: 2013_ 0_Bai_Men
+[2014-07-17 20:20:41,343][INFO][InputParser.java:55][main]: 2013_ 0_AoGe_Duo
+[2014-07-17 20:20:41,343][INFO][InputParser.java:55][main]: 2013_ 0_Le_Fu
+[2014-07-17 20:20:41,344][INFO][InputParser.java:55][main]: 2013_ 0_HanNuo_AoEr
+[2014-07-17 20:20:41,344][INFO][InputParser.java:55][main]: 2013_ 0_He_Niu
+[2014-07-17 20:20:41,344][INFO][InputParser.java:55][main]: 2013_ 0_Bo_Fa
+[2014-07-17 20:20:41,344][INFO][InputParser.java:55][main]: 2013_ 0_Bu_Yun
+[2014-07-17 20:20:41,346][INFO][InputParser.java:55][main]: 2013_ 0_Mei_Si
+[2014-07-17 20:20:41,346][INFO][InputParser.java:55][main]: 2013_ 0_Sha_HanBao
+[2014-07-17 20:20:41,346][INFO][InputParser.java:55][main]: 2013_ 0_Si_Le
+[2014-07-17 20:20:41,346][INFO][InputParser.java:55][main]: 2013_ 0_AoEr_Sha
+[2014-07-17 20:20:41,346][INFO][InputParser.java:55][main]: 2013_ 0_Yun_AoGe
+[2014-07-17 20:20:41,347][INFO][InputParser.java:55][main]: 2013_ 0_Fu_Mei
+[2014-07-17 20:20:41,347][INFO][InputParser.java:55][main]: 2013_ 0_HanBao_He
+[2014-07-17 20:20:41,347][INFO][InputParser.java:55][main]: 2013_ 0_Fa_Bai
+[2014-07-17 20:20:41,347][INFO][InputParser.java:55][main]: 2013_ 0_Men_HanNuo
+[2014-07-17 20:20:41,348][INFO][InputParser.java:55][main]: 2013_ 0_Niu_Bo
+[2014-07-17 20:20:41,348][INFO][InputParser.java:55][main]: 2013_ 0_Duo_Bu
+[2014-07-17 20:20:41,348][INFO][LfsUtil.java:115][main]: Total size: 18
+[2014-07-17 20:20:41,349][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 02:30, host=Bai, guest=Men, score=3-1, even=[1.13, 7.55, 17.77]]
+[2014-07-17 20:20:41,349][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=AoGe, guest=Duo, score=0-4, even=[1.51, 4.05, 6.04]]
+[2014-07-17 20:20:41,349][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=Le, guest=Fu, score=3-1, even=[1.44, 4.31, 6.59]]
+[2014-07-17 20:20:41,349][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=HanNuo, guest=AoEr, score=2-0, even=[2.48, 3.32, 2.67]]
+[2014-07-17 20:20:41,349][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=He, guest=Niu, score=2-2, even=[2.09, 3.31, 3.32]]
+[2014-07-17 20:20:41,349][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=Bo, guest=Fa, score=6-1, even=[2.33, 3.29, 2.88]]
+[2014-07-17 20:20:41,349][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 00:30, host=Bu, guest=Yun, score=0-1, even=[6.49, 4.11, 1.47]]
+[2014-07-17 20:20:41,349][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 21:30, host=Mei, guest=Si, score=3-2, even=[2.79, 3.33, 2.37]]
+[2014-07-17 20:20:41,349][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 23:30, host=Sha, guest=HanBao, score=3-3, even=[2.27, 3.3, 2.95]]
+[2014-07-17 20:20:41,350][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Si, guest=Le, score=0-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:41,350][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=AoEr, guest=Sha, score=4-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:41,350][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Yun, guest=AoGe, score=1-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:41,350][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Fu, guest=Mei, score=1-2, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:41,350][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=HanBao, guest=He, score=1-5, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:41,350][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Fa, guest=Bai, score=0-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:41,350][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 00:30, host=Men, guest=HanNuo, score=3-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:41,350][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 21:30, host=Niu, guest=Bo, score=2-2, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:20:41,351][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 23:30, host=Duo, guest=Bu, score=2-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:19,439][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@10ee36ee: startup date [Thu Jul 17 20:21:19 CST 2014]; root of context hierarchy
+[2014-07-17 20:21:19,475][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 20:21:19,756][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 20:21:19,756][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 20:21:19,759][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 20:21:19,871][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 20:21:19,871][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 20:21:19,898][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 20:21:19,906][INFO][LfsMain.java:34][main]: Starting application.
+[2014-07-17 20:21:19,908][INFO][InputParser.java:55][main]: 2013_00_Bai_Men
+[2014-07-17 20:21:19,908][INFO][InputParser.java:55][main]: 2013_00_AoGe_Duo
+[2014-07-17 20:21:19,908][INFO][InputParser.java:55][main]: 2013_00_Le_Fu
+[2014-07-17 20:21:19,909][INFO][InputParser.java:55][main]: 2013_00_HanNuo_AoEr
+[2014-07-17 20:21:19,909][INFO][InputParser.java:55][main]: 2013_00_He_Niu
+[2014-07-17 20:21:19,909][INFO][InputParser.java:55][main]: 2013_00_Bo_Fa
+[2014-07-17 20:21:19,909][INFO][InputParser.java:55][main]: 2013_00_Bu_Yun
+[2014-07-17 20:21:19,911][INFO][InputParser.java:55][main]: 2013_00_Mei_Si
+[2014-07-17 20:21:19,911][INFO][InputParser.java:55][main]: 2013_00_Sha_HanBao
+[2014-07-17 20:21:19,911][INFO][InputParser.java:55][main]: 2013_00_Si_Le
+[2014-07-17 20:21:19,911][INFO][InputParser.java:55][main]: 2013_00_AoEr_Sha
+[2014-07-17 20:21:19,912][INFO][InputParser.java:55][main]: 2013_00_Yun_AoGe
+[2014-07-17 20:21:19,912][INFO][InputParser.java:55][main]: 2013_00_Fu_Mei
+[2014-07-17 20:21:19,912][INFO][InputParser.java:55][main]: 2013_00_HanBao_He
+[2014-07-17 20:21:19,912][INFO][InputParser.java:55][main]: 2013_00_Fa_Bai
+[2014-07-17 20:21:19,912][INFO][InputParser.java:55][main]: 2013_00_Men_HanNuo
+[2014-07-17 20:21:19,913][INFO][InputParser.java:55][main]: 2013_00_Niu_Bo
+[2014-07-17 20:21:19,913][INFO][InputParser.java:55][main]: 2013_00_Duo_Bu
+[2014-07-17 20:21:19,913][INFO][LfsUtil.java:115][main]: Total size: 18
+[2014-07-17 20:21:19,914][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 02:30, host=Bai, guest=Men, score=3-1, even=[1.13, 7.55, 17.77]]
+[2014-07-17 20:21:19,914][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=AoGe, guest=Duo, score=0-4, even=[1.51, 4.05, 6.04]]
+[2014-07-17 20:21:19,914][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=Le, guest=Fu, score=3-1, even=[1.44, 4.31, 6.59]]
+[2014-07-17 20:21:19,914][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=HanNuo, guest=AoEr, score=2-0, even=[2.48, 3.32, 2.67]]
+[2014-07-17 20:21:19,914][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=He, guest=Niu, score=2-2, even=[2.09, 3.31, 3.32]]
+[2014-07-17 20:21:19,914][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=Bo, guest=Fa, score=6-1, even=[2.33, 3.29, 2.88]]
+[2014-07-17 20:21:19,914][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 00:30, host=Bu, guest=Yun, score=0-1, even=[6.49, 4.11, 1.47]]
+[2014-07-17 20:21:19,914][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 21:30, host=Mei, guest=Si, score=3-2, even=[2.79, 3.33, 2.37]]
+[2014-07-17 20:21:19,914][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 23:30, host=Sha, guest=HanBao, score=3-3, even=[2.27, 3.3, 2.95]]
+[2014-07-17 20:21:19,915][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Si, guest=Le, score=0-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:19,915][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=AoEr, guest=Sha, score=4-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:19,915][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Yun, guest=AoGe, score=1-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:19,915][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Fu, guest=Mei, score=1-2, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:19,915][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=HanBao, guest=He, score=1-5, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:19,915][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Fa, guest=Bai, score=0-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:19,915][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 00:30, host=Men, guest=HanNuo, score=3-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:19,915][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 21:30, host=Niu, guest=Bo, score=2-2, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:19,915][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 23:30, host=Duo, guest=Bu, score=2-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:50,056][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@f18ae23: startup date [Thu Jul 17 20:21:50 CST 2014]; root of context hierarchy
+[2014-07-17 20:21:50,093][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 20:21:50,371][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 20:21:50,372][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 20:21:50,375][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 20:21:50,485][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 20:21:50,486][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 20:21:50,513][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 20:21:50,521][INFO][LfsMain.java:34][main]: Starting application.
+[2014-07-17 20:21:50,523][INFO][InputParser.java:55][main]: 2013_00_Bai_Men
+[2014-07-17 20:21:50,523][INFO][InputParser.java:55][main]: 2013_00_AoGe_Duo
+[2014-07-17 20:21:50,524][INFO][InputParser.java:55][main]: 2013_00_Le_Fu
+[2014-07-17 20:21:50,524][INFO][InputParser.java:55][main]: 2013_00_HanNuo_AoEr
+[2014-07-17 20:21:50,524][INFO][InputParser.java:55][main]: 2013_00_He_Niu
+[2014-07-17 20:21:50,524][INFO][InputParser.java:55][main]: 2013_00_Bo_Fa
+[2014-07-17 20:21:50,525][INFO][InputParser.java:55][main]: 2013_00_Bu_Yun
+[2014-07-17 20:21:50,526][INFO][InputParser.java:55][main]: 2013_00_Mei_Si
+[2014-07-17 20:21:50,526][INFO][InputParser.java:55][main]: 2013_00_Sha_HanBao
+[2014-07-17 20:21:50,526][INFO][InputParser.java:55][main]: 2013_00_Si_Le
+[2014-07-17 20:21:50,527][INFO][InputParser.java:55][main]: 2013_00_AoEr_Sha
+[2014-07-17 20:21:50,527][INFO][InputParser.java:55][main]: 2013_00_Yun_AoGe
+[2014-07-17 20:21:50,527][INFO][InputParser.java:55][main]: 2013_00_Fu_Mei
+[2014-07-17 20:21:50,527][INFO][InputParser.java:55][main]: 2013_00_HanBao_He
+[2014-07-17 20:21:50,527][INFO][InputParser.java:55][main]: 2013_00_Fa_Bai
+[2014-07-17 20:21:50,528][INFO][InputParser.java:55][main]: 2013_00_Men_HanNuo
+[2014-07-17 20:21:50,528][INFO][InputParser.java:55][main]: 2013_00_Niu_Bo
+[2014-07-17 20:21:50,528][INFO][InputParser.java:55][main]: 2013_00_Duo_Bu
+[2014-07-17 20:21:50,528][INFO][LfsUtil.java:115][main]: Total size: 18
+[2014-07-17 20:21:50,529][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 02:30, host=Bai, guest=Men, score=3-1, even=[1.13, 7.55, 17.77]]
+[2014-07-17 20:21:50,529][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=AoGe, guest=Duo, score=0-4, even=[1.51, 4.05, 6.04]]
+[2014-07-17 20:21:50,529][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=Le, guest=Fu, score=3-1, even=[1.44, 4.31, 6.59]]
+[2014-07-17 20:21:50,529][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=HanNuo, guest=AoEr, score=2-0, even=[2.48, 3.32, 2.67]]
+[2014-07-17 20:21:50,530][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=He, guest=Niu, score=2-2, even=[2.09, 3.31, 3.32]]
+[2014-07-17 20:21:50,530][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=Bo, guest=Fa, score=6-1, even=[2.33, 3.29, 2.88]]
+[2014-07-17 20:21:50,530][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 00:30, host=Bu, guest=Yun, score=0-1, even=[6.49, 4.11, 1.47]]
+[2014-07-17 20:21:50,530][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 21:30, host=Mei, guest=Si, score=3-2, even=[2.79, 3.33, 2.37]]
+[2014-07-17 20:21:50,530][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 23:30, host=Sha, guest=HanBao, score=3-3, even=[2.27, 3.3, 2.95]]
+[2014-07-17 20:21:50,530][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Si, guest=Le, score=0-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:50,530][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=AoEr, guest=Sha, score=4-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:50,530][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Yun, guest=AoGe, score=1-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:50,531][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Fu, guest=Mei, score=1-2, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:50,531][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=HanBao, guest=He, score=1-5, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:50,531][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Fa, guest=Bai, score=0-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:50,531][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 00:30, host=Men, guest=HanNuo, score=3-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:50,531][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 21:30, host=Niu, guest=Bo, score=2-2, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:21:50,531][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 23:30, host=Duo, guest=Bu, score=2-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:22:00,374][INFO][AbstractApplicationContext.java:513][main]: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@1d508393: startup date [Thu Jul 17 20:22:00 CST 2014]; root of context hierarchy
+[2014-07-17 20:22:00,410][INFO][XmlBeanDefinitionReader.java:316][main]: Loading XML bean definitions from class path resource [applicationContext.xml]
+[2014-07-17 20:22:00,689][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/jdbc.properties]
+[2014-07-17 20:22:00,689][INFO][PropertiesLoaderSupport.java:172][main]: Loading properties file from URL [file:./conf/threadPool.properties]
+[2014-07-17 20:22:00,692][INFO][AutowiredAnnotationBeanPostProcessor.java:141][main]: JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2014-07-17 20:22:00,803][INFO][LfsConfMgr.java:34][main]: Initialize conf.
+[2014-07-17 20:22:00,804][INFO][LfsConfMgr.java:37][main]: file: D:\github\an-lfs\conf\lfs.txt
+[2014-07-17 20:22:00,829][INFO][LfsConfMgr.java:39][main]: conf: LfsConf [parse=1]
+[2014-07-17 20:22:00,837][INFO][LfsMain.java:34][main]: Starting application.
+[2014-07-17 20:22:00,839][INFO][InputParser.java:55][main]: 2013_01_Bai_Men
+[2014-07-17 20:22:00,839][INFO][InputParser.java:55][main]: 2013_01_AoGe_Duo
+[2014-07-17 20:22:00,839][INFO][InputParser.java:55][main]: 2013_01_Le_Fu
+[2014-07-17 20:22:00,839][INFO][InputParser.java:55][main]: 2013_01_HanNuo_AoEr
+[2014-07-17 20:22:00,840][INFO][InputParser.java:55][main]: 2013_01_He_Niu
+[2014-07-17 20:22:00,840][INFO][InputParser.java:55][main]: 2013_01_Bo_Fa
+[2014-07-17 20:22:00,840][INFO][InputParser.java:55][main]: 2013_01_Bu_Yun
+[2014-07-17 20:22:00,841][INFO][InputParser.java:55][main]: 2013_01_Mei_Si
+[2014-07-17 20:22:00,842][INFO][InputParser.java:55][main]: 2013_01_Sha_HanBao
+[2014-07-17 20:22:00,842][INFO][InputParser.java:55][main]: 2013_02_Si_Le
+[2014-07-17 20:22:00,842][INFO][InputParser.java:55][main]: 2013_02_AoEr_Sha
+[2014-07-17 20:22:00,842][INFO][InputParser.java:55][main]: 2013_02_Yun_AoGe
+[2014-07-17 20:22:00,843][INFO][InputParser.java:55][main]: 2013_02_Fu_Mei
+[2014-07-17 20:22:00,843][INFO][InputParser.java:55][main]: 2013_02_HanBao_He
+[2014-07-17 20:22:00,843][INFO][InputParser.java:55][main]: 2013_02_Fa_Bai
+[2014-07-17 20:22:00,843][INFO][InputParser.java:55][main]: 2013_02_Men_HanNuo
+[2014-07-17 20:22:00,844][INFO][InputParser.java:55][main]: 2013_02_Niu_Bo
+[2014-07-17 20:22:00,844][INFO][InputParser.java:55][main]: 2013_02_Duo_Bu
+[2014-07-17 20:22:00,844][INFO][LfsUtil.java:115][main]: Total size: 18
+[2014-07-17 20:22:00,844][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 02:30, host=Bai, guest=Men, score=3-1, even=[1.13, 7.55, 17.77]]
+[2014-07-17 20:22:00,844][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=AoGe, guest=Duo, score=0-4, even=[1.51, 4.05, 6.04]]
+[2014-07-17 20:22:00,845][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=Le, guest=Fu, score=3-1, even=[1.44, 4.31, 6.59]]
+[2014-07-17 20:22:00,845][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=HanNuo, guest=AoEr, score=2-0, even=[2.48, 3.32, 2.67]]
+[2014-07-17 20:22:00,845][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=He, guest=Niu, score=2-2, even=[2.09, 3.31, 3.32]]
+[2014-07-17 20:22:00,845][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-10 21:30, host=Bo, guest=Fa, score=6-1, even=[2.33, 3.29, 2.88]]
+[2014-07-17 20:22:00,845][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 00:30, host=Bu, guest=Yun, score=0-1, even=[6.49, 4.11, 1.47]]
+[2014-07-17 20:22:00,845][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 21:30, host=Mei, guest=Si, score=3-2, even=[2.79, 3.33, 2.37]]
+[2014-07-17 20:22:00,845][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=1, time=2013-08-11 23:30, host=Sha, guest=HanBao, score=3-3, even=[2.27, 3.3, 2.95]]
+[2014-07-17 20:22:00,845][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Si, guest=Le, score=0-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:22:00,845][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=AoEr, guest=Sha, score=4-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:22:00,846][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Yun, guest=AoGe, score=1-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:22:00,846][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Fu, guest=Mei, score=1-2, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:22:00,846][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=HanBao, guest=He, score=1-5, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:22:00,846][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-17 21:30, host=Fa, guest=Bai, score=0-1, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:22:00,846][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 00:30, host=Men, guest=HanNuo, score=3-0, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:22:00,846][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 21:30, host=Niu, guest=Bo, score=2-2, even=[4.71, 3.72, 1.76]]
+[2014-07-17 20:22:00,846][INFO][LfsUtil.java:117][main]: MatchItem [id=0, index=2, time=2013-08-18 23:30, host=Duo, guest=Bu, score=2-1, even=[4.71, 3.72, 1.76]]
