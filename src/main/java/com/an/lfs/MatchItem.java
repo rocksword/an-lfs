@@ -5,23 +5,22 @@ import java.util.Arrays;
 public class MatchItem {
     private int id;
     private int index;
-    private String time;// yyyy-MM-dd hh:mm
+    private String year; // yyyy
+    private String time; // MM-dd hh:mm
     private String host;
     private String guest;
     private String score;
     private float[] even;
 
     public String getKey() {
-        String result = String.format("%s_%02d_%s_%s", time.substring(0, 4), index, host, guest);
+        String result = String.format("%s_%02d_%s_%s", year, index, host, guest);
         return result;
     }
 
     @Override
     public String toString() {
-        return "MatchItem [id=" + id + ", index=" + index + ", " + (time != null ? "time=" + time + ", " : "")
-                + (host != null ? "host=" + host + ", " : "") + (guest != null ? "guest=" + guest + ", " : "")
-                + (score != null ? "score=" + score + ", " : "")
-                + (even != null ? "even=" + Arrays.toString(even) : "") + "]";
+        return "MatchItem [id=" + id + ", index=" + index + ", year=" + year + ", time=" + time + ", host=" + host
+                + ", guest=" + guest + ", score=" + score + ", even=" + Arrays.toString(even) + "]";
     }
 
     public int getId() {
@@ -38,6 +37,14 @@ public class MatchItem {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public String getTime() {

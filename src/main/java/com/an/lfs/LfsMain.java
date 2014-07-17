@@ -3,8 +3,6 @@ package com.an.lfs;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,10 +30,18 @@ public class LfsMain {
 
     private void startApp() {
         logger.info("Starting application.");
-        InputParser parser = new InputParser();
-        List<MatchItem> items = new ArrayList<>();
-        parser.parse("2013", "2014", items);
-        LfsUtil.logCollection(items);
+
+        MatchParser mParser = new MatchParser();
+        mParser.parse("2013", LfsUtil.matchItems);
+        logger.info(LfsUtil.matchItems);
+
+        CompanyParser cParser = new CompanyParser();
+        cParser.parse(LfsUtil.companys);
+
+        ClaimRateParser crParser = new ClaimRateParser();
+        crParser.parse(LfsUtil.claimRates);
+
+        LfsUtil.createClaimRateFiles();
     }
 
     private static void init() {

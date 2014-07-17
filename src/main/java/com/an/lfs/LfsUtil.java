@@ -1,8 +1,10 @@
 package com.an.lfs;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,23 +23,36 @@ public class LfsUtil {
     private static final String DIR_CONF = "conf";
     private static final String DIR_INPUT = "input";
     private static final String DIR_OUTPUT = "output";
-    private static Map<String, String> teamNames = new HashMap<>();
 
+    private static Map<String, String> teams = new HashMap<>();
     static {
         for (int i = 0; i < TEAM_NAMES_ZH.length; i++) {
-            teamNames.put(TEAM_NAMES_ZH[i], TEAM_NAMES_EN[i]);
+            teams.put(TEAM_NAMES_ZH[i], TEAM_NAMES_EN[i]);
         }
     }
+
+    // RawName -> RefinedName
+    public static Map<String, String> companys = new HashMap<>();
+    // 2013.txt
+    public static List<MatchItem> matchItems = new ArrayList<>();
+    // year_index_host_guest: 2013_01_Bai_Men.txt
+    public static List<String> claimRateKeys = new ArrayList<>();
+    // claimRateKey -> rates
+    public static Map<String, List<ClaimRate>> claimRates = new HashMap<String, List<ClaimRate>>();
 
     /**
      * @param nameZh
      * @return
      */
-    public static String getName(String nameZh) {
-        return teamNames.get(nameZh);
+    public static String getTeamName(String nameZh) {
+        return teams.get(nameZh);
     }
 
-    public synchronized static String getSussHome() {
+    public static String getCompName(String rawName) {
+        return companys.get(rawName);
+    }
+
+    public synchronized static String getLfsHome() {
         String dir = System.getenv(LfsConst.LFS_HOME);
         if (StringUtils.isEmpty(dir)) {
             throw new RuntimeException("Not found LFS_HOME, please set it.");
@@ -45,25 +60,25 @@ public class LfsUtil {
         return dir;
     }
 
-    public synchronized static String getConfFilePath(String finename) {
-        String home = getSussHome();
+    public synchronized static String getConfFilePath(String filename) {
+        String home = getLfsHome();
         File file = new File(home);
         return new StringBuilder().append(file.getAbsolutePath()).append(File.separator).append(DIR_CONF)
-                .append(File.separator).append(finename).toString();
+                .append(File.separator).append(filename).toString();
     }
 
-    public synchronized static String getInputFilePath(String finename) {
-        String home = getSussHome();
+    public synchronized static String getInputFilePath(String filename) {
+        String home = getLfsHome();
         File file = new File(home);
         return new StringBuilder().append(file.getAbsolutePath()).append(File.separator).append(DIR_INPUT)
-                .append(File.separator).append(finename).toString();
+                .append(File.separator).append(filename).toString();
     }
 
-    public synchronized static String getOutputFilePath(String finename) {
-        String home = getSussHome();
+    public synchronized static String getOutputFilePath(String filename) {
+        String home = getLfsHome();
         File file = new File(home);
         return new StringBuilder().append(file.getAbsolutePath()).append(File.separator).append(DIR_OUTPUT)
-                .append(File.separator).append(finename).toString();
+                .append(File.separator).append(filename).toString();
     }
 
     // invalid chars in domain names
@@ -115,6 +130,13 @@ public class LfsUtil {
         logger.info("Total size: " + collection.size());
         for (Object obj : collection) {
             logger.info(obj);
+        }
+    }
+
+    public static void createClaimRateFiles() {
+        for (String key : claimRateKeys) {
+            String filename = key + ".txt";
+            FileLineIterator.writeFile(filename);
         }
     }
 }

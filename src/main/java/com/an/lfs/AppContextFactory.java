@@ -11,7 +11,7 @@ public class AppContextFactory {
     }
 
     public synchronized static void init() {
-        LfsUtil.getSussHome();
+        LfsUtil.getLfsHome();
         if (!initialized) {
             synchronized (AppContextFactory.class) {
                 if (!initialized) {
