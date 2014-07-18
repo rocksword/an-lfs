@@ -15,42 +15,9 @@ import org.apache.commons.logging.LogFactory;
 
 public class LfsUtil {
     private static final Log logger = LogFactory.getLog(LfsConfMgr.class);
-    private static String[] TEAM_NAMES_ZH = new String[] { "拜仁慕尼黑", "多特蒙德", "沙尔克04", "勒沃库森", "沃尔夫斯堡", "门兴格拉德巴赫", "美因茨",
-            "奥格斯堡", "霍芬海姆", "汉诺威96", "柏林赫塔", "云达不来梅", "法兰克福", "弗赖堡", "斯图加特", "汉堡", "纽伦堡", "布伦斯维克" };
-    private static String[] TEAM_NAMES_EN = new String[] { "Bai", "Duo", "Sha", "Le", "AoEr", "Men", "Mei", "AoGe",
-            "He", "HanNuo", "Bo", "Yun", "Fa", "Fu", "Si", "HanBao", "Niu", "Bu" };
-
     private static final String DIR_CONF = "conf";
     private static final String DIR_INPUT = "input";
     private static final String DIR_OUTPUT = "output";
-
-    private static Map<String, String> teams = new HashMap<>();
-    static {
-        for (int i = 0; i < TEAM_NAMES_ZH.length; i++) {
-            teams.put(TEAM_NAMES_ZH[i], TEAM_NAMES_EN[i]);
-        }
-    }
-
-    // RawName -> RefinedName
-    public static Map<String, String> companys = new HashMap<>();
-    // 2013.txt
-    public static List<MatchItem> matchItems = new ArrayList<>();
-    // year_index_host_guest: 2013_01_Bai_Men.txt
-    public static List<String> claimRateKeys = new ArrayList<>();
-    // claimRateKey -> rates
-    public static Map<String, List<ClaimRate>> claimRates = new HashMap<String, List<ClaimRate>>();
-
-    /**
-     * @param nameZh
-     * @return
-     */
-    public static String getTeamName(String nameZh) {
-        return teams.get(nameZh);
-    }
-
-    public static String getCompName(String rawName) {
-        return companys.get(rawName);
-    }
 
     public synchronized static String getLfsHome() {
         String dir = System.getenv(LfsConst.LFS_HOME);
@@ -130,13 +97,6 @@ public class LfsUtil {
         logger.info("Total size: " + collection.size());
         for (Object obj : collection) {
             logger.info(obj);
-        }
-    }
-
-    public static void createClaimRateFiles() {
-        for (String key : claimRateKeys) {
-            String filename = key + ".txt";
-            FileLineIterator.writeFile(filename);
         }
     }
 }

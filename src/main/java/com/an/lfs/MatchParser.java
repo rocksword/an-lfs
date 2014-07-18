@@ -6,13 +6,15 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.an.lfs.vo.Match;
+
 public class MatchParser {
     private static final Log logger = LogFactory.getLog(MatchParser.class);
 
     public MatchParser() {
     }
 
-    public boolean parse(String year, List<MatchItem> result) {
+    public boolean parse(String year, List<Match> matchs, List<String> claimRateKeys) {
         String filename = year + ".txt";
         String filepath = LfsUtil.getInputFilePath(filename);
         FileLineIterator iter = new FileLineIterator(filepath);
@@ -27,26 +29,28 @@ public class MatchParser {
                 logger.info("Invalid line " + line);
                 continue;
             }
-            MatchItem item = new MatchItem();
+            Match match = new Match();
             int index = Integer.parseInt(splits[0].trim());
             String time = splits[1].trim();
-            String host = LfsUtil.getTeamName(splits[2].trim());
+            String host = TeamMgr.getName(splits[2].trim());
             String score = splits[3].trim();
-            String guest = LfsUtil.getTeamName(splits[4].trim());
+            String guest = TeamMgr.getName(splits[4].trim());
             float win = Float.parseFloat(splits[5].trim());
             float draw = Float.parseFloat(splits[6].trim());
             float lose = Float.parseFloat(splits[7].trim());
 
-            item.setIndex(index);
-            item.setYear(year);
-            item.setTime(time);
-            item.setHost(host);
-            item.setScore(score);
-            item.setGuest(guest);
-            item.setEven(new float[] { win, draw, lose });
+            match.setIndex(index);
+            match.setYear(year);
+            match.setTime(time);
+            match.setHost(host);
+            match.setScore(score);
+            match.setGuest(guest);
+            match.setWin(win);
+            match.setDraw(draw);
+            match.setLose(lose);
 
-            LfsUtil.claimRateKeys.add(item.getKey());
-            result.add(item);
+            claimRateKeys.add(match.getKey());
+            matchs.add(match);
         }
         iter.close();
         return true;

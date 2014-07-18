@@ -21,17 +21,13 @@
     <context:component-scan base-package="com.an.lfs" />
     <context:property-placeholder
         location="file:./conf/jdbc.properties,file:./conf/threadPool.properties" />
-<!-- 
-    <bean id="threadPoolTaskExecutor"
-        class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-        <property name="corePoolSize" value="${threadpool.corePoolSize}" />
-        <property name="maxPoolSize" value="${threadpool.maxPoolSize}" />
-        <property name="queueCapacity" value="${threadpool.queueCapacity}" />
-    </bean>
 
-    <bean id="urlHandlerTaskExecutor" class="com.dell.sonicwall.suss.UrlHandlerTaskExecutor">
-        <constructor-arg ref="threadPoolTaskExecutor" />
-    </bean>
+    <!-- <bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"> 
+        <property name="corePoolSize" value="${threadpool.corePoolSize}" /> <property 
+        name="maxPoolSize" value="${threadpool.maxPoolSize}" /> <property name="queueCapacity" 
+        value="${threadpool.queueCapacity}" /> </bean> <bean id="urlHandlerTaskExecutor" 
+        class="com.dell.sonicwall.suss.UrlHandlerTaskExecutor"> <constructor-arg 
+        ref="threadPoolTaskExecutor" /> </bean> -->
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
         destroy-method="close">
@@ -48,5 +44,5 @@
         <property name="idleConnectionTestPeriod" value="1200" />
         <property name="acquireRetryAttempts" value="30" />
     </bean>
-     -->
+
 </beans>

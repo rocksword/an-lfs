@@ -48,7 +48,7 @@ public class FileLineIterator {
     public void close() {
         if (br != null) {
             try {
-                logger.info("Close BufferedReader " + br);
+                logger.debug("Close BufferedReader " + br);
                 br.close();
             } catch (Exception e) {
                 e.printStackTrace();

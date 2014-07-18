@@ -3,12 +3,19 @@ package com.an.lfs;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.PropertyConfigurator;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import com.an.lfs.vo.ClaimRateSummary;
+import com.an.lfs.vo.Match;
 
 @Configuration
 @ComponentScan
@@ -28,20 +35,27 @@ public class LfsMain {
 
     }
 
+    // 2013.txt
+    public List<Match> matches = new ArrayList<>();
+    // year_index_host_guest: 2013_01_Bai_Men.txt
+    public List<String> claimRateKeys = new ArrayList<>();
+    // claimRateKey -> ClaimRateSummary
+    public Map<String, ClaimRateSummary> rateSummaries = new HashMap<String, ClaimRateSummary>();
+
     private void startApp() {
         logger.info("Starting application.");
 
         MatchParser mParser = new MatchParser();
-        mParser.parse("2013", LfsUtil.matchItems);
-        logger.info(LfsUtil.matchItems);
+        mParser.parse("2013", matches, claimRateKeys);
+        logger.info(claimRateKeys);
+        logger.info(matches);
 
-        CompanyParser cParser = new CompanyParser();
-        cParser.parse(LfsUtil.companys);
-
-        ClaimRateParser crParser = new ClaimRateParser();
-        crParser.parse(LfsUtil.claimRates);
-
-        LfsUtil.createClaimRateFiles();
+        for (String key : claimRateKeys) {
+            ClaimRateSummary sum = ClaimRateParser.parse(key);
+            if (sum != null) {
+                rateSummaries.put(key, sum);
+            }
+        }
     }
 
     private static void init() {
@@ -54,5 +68,13 @@ public class LfsMain {
         }
 
         AppContextFactory.init();
+    }
+
+    // Create claim rate files
+    public void createClaimRateFiles() {
+        for (String key : claimRateKeys) {
+            String filename = key + ".txt";
+            FileLineIterator.writeFile(filename);
+        }
     }
 }

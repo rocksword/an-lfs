@@ -1,5 +1,6 @@
 package com.an.lfs;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -12,7 +13,8 @@ public class CompanyParser {
     public CompanyParser() {
     }
 
-    public boolean parse(Map<String, String> companys) {
+    public Map<String, String> parse() {
+        Map<String, String> companys = new HashMap<String, String>();
         String filepath = LfsUtil.getInputFilePath("2013_01_Bai_Men.txt");
         FileLineIterator iter = new FileLineIterator(filepath);
         Pattern pat = Pattern.compile("\t");
@@ -31,11 +33,11 @@ public class CompanyParser {
             String name = null;
             if (index != -1) {
                 name = rawName.substring(0, index);
-                System.out.println(rawName + ", " + name);
+                System.out.println(rawName + "," + name);
             }
             companys.put(rawName, name);
         }
         iter.close();
-        return true;
+        return companys;
     }
 }

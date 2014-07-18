@@ -1,8 +1,6 @@
-package com.an.lfs;
+package com.an.lfs.vo;
 
-import java.util.Arrays;
-
-public class MatchItem {
+public class Match {
     private int id;
     private int index;
     private String year; // yyyy
@@ -10,8 +8,13 @@ public class MatchItem {
     private String host;
     private String guest;
     private String score;
-    private float[] even;
+    private float win;
+    private float draw;
+    private float lose;
 
+    /**
+     * @return year_index_host_guest
+     */
     public String getKey() {
         String result = String.format("%s_%02d_%s_%s", year, index, host, guest);
         return result;
@@ -19,8 +22,10 @@ public class MatchItem {
 
     @Override
     public String toString() {
-        return "MatchItem [id=" + id + ", index=" + index + ", year=" + year + ", time=" + time + ", host=" + host
-                + ", guest=" + guest + ", score=" + score + ", even=" + Arrays.toString(even) + "]";
+        return "Match [id=" + id + ", index=" + index + ", " + (year != null ? "year=" + year + ", " : "")
+                + (time != null ? "time=" + time + ", " : "") + (host != null ? "host=" + host + ", " : "")
+                + (guest != null ? "guest=" + guest + ", " : "") + (score != null ? "score=" + score + ", " : "")
+                + "win=" + win + ", draw=" + draw + ", lose=" + lose + "]";
     }
 
     public int getId() {
@@ -79,11 +84,27 @@ public class MatchItem {
         this.score = score;
     }
 
-    public float[] getEven() {
-        return even;
+    public float getWin() {
+        return win;
     }
 
-    public void setEven(float[] even) {
-        this.even = even;
+    public void setWin(float win) {
+        this.win = win;
+    }
+
+    public float getDraw() {
+        return draw;
+    }
+
+    public void setDraw(float draw) {
+        this.draw = draw;
+    }
+
+    public float getLose() {
+        return lose;
+    }
+
+    public void setLose(float lose) {
+        this.lose = lose;
     }
 }
