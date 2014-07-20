@@ -21,6 +21,20 @@ public class ClaimRateSummary {
     private float drawKAvg;
     private float loseKAvg;
 
+    // dynamic data
+    private boolean passBet = false;
+
+    public void setPassBet(boolean passBet) {
+        this.passBet = passBet;
+    }
+
+    // Compute
+    public void init() {
+        for (ClaimRate rate : rates) {
+            
+        }
+    }
+
     public void addClaimRate(ClaimRate rate) {
         rates.add(rate);
     }

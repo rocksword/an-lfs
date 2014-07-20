@@ -39,6 +39,8 @@ public class LfsMain {
     public List<Match> matches = new ArrayList<>();
     // year_index_host_guest: 2013_01_Bai_Men.txt
     public List<String> claimRateKeys = new ArrayList<>();
+    //
+    public Map<String, Boolean> passBets = new HashMap<>();
     // claimRateKey -> ClaimRateSummary
     public Map<String, ClaimRateSummary> rateSummaries = new HashMap<String, ClaimRateSummary>();
 
@@ -47,13 +49,20 @@ public class LfsMain {
 
         MatchParser mParser = new MatchParser();
         mParser.parse("2013", matches, claimRateKeys);
-        logger.info(claimRateKeys);
-        logger.info(matches);
+        logger.debug(claimRateKeys);
+        logger.debug(matches);
+
+        for (Match mat : matches) {
+            System.out.println(mat.getKey() + " -> " + mat.isPassBet());
+            passBets.put(mat.getKey(), mat.isPassBet());
+        }
 
         for (String key : claimRateKeys) {
             ClaimRateSummary sum = ClaimRateParser.parse(key);
             if (sum != null) {
+                sum.setPassBet(passBets.get(key));
                 rateSummaries.put(key, sum);
+                logger.debug(key + ", " + sum);
             }
         }
     }

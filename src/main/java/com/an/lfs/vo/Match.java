@@ -1,6 +1,10 @@
 package com.an.lfs.vo;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class Match {
+    private static final Log logger = LogFactory.getLog(Match.class);
     private int id;
     private int index;
     private String year; // yyyy
@@ -12,6 +16,68 @@ public class Match {
     private float draw;
     private float lose;
 
+    public Match() {
+    }
+
+    private boolean scoreWin = false;
+    // draw match, for example, 1-1, 2-2
+    private boolean scoreDraw = false;
+    private boolean scoreLose = false;
+
+    private boolean minWin = false;
+    private boolean minDraw = false;
+    private boolean minLose = false;
+
+    private boolean passBet = false;
+
+    // true - win the bet, false - lose the bet
+    public boolean isPassBet() {
+        return passBet;
+    }
+
+    public void initPassBet() {
+        float min = 0;
+        if (Float.compare(win, lose) < 0) {
+            min = win;
+            minWin = true;
+            minDraw = false;
+            minLose = false;
+        } else if (Float.compare(win, lose) > 0) {
+            min = lose;
+            minWin = false;
+            minDraw = false;
+            minLose = true;
+        } else if (Float.compare(win, lose) == 0) {
+            min = win;
+            minWin = true;
+            minDraw = false;
+            minLose = true;
+        }
+
+        if (Float.compare(draw, min) <= 0) {
+            minDraw = true;
+            minWin = false;
+            minLose = false;
+        }
+
+        String[] strs = score.split("-");
+        if (strs[0].compareTo(strs[1]) > 0) {
+            scoreWin = true;
+        } else if (strs[0].compareTo(strs[1]) < 0) {
+            scoreLose = true;
+        } else if (strs[0].compareTo(strs[1]) == 0) {
+            scoreDraw = true;
+        }
+
+        if (minDraw && scoreDraw) {
+            passBet = true;
+        } else if (minWin && scoreWin) {
+            passBet = true;
+        } else if (minLose && scoreLose) {
+            passBet = true;
+        }
+    }
+
     /**
      * @return year_index_host_guest
      */
@@ -22,10 +88,10 @@ public class Match {
 
     @Override
     public String toString() {
-        return "Match [id=" + id + ", index=" + index + ", " + (year != null ? "year=" + year + ", " : "")
-                + (time != null ? "time=" + time + ", " : "") + (host != null ? "host=" + host + ", " : "")
-                + (guest != null ? "guest=" + guest + ", " : "") + (score != null ? "score=" + score + ", " : "")
-                + "win=" + win + ", draw=" + draw + ", lose=" + lose + "]";
+        return "Match [id=" + id + ", index=" + index + ", year=" + year + ", time=" + time + ", host=" + host
+                + ", guest=" + guest + ", score=" + score + ", win=" + win + ", draw=" + draw + ", lose=" + lose
+                + ", scoreWin=" + scoreWin + ", scoreDraw=" + scoreDraw + ", scoreLose=" + scoreLose + ", minWin="
+                + minWin + ", minDraw=" + minDraw + ", minLose=" + minLose + ", passBet=" + passBet + "]";
     }
 
     public int getId() {
