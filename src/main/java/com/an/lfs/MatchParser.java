@@ -49,8 +49,6 @@ public class MatchParser {
             match.setDraw(draw);
             match.setLose(lose);
 
-            match.initPassBet();
-
             claimRateKeys.add(match.getKey());
             matchs.add(match);
         }

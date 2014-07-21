@@ -22,16 +22,163 @@ public class ClaimRateSummary {
     private float loseKAvg;
 
     // dynamic data
-    private boolean passBet = false;
+    private boolean minWin = false;
+    private boolean minDraw = false;
+    private boolean minLose = false;
 
-    public void setPassBet(boolean passBet) {
-        this.passBet = passBet;
+    private List<String> compareAvg = new ArrayList<>();
+    private List<String> trendStartEnd = new ArrayList<>();
+    private boolean oddsPass = false;
+
+    public String getOddsPass() {
+        return oddsPass ? "T" : "F";
     }
 
-    // Compute
-    public void init() {
+    public void setValues(boolean minWin, boolean minDraw, boolean minLose) {
+        this.minWin = minWin;
+        this.minDraw = minDraw;
+        this.minLose = minLose;
+    }
+
+    public String getRateAvg() {
+        return winAvg + " " + drawAvg + " " + loseAvg;
+    }
+
+    public void initOddsPass(ScoreResult scoreResult) {
+        float win = 0;
+        float draw = 0;
+        float lose = 0;
         for (ClaimRate rate : rates) {
-            
+            if ("Oddset".equals(rate.getComp())) {
+                win = rate.getWin();
+                draw = rate.getDraw();
+                lose = rate.getLose();
+                break;
+            }
+        }
+
+        float min = win;
+        minWin = true;
+        minDraw = false;
+        minLose = false;
+        if (Float.compare(draw, min) < 0) {
+            min = draw;
+            minWin = false;
+            minDraw = true;
+            minLose = false;
+        }
+        if (Float.compare(lose, min) < 0) {
+            min = lose;
+            minWin = false;
+            minDraw = false;
+            minLose = true;
+        }
+
+        if (minDraw && (scoreResult.getVal() == ScoreResult.DRAW.getVal())) {
+            oddsPass = true;
+        } else if (minWin && (scoreResult.getVal() == ScoreResult.WIN.getVal())) {
+            oddsPass = true;
+        } else if (minLose && (scoreResult.getVal() == ScoreResult.LOSE.getVal())) {
+            oddsPass = true;
+        }
+    }
+
+    public String getOddsEnd() {
+        for (ClaimRate rate : rates) {
+            if ("Oddset".equals(rate.getComp())) {
+                return rate.getWinEnd() + " " + rate.getDrawEnd() + " " + rate.getLoseEnd();
+            }
+        }
+        return null;
+    }
+
+    public String getOdds() {
+        for (ClaimRate rate : rates) {
+            if ("Oddset".equals(rate.getComp())) {
+                return rate.getWin() + " " + rate.getDraw() + " " + rate.getLose();
+            }
+        }
+        return null;
+    }
+
+    public void initCompareAvgAndTrend() {
+        for (ClaimRate rate : rates) {
+            if ("Oddset".equals(rate.getComp())) {
+                computeRate(rate);
+            }
+        }
+    }
+
+    public void computeRate(ClaimRate rate) {
+        String compareAvgWin = " ";
+        String compareAvgDraw = " ";
+        String compareAvgLose = " ";
+        if ((rate.getWin() - winAvg) < 0) {
+            compareAvgWin = "-";
+        } else if ((rate.getWin() - winAvg) == 0) {
+            compareAvgWin = "-";
+        } else {
+            compareAvgWin = "+";
+        }
+
+        if ((rate.getDraw() - drawAvg) < 0) {
+            compareAvgDraw = "-";
+        } else if ((rate.getDraw() - drawAvg) == 0) {
+            compareAvgDraw = "=";
+        } else {
+            compareAvgDraw = "+";
+        }
+
+        if ((rate.getLose() - loseAvg) < 0) {
+            compareAvgLose = "-";
+        } else if ((rate.getLose() - loseAvg) == 0) {
+            compareAvgLose = "=";
+        } else {
+            compareAvgLose = "+";
+        }
+
+        compareAvg.add(compareAvgWin);
+        compareAvg.add(compareAvgDraw);
+        compareAvg.add(compareAvgLose);
+        if (minWin) {
+            compareAvg.add(compareAvgWin);
+        } else if (minDraw) {
+            compareAvg.add(compareAvgDraw);
+        } else if (minLose) {
+            compareAvg.add(compareAvgLose);
+        }
+
+        if (rate.getWinEnd() > 0 && rate.getDrawEnd() > 0 && rate.getLoseEnd() > 0) {
+            String trendSEWin = " ";
+            String trendSEDraw = " ";
+            String trendSELose = " ";
+            if ((rate.getWinEnd() - rate.getWin()) < 0) {
+                trendSEWin = "-";
+            } else if ((rate.getWinEnd() - rate.getWin()) == 0) {
+                trendSEWin = "=";
+            } else {
+                trendSEWin = "+";
+            }
+
+            if ((rate.getDrawEnd() - rate.getDraw()) < 0) {
+                trendSEDraw = "-";
+            } else if ((rate.getDrawEnd() - rate.getDraw()) == 0) {
+                trendSEDraw = "=";
+            } else {
+                trendSEDraw = "+";
+            }
+
+            if ((rate.getLoseEnd() - rate.getLose()) < 0) {
+                trendSELose = "-";
+            } else if ((rate.getLoseEnd() - rate.getLose()) == 0) {
+                trendSELose = "=";
+            } else {
+                trendSELose = "+";
+            }
+
+            trendStartEnd.add(trendSEWin);
+            trendStartEnd.add(trendSEDraw);
+            trendStartEnd.add(trendSELose);
         }
     }
 
@@ -71,6 +218,14 @@ public class ClaimRateSummary {
         for (ClaimRate rate : rates) {
             logger.info(rate);
         }
+    }
+
+    public List<String> getCompareAvg() {
+        return compareAvg;
+    }
+
+    public List<String> getTrendStartEnd() {
+        return trendStartEnd;
     }
 
     @Override

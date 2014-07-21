@@ -69,12 +69,12 @@ public class FileLineIterator {
         }
     }
 
-    public static void writeFile(String filename) {
+    public static void writeFile(String filename, String content) {
         String filepath = LfsUtil.getOutputFilePath(filename);
         logger.info("filepath: " + filepath);
         try (FileOutputStream fos = new FileOutputStream(filepath);
                 Writer writer = new BufferedWriter(new OutputStreamWriter(fos, "UTF-8"));) {
-            writer.write("中");
+            writer.write(content);
         } catch (Exception e) {
             e.printStackTrace();
         }

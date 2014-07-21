@@ -19,61 +19,72 @@ public class Match {
     public Match() {
     }
 
-    private boolean scoreWin = false;
-    // draw match, for example, 1-1, 2-2
-    private boolean scoreDraw = false;
-    private boolean scoreLose = false;
-
     private boolean minWin = false;
     private boolean minDraw = false;
     private boolean minLose = false;
 
     private boolean passBet = false;
+    private ScoreResult scoreResult = ScoreResult.WIN;
+
+    public ScoreResult getScoreResult() {
+        return scoreResult;
+    }
+
+    public String getMatAvg() {
+        return win + " " + draw + " " + lose;
+    }
+
+    public String getMatPass() {
+        return passBet ? "T" : "F";
+    }
 
     // true - win the bet, false - lose the bet
     public boolean isPassBet() {
         return passBet;
     }
 
+    public boolean isMinWin() {
+        return minWin;
+    }
+
+    public boolean isMinDraw() {
+        return minDraw;
+    }
+
+    public boolean isMinLose() {
+        return minLose;
+    }
+
     public void initPassBet() {
-        float min = 0;
-        if (Float.compare(win, lose) < 0) {
-            min = win;
-            minWin = true;
-            minDraw = false;
+        float min = win;
+        minWin = true;
+        minDraw = false;
+        minLose = false;
+        if (Float.compare(draw, min) < 0) {
+            min = draw;
+            minWin = false;
+            minDraw = true;
             minLose = false;
-        } else if (Float.compare(win, lose) > 0) {
+        }
+        if (Float.compare(lose, min) < 0) {
             min = lose;
             minWin = false;
             minDraw = false;
             minLose = true;
-        } else if (Float.compare(win, lose) == 0) {
-            min = win;
-            minWin = true;
-            minDraw = false;
-            minLose = true;
-        }
-
-        if (Float.compare(draw, min) <= 0) {
-            minDraw = true;
-            minWin = false;
-            minLose = false;
         }
 
         String[] strs = score.split("-");
-        if (strs[0].compareTo(strs[1]) > 0) {
-            scoreWin = true;
-        } else if (strs[0].compareTo(strs[1]) < 0) {
-            scoreLose = true;
+        if (strs[0].compareTo(strs[1]) < 0) {
+            scoreResult = ScoreResult.LOSE;
         } else if (strs[0].compareTo(strs[1]) == 0) {
-            scoreDraw = true;
+            scoreResult = ScoreResult.DRAW;
         }
 
-        if (minDraw && scoreDraw) {
+        if (minDraw && (scoreResult.getVal() == ScoreResult.DRAW.getVal())) {
             passBet = true;
-        } else if (minWin && scoreWin) {
+        } else if (minWin && (scoreResult.getVal() == ScoreResult.WIN.getVal())) {
             passBet = true;
-        } else if (minLose && scoreLose) {
+        } else if (minLose && (scoreResult.getVal() == ScoreResult.LOSE.getVal())) {
             passBet = true;
         }
     }
@@ -88,10 +99,11 @@ public class Match {
 
     @Override
     public String toString() {
-        return "Match [id=" + id + ", index=" + index + ", year=" + year + ", time=" + time + ", host=" + host
-                + ", guest=" + guest + ", score=" + score + ", win=" + win + ", draw=" + draw + ", lose=" + lose
-                + ", scoreWin=" + scoreWin + ", scoreDraw=" + scoreDraw + ", scoreLose=" + scoreLose + ", minWin="
-                + minWin + ", minDraw=" + minDraw + ", minLose=" + minLose + ", passBet=" + passBet + "]";
+        return "Match [id=" + id + ", index=" + index + ", " + (year != null ? "year=" + year + ", " : "")
+                + (time != null ? "time=" + time + ", " : "") + (host != null ? "host=" + host + ", " : "")
+                + (guest != null ? "guest=" + guest + ", " : "") + (score != null ? "score=" + score + ", " : "")
+                + "win=" + win + ", draw=" + draw + ", lose=" + lose + ", minWin=" + minWin + ", minDraw=" + minDraw
+                + ", minLose=" + minLose + ", passBet=" + passBet + "]";
     }
 
     public int getId() {

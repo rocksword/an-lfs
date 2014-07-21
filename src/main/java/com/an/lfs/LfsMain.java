@@ -29,10 +29,9 @@ public class LfsMain {
             init();
             app.startApp();
         } catch (Exception e) {
-            logger.error("Error: " + e);
+            e.printStackTrace();
             System.exit(1);
         }
-
     }
 
     // 2013.txt
@@ -40,7 +39,7 @@ public class LfsMain {
     // year_index_host_guest: 2013_01_Bai_Men.txt
     public List<String> claimRateKeys = new ArrayList<>();
     //
-    public Map<String, Boolean> passBets = new HashMap<>();
+    public Map<String, Match> matchMap = new HashMap<>();
     // claimRateKey -> ClaimRateSummary
     public Map<String, ClaimRateSummary> rateSummaries = new HashMap<String, ClaimRateSummary>();
 
@@ -53,18 +52,50 @@ public class LfsMain {
         logger.debug(matches);
 
         for (Match mat : matches) {
-            System.out.println(mat.getKey() + " -> " + mat.isPassBet());
-            passBets.put(mat.getKey(), mat.isPassBet());
+            mat.initPassBet();
+            matchMap.put(mat.getKey(), mat);
         }
 
         for (String key : claimRateKeys) {
             ClaimRateSummary sum = ClaimRateParser.parse(key);
             if (sum != null) {
-                sum.setPassBet(passBets.get(key));
+                Match mat = matchMap.get(key);
+                sum.setValues(mat.isMinWin(), mat.isMinDraw(), mat.isMinLose());
+                sum.initCompareAvgAndTrend();
+                sum.initOddsPass(mat.getScoreResult());
+
                 rateSummaries.put(key, sum);
                 logger.debug(key + ", " + sum);
+            } else {
+                logger.error("ClaimRateSummary is null.");
             }
         }
+
+        StringBuilder content = new StringBuilder();
+        content.append("KEY,SCORE,MAT_PASS,MAT_AVG,RATE_AVG,ODDS,ODDS_PASS,ODDS_END,ODDS_AVG_W,ODDS_AVG_D,ODDS_AVG_L,ODDS_PASS,TREND_W,TREND_D,TREND_L\n");
+        for (String key : claimRateKeys) {
+            Match mat = matchMap.get(key);
+            ClaimRateSummary rate = rateSummaries.get(key);
+            content.append(key);
+            content.append(",").append(" " + mat.getScore());
+            content.append(",").append(mat.getMatPass());
+            content.append(",").append(mat.getMatAvg());
+
+            content.append(",").append(rate.getRateAvg());
+            content.append(",").append(rate.getOdds());
+            content.append(",").append(rate.getOddsPass());
+            content.append(",").append(rate.getOddsEnd());
+
+            for (String val : rate.getCompareAvg()) {
+                content.append(",").append(val);
+            }
+            for (String val : rate.getTrendStartEnd()) {
+                content.append(",").append(val);
+            }
+            content.append("\n");
+        }
+        FileLineIterator.createFile("2013.csv");
+        FileLineIterator.writeFile("2013.csv", content.toString());
     }
 
     private static void init() {
@@ -83,7 +114,7 @@ public class LfsMain {
     public void createClaimRateFiles() {
         for (String key : claimRateKeys) {
             String filename = key + ".txt";
-            FileLineIterator.writeFile(filename);
+            FileLineIterator.writeFile(filename, "中");
         }
     }
 }

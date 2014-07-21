@@ -20,7 +20,7 @@ public class ClaimRateParser {
 
         String filename = key + ".txt";
         String filepath = LfsUtil.getInputFilePath(filename);
-        logger.info("Parse file: " + filepath);
+        logger.debug("Parse file: " + filepath);
 
         FileLineIterator iter = new FileLineIterator(filepath);
         String line = null;
@@ -122,6 +122,7 @@ public class ClaimRateParser {
                 }
             } catch (Exception e) {
                 logger.error("Error line: " + line);
+                logger.error("strs len: " + len);
                 logger.error("Error: " + e);
                 iter.close();
                 return null;
