@@ -19,8 +19,12 @@ public class LfsConfMgr {
         init();
     }
 
-    public LfsConf getConf() {
-        return conf;
+    /**
+     * @param comp
+     * @return
+     */
+    public boolean isContainCompany(String comp) {
+        return conf.getCompanys().contains(comp);
     }
 
     @Override

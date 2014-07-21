@@ -1,21 +1,23 @@
 package com.an.lfs;
 
+import java.util.List;
+
 public class LfsConf {
-    private int parse;
+    private List<String> companys;
 
     public LfsConf() {
     }
 
     @Override
     public String toString() {
-        return "LfsConf [parse=" + parse + "]";
+        return "LfsConf [companys=" + companys + "]";
     }
 
-    public int isParse() {
-        return parse;
+    public List<String> getCompanys() {
+        return companys;
     }
 
-    public void setParse(int parse) {
-        this.parse = parse;
+    public void setCompanys(List<String> companys) {
+        this.companys = companys;
     }
 }

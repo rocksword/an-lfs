@@ -4,17 +4,27 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.an.lfs.vo.ClaimRate;
 import com.an.lfs.vo.ClaimRateSummary;
 
+@Component
+@Scope("singleton")
 public class ClaimRateParser {
     private static final Log logger = LogFactory.getLog(ClaimRateParser.class);
+
+    @Autowired
+    private LfsConfMgr lfsConfMgr;
 
     public ClaimRateParser() {
     }
 
-    public static ClaimRateSummary parse(String key) {
+    private boolean matched = false;
+
+    public ClaimRateSummary parse(String key) {
         ClaimRateSummary result = new ClaimRateSummary();
         result.setKey(key);
 
@@ -26,33 +36,34 @@ public class ClaimRateParser {
         String line = null;
         Pattern pat = Pattern.compile("\t");
 
-        boolean end = false;
+        boolean avgLine = false;
+        boolean endPart = false;
         while ((line = iter.nextLine()) != null) {
             if (line.trim().isEmpty()) {
                 continue;
             }
-            if (end) {
-                if (line.trim().startsWith("平均值")) {
-                    String[] strs = pat.split(line.toString());
 
+            if (line.trim().startsWith("胜")) {
+                endPart = true;
+                continue;
+            }
+
+            if (endPart) {
+                String[] strs = pat.split(line.toString());
+                if (line.trim().startsWith("平均值")) {
+                    avgLine = true;
                     float winAvg = Float.parseFloat(strs[1].trim());
                     float drawAvg = Float.parseFloat(strs[2].trim());
                     float loseAvg = Float.parseFloat(strs[3].trim());
-
-                    String winPerStr = strs[4].trim();
-                    String drawPerStr = strs[5].trim();
-                    String losePerStr = strs[6].trim();
-                    String retStr = strs[7].trim();
-                    float winPerAvg = Float.parseFloat(winPerStr.substring(0, winPerStr.length() - 1));
-                    float drawPerAvg = Float.parseFloat(drawPerStr.substring(0, drawPerStr.length() - 1));
-                    float losePerAvg = Float.parseFloat(losePerStr.substring(0, losePerStr.length() - 1));
-                    float retAvg = Float.parseFloat(retStr.substring(0, retStr.length() - 1));
-
-                    float winKAvg = Float.parseFloat(strs[8].trim());
-                    float drawKAvg = Float.parseFloat(strs[9].trim());
-                    float loseKAvg = Float.parseFloat(strs[10].trim());
-                    result.addAvgValues(winAvg, drawAvg, loseAvg, winPerAvg, drawPerAvg, losePerAvg, retAvg, winKAvg,
-                            drawKAvg, loseKAvg);
+                    result.addRateAvg(winAvg, drawAvg, loseAvg);
+                    continue;
+                }
+                if (avgLine) {
+                    float winEnd = Float.parseFloat(strs[0].trim());
+                    float drawEnd = Float.parseFloat(strs[1].trim());
+                    float loseEnd = Float.parseFloat(strs[2].trim());
+                    result.addRateEnd(winEnd, drawEnd, loseEnd);
+                    continue;
                 }
                 continue;
             }
@@ -63,64 +74,36 @@ public class ClaimRateParser {
                 if (len == 13) {
                     int id = Integer.parseInt(strs[0].trim());
                     String comp = CompanyMgr.getName(strs[1].trim());
+                    if (!lfsConfMgr.isContainCompany(comp)) {
+                        matched = false;
+                        continue;
+                    }
+                    matched = true;
+
                     float win = Float.parseFloat(strs[2].trim());
                     float draw = Float.parseFloat(strs[3].trim());
                     float lose = Float.parseFloat(strs[4].trim());
-
-                    String winPerStr = strs[5].trim();
-                    String drawPerStr = strs[6].trim();
-                    String losePerStr = strs[7].trim();
-                    String retStr = strs[8].trim();
-                    float winPer = Float.parseFloat(winPerStr.substring(0, winPerStr.length() - 1));
-                    float drawPer = Float.parseFloat(drawPerStr.substring(0, drawPerStr.length() - 1));
-                    float losePer = Float.parseFloat(losePerStr.substring(0, losePerStr.length() - 1));
-                    float ret = Float.parseFloat(retStr.substring(0, retStr.length() - 1));
-
-                    float winK = Float.parseFloat(strs[9].trim());
-                    float drawK = Float.parseFloat(strs[10].trim());
-                    float loseK = Float.parseFloat(strs[11].trim());
-
                     ClaimRate rate = new ClaimRate();
                     rate.setId(id);
                     rate.setComp(comp);
                     rate.setWin(win);
                     rate.setDraw(draw);
                     rate.setLose(lose);
-                    rate.setWinPer(winPer);
-                    rate.setDrawPer(drawPer);
-                    rate.setLosePer(losePer);
-                    rate.setRet(ret);
-                    rate.setWinK(winK);
-                    rate.setDrawK(drawK);
-                    rate.setLoseK(loseK);
                     logger.debug(rate);
                     result.addClaimRate(rate);
                 } else if (len == 10) {
-                    float winEnd = Float.parseFloat(strs[0].trim());
-                    float drawEnd = Float.parseFloat(strs[1].trim());
-                    float loseEnd = Float.parseFloat(strs[2].trim());
-
-                    String winPerStr = strs[3].trim();
-                    String drawPerStr = strs[4].trim();
-                    String losePerStr = strs[5].trim();
-                    String retStr = strs[6].trim();
-                    float winPerEnd = Float.parseFloat(winPerStr.substring(0, winPerStr.length() - 1));
-                    float drawPerEnd = Float.parseFloat(drawPerStr.substring(0, drawPerStr.length() - 1));
-                    float losePerEnd = Float.parseFloat(losePerStr.substring(0, losePerStr.length() - 1));
-                    float retEnd = Float.parseFloat(retStr.substring(0, retStr.length() - 1));
-
-                    float winKEnd = Float.parseFloat(strs[7].trim());
-                    float drawKEnd = Float.parseFloat(strs[8].trim());
-                    float loseKEnd = Float.parseFloat(strs[9].trim());
-                    result.addEndValues(winEnd, drawEnd, loseEnd, winPerEnd, drawPerEnd, losePerEnd, retEnd, winKEnd,
-                            drawKEnd, loseKEnd);
-                } else if (len == 8) {
-                    end = true;
+                    if (matched) {
+                        float winEnd = Float.parseFloat(strs[0].trim());
+                        float drawEnd = Float.parseFloat(strs[1].trim());
+                        float loseEnd = Float.parseFloat(strs[2].trim());
+                        result.addEndValues(winEnd, drawEnd, loseEnd);
+                    }
                 } else {
-                    logger.error("Invalid line: " + line);
+                    logger.error("key: " + key + ", invalid line: " + line);
                     continue;
                 }
             } catch (Exception e) {
+                logger.error("Key: " + key);
                 logger.error("Error line: " + line);
                 logger.error("strs len: " + len);
                 logger.error("Error: " + e);

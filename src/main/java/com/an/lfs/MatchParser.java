@@ -35,9 +35,6 @@ public class MatchParser {
             String host = TeamMgr.getName(splits[2].trim());
             String score = splits[3].trim();
             String guest = TeamMgr.getName(splits[4].trim());
-            float win = Float.parseFloat(splits[5].trim());
-            float draw = Float.parseFloat(splits[6].trim());
-            float lose = Float.parseFloat(splits[7].trim());
 
             match.setIndex(index);
             match.setYear(year);
@@ -45,9 +42,6 @@ public class MatchParser {
             match.setHost(host);
             match.setScore(score);
             match.setGuest(guest);
-            match.setWin(win);
-            match.setDraw(draw);
-            match.setLose(lose);
 
             claimRateKeys.add(match.getKey());
             matchs.add(match);

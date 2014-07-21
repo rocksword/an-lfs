@@ -7,6 +7,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class CompanyMgr {
+    public static String WILLIAM_HILL = "WilliamHill";
+    public static String LIBO = "LiBo";
+    public static String ODDSET = "Oddset";
+
     private static final Log logger = LogFactory.getLog(CompanyMgr.class);
     // Raw company name -> companyKey
     private static Map<String, String> companys = new HashMap<>();

@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.an.lfs.vo.ClaimRateSummary;
 import com.an.lfs.vo.Match;
+import com.an.lfs.vo.ScoreResult;
 
 @Configuration
 @ComponentScan
@@ -52,46 +53,36 @@ public class LfsMain {
         logger.debug(matches);
 
         for (Match mat : matches) {
-            mat.initPassBet();
+            mat.initScoreResult();
             matchMap.put(mat.getKey(), mat);
         }
 
         for (String key : claimRateKeys) {
-            ClaimRateSummary sum = ClaimRateParser.parse(key);
-            if (sum != null) {
-                Match mat = matchMap.get(key);
-                sum.setValues(mat.isMinWin(), mat.isMinDraw(), mat.isMinLose());
-                sum.initCompareAvgAndTrend();
-                sum.initOddsPass(mat.getScoreResult());
-
-                rateSummaries.put(key, sum);
-                logger.debug(key + ", " + sum);
-            } else {
-                logger.error("ClaimRateSummary is null.");
-            }
+            ClaimRateSummary sum = AppContextFactory.getClaimRateParser().parse(key);
+            ScoreResult score = matchMap.get(key).getScoreResult();
+            sum.initPass(score);
+            sum.initPassOdds(score);
+            sum.initRateResult(CompanyMgr.ODDSET);
+            sum.initRateResult(CompanyMgr.WILLIAM_HILL);
+            sum.initRateResult(CompanyMgr.LIBO);
+            rateSummaries.put(key, sum);
         }
 
         StringBuilder content = new StringBuilder();
-        content.append("KEY,SCORE,MAT_PASS,MAT_AVG,RATE_AVG,ODDS,ODDS_PASS,ODDS_END,ODDS_AVG_W,ODDS_AVG_D,ODDS_AVG_L,ODDS_PASS,TREND_W,TREND_D,TREND_L\n");
+        content.append("KEY,HOST,GUEST,SCORE,RATE_AVG,PASS(S->E),ODDS,PASS,WilliamHill,Libo\n");
         for (String key : claimRateKeys) {
             Match mat = matchMap.get(key);
             ClaimRateSummary rate = rateSummaries.get(key);
-            content.append(key);
+            content.append(mat.getSimpleKey());
+            content.append(",").append(mat.getHost());
+            content.append(",").append(mat.getGuest());
             content.append(",").append(" " + mat.getScore());
-            content.append(",").append(mat.getMatPass());
-            content.append(",").append(mat.getMatAvg());
-
             content.append(",").append(rate.getRateAvg());
-            content.append(",").append(rate.getOdds());
-            content.append(",").append(rate.getOddsPass());
-            content.append(",").append(rate.getOddsEnd());
-
-            for (String val : rate.getCompareAvg()) {
-                content.append(",").append(val);
-            }
-            for (String val : rate.getTrendStartEnd()) {
-                content.append(",").append(val);
-            }
+            content.append(",").append(rate.getPassResult());
+            content.append(",").append(rate.getRateString(CompanyMgr.ODDSET));
+            content.append(",").append(rate.getPassResultOdds());
+            content.append(",").append(rate.getRateString(CompanyMgr.WILLIAM_HILL));
+            content.append(",").append(rate.getRateString(CompanyMgr.LIBO));
             content.append("\n");
         }
         FileLineIterator.createFile("2013.csv");

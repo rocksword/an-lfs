@@ -31,4 +31,10 @@ public class AppContextFactory {
         LfsConfMgr result = (LfsConfMgr) appContext.getBean("lfsConfMgr");
         return result;
     }
+
+    public static ClaimRateParser getClaimRateParser() {
+        ClaimRateParser result = (ClaimRateParser) appContext.getBean("claimRateParser");
+        return result;
+    }
+
 }
