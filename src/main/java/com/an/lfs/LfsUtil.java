@@ -9,11 +9,22 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.an.lfs.vo.Country;
+
 public class LfsUtil {
     private static final Log logger = LogFactory.getLog(LfsUtil.class);
     private static final String DIR_CONF = "conf";
     private static final String DIR_INPUT = "input";
     private static final String DIR_OUTPUT = "output";
+
+    /**
+     * @param country
+     * @param year
+     * @return spa_2013
+     */
+    public static String getMatchDirName(Country country, int year) {
+        return String.format("%s_%s", country.getVal(), year);
+    }
 
     public synchronized static String getLfsHome() {
         String dir = System.getenv(LfsConst.LFS_HOME);

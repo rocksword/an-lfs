@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.an.lfs.vo.Country;
 import com.an.lfs.vo.Match;
 
 public class MatchParser {
@@ -15,9 +16,9 @@ public class MatchParser {
     public MatchParser() {
     }
 
-    public static boolean parse(String year, Map<String, Match> matchMap, List<String> claimRateKeys) {
-        String filename = year + ".txt";
-        String filepath = LfsUtil.getInputFilePath(LfsMain.ARGUMENT, filename);
+    public static boolean parse(Country cty, int year, String relativeDir, Map<String, Match> matchMap,
+            List<String> rateKeyList) {
+        String filepath = LfsUtil.getInputFilePath(relativeDir, LfsConst.MATCH_FILE);
         FileLineIterator iter = new FileLineIterator(filepath);
         Pattern pat = Pattern.compile("\t");
         String line = null;
@@ -33,9 +34,9 @@ public class MatchParser {
             Match mat = new Match();
             int index = Integer.parseInt(splits[0].trim());
             String time = splits[1].trim();
-            String host = TeamMgr.getName(splits[2].trim());
+            String host = TeamMgr.getName(cty, splits[2].trim());
             String score = splits[3].trim();
-            String guest = TeamMgr.getName(splits[4].trim());
+            String guest = TeamMgr.getName(cty, splits[4].trim());
 
             mat.setIndex(index);
             mat.setYear(year);
@@ -47,7 +48,7 @@ public class MatchParser {
             String key = mat.getKey();
             mat.initScoreResult();
 
-            claimRateKeys.add(key);
+            rateKeyList.add(key);
             matchMap.put(key, mat);
         }
         iter.close();

@@ -7,15 +7,17 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.an.lfs.vo.Country;
+
 public class CompanyParser {
     private static final Log logger = LogFactory.getLog(CompanyParser.class);
 
     public CompanyParser() {
     }
 
-    public Map<String, String> parse() {
+    public Map<String, String> parse(Country cty, int year) {
         Map<String, String> companys = new HashMap<String, String>();
-        String filepath = LfsUtil.getInputFilePath(LfsMain.ARGUMENT, "2013_01_Bai_Men.txt");
+        String filepath = LfsUtil.getInputFilePath(LfsUtil.getMatchDirName(cty, year), "2013_01_Bai_Men.txt");
         FileLineIterator iter = new FileLineIterator(filepath);
         Pattern pat = Pattern.compile("\t");
         String line = null;

@@ -7,7 +7,7 @@ public class Match {
     private static final Log logger = LogFactory.getLog(Match.class);
     private int id;
     private int index;
-    private String year; // yyyy
+    private int year; // yyyy
     private String time; // MM-dd hh:mm
     private String host;
     private String guest;
@@ -74,11 +74,11 @@ public class Match {
         this.index = index;
     }
 
-    public String getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(int year) {
         this.year = year;
     }
 

@@ -3,12 +3,14 @@ package com.an.lfs;
 import org.junit.Test;
 
 import com.an.lfs.vo.ClaimRateSummary;
+import com.an.lfs.vo.Country;
 
 public class ParserTest {
     @Test
     public void testClaimRateParser() {
         String key = "2013_01_Ao_Duo";
-        ClaimRateSummary sum = ClaimRateParser.parse(LfsMain.ARGUMENT, key);
+        String dirName = LfsUtil.getMatchDirName(Country.ENG, 2013);
+        ClaimRateSummary sum = ClaimRateParser.parse(dirName, key);
         System.out.println(sum);
     }
 }

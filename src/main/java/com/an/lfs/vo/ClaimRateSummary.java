@@ -30,6 +30,8 @@ public class ClaimRateSummary {
     private String category = null;
     // 1.2,1.4,1.6,1.8,2.0,2.3,2.6,3.0,4.0,5.0
     private String hostCategory = null;
+    // 1.2,1.4,1.6,1.8,2.0,2.3,2.6,3.0,4.0,5.0
+    private String guestCategory = null;
 
     public String getPassResult() {
         StringBuilder result = new StringBuilder();
@@ -75,7 +77,7 @@ public class ClaimRateSummary {
         companyRateResult.put(company, rateResult);
     }
 
-    public void initPass(ScoreResult score) {
+    public void initPass(ScoreResult scoreResult) {
         float min = winAvg;
         RateResult rateResult = RateResult.WIN;
         if (Float.compare(drawAvg, min) < 0) {
@@ -87,11 +89,11 @@ public class ClaimRateSummary {
             rateResult = RateResult.LOSE;
         }
 
-        if (rateResult.isWin() && score.isWin()) {
+        if (rateResult.isWin() && scoreResult.isWin()) {
             passStart = true;
-        } else if (rateResult.isDraw() && score.isDraw()) {
+        } else if (rateResult.isDraw() && scoreResult.isDraw()) {
             passStart = true;
-        } else if (rateResult.isLose() && score.isLose()) {
+        } else if (rateResult.isLose() && scoreResult.isLose()) {
             passStart = true;
         }
 
@@ -105,12 +107,11 @@ public class ClaimRateSummary {
             min = loseEnd;
             rateResult = RateResult.LOSE;
         }
-
-        if (rateResult.isWin() && score.isWin()) {
+        if (rateResult.isWin() && scoreResult.isWin()) {
             passEnd = true;
-        } else if (rateResult.isDraw() && score.isDraw()) {
+        } else if (rateResult.isDraw() && scoreResult.isDraw()) {
             passEnd = true;
-        } else if (rateResult.isLose() && score.isLose()) {
+        } else if (rateResult.isLose() && scoreResult.isLose()) {
             passEnd = true;
         }
     }
@@ -121,6 +122,10 @@ public class ClaimRateSummary {
 
     public String getHostCategory() {
         return hostCategory;
+    }
+
+    public String getGuestCategory() {
+        return guestCategory;
     }
 
     // 1.20以内（不包括） 6胜
@@ -176,6 +181,40 @@ public class ClaimRateSummary {
             hostCategory = "6.0";
         } else if (Float.compare(7.0f, winAvg) >= 0) {
             hostCategory = "7.0";
+        } else if (Float.compare(8.0f, winAvg) >= 0) {
+            hostCategory = "8.0";
+        } else {
+            hostCategory = "9.0";
+        }
+
+        if (Float.compare(1.2f, loseAvg) >= 0) {
+            guestCategory = "1.2";
+        } else if (Float.compare(1.4f, loseAvg) >= 0) {
+            guestCategory = "1.4";
+        } else if (Float.compare(1.6f, loseAvg) >= 0) {
+            guestCategory = "1.6";
+        } else if (Float.compare(1.8f, loseAvg) >= 0) {
+            guestCategory = "1.8";
+        } else if (Float.compare(2.0f, loseAvg) >= 0) {
+            guestCategory = "2.0";
+        } else if (Float.compare(2.3f, loseAvg) >= 0) {
+            guestCategory = "2.3";
+        } else if (Float.compare(2.6f, loseAvg) >= 0) {
+            guestCategory = "2.6";
+        } else if (Float.compare(3.0f, loseAvg) >= 0) {
+            guestCategory = "3.0";
+        } else if (Float.compare(4.0f, loseAvg) >= 0) {
+            guestCategory = "4.0";
+        } else if (Float.compare(5.0f, loseAvg) >= 0) {
+            guestCategory = "5.0";
+        } else if (Float.compare(6.0f, loseAvg) >= 0) {
+            guestCategory = "6.0";
+        } else if (Float.compare(7.0f, loseAvg) >= 0) {
+            guestCategory = "7.0";
+        } else if (Float.compare(8.0f, loseAvg) >= 0) {
+            guestCategory = "8.0";
+        } else {
+            guestCategory = "9.0";
         }
     }
 
