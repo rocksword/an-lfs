@@ -10,6 +10,18 @@ public enum RateResult {
     DRAW(0), //
     LOSE(-1);
 
+    public boolean isWin() {
+        return val == WIN.getVal();
+    }
+
+    public boolean isDraw() {
+        return val == DRAW.getVal();
+    }
+
+    public boolean isLose() {
+        return val == LOSE.getVal();
+    }
+
     private int val;
 
     private RateResult(int val) {

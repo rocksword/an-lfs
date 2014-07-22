@@ -12,12 +12,13 @@ public class Match {
     private String host;
     private String guest;
     private String score;
+    //
     private ScoreResult scoreResult = ScoreResult.WIN;
 
     public String getScoreResultStr() {
-        if (scoreResult.getVal() == ScoreResult.WIN.getVal()) {
+        if (scoreResult.isWin()) {
             return "+";
-        } else if (scoreResult.getVal() == ScoreResult.DRAW.getVal()) {
+        } else if (scoreResult.isDraw()) {
             return "=";
         } else {
             return "-";

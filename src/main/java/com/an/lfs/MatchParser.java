@@ -1,6 +1,7 @@
 package com.an.lfs;
 
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
@@ -14,7 +15,7 @@ public class MatchParser {
     public MatchParser() {
     }
 
-    public static boolean parse(String year, List<Match> matchs, List<String> claimRateKeys) {
+    public static boolean parse(String year, Map<String, Match> matchMap, List<String> claimRateKeys) {
         String filename = year + ".txt";
         String filepath = LfsUtil.getInputFilePath(LfsMain.ARGUMENT, filename);
         FileLineIterator iter = new FileLineIterator(filepath);
@@ -29,22 +30,25 @@ public class MatchParser {
                 logger.info("Invalid line " + line);
                 continue;
             }
-            Match match = new Match();
+            Match mat = new Match();
             int index = Integer.parseInt(splits[0].trim());
             String time = splits[1].trim();
             String host = TeamMgr.getName(splits[2].trim());
             String score = splits[3].trim();
             String guest = TeamMgr.getName(splits[4].trim());
 
-            match.setIndex(index);
-            match.setYear(year);
-            match.setTime(time);
-            match.setHost(host);
-            match.setScore(score);
-            match.setGuest(guest);
+            mat.setIndex(index);
+            mat.setYear(year);
+            mat.setTime(time);
+            mat.setHost(host);
+            mat.setScore(score);
+            mat.setGuest(guest);
 
-            claimRateKeys.add(match.getKey());
-            matchs.add(match);
+            String key = mat.getKey();
+            mat.initScoreResult();
+
+            claimRateKeys.add(key);
+            matchMap.put(key, mat);
         }
         iter.close();
         return true;

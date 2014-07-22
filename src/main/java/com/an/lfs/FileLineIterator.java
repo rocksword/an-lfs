@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -56,27 +57,18 @@ public class FileLineIterator {
         }
     }
 
-    public static void createFile(String filename) {
+    public static void writeFile(String filename, String content) throws IOException {
         String filepath = LfsUtil.getOutputFilePath(filename);
         logger.info("filepath: " + filepath);
-        File file = new File(filepath);
-        try {
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    public static void writeFile(String filename, String content) {
-        String filepath = LfsUtil.getOutputFilePath(filename);
-        logger.info("filepath: " + filepath);
+        File file = new File(filepath);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
         try (FileOutputStream fos = new FileOutputStream(filepath);
                 Writer writer = new BufferedWriter(new OutputStreamWriter(fos, "UTF-8"));) {
             writer.write(content);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

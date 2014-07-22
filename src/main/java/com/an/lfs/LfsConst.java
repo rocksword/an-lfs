@@ -7,4 +7,10 @@ public class LfsConst {
     public static final String DATE_FORMAT_FULL = "yyyy-MM-dd hh:mm:ss";
     public static final String HADOOP_INSTALL = "HADOOP_INSTALL";
     public static final String HBASE_INSTALL = "HBASE_INSTALL";
+
+    public static String PASS = "T";
+    public static String FAIL = "F";
+    public static String SEPARATOR = "~";
+    public static String COMMA = ",";
+    public static String NEXT_LINE = "\n";
 }
