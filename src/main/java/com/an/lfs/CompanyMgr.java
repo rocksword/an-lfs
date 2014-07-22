@@ -28,7 +28,10 @@ public class CompanyMgr {
      * @return
      */
     public static String getName(String comp) {
-        return companys.get(comp);
+        if (companys.containsKey(comp)) {
+            return companys.get(comp);
+        }
+        return comp;
     }
 
     private static void init() {

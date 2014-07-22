@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import com.an.lfs.vo.Category;
 import com.an.lfs.vo.ClaimRateSummary;
 import com.an.lfs.vo.Match;
 import com.an.lfs.vo.ScoreResult;
@@ -22,6 +25,8 @@ import com.an.lfs.vo.ScoreResult;
 @ComponentScan
 public class LfsMain {
     private static final Log logger = LogFactory.getLog(LfsMain.class);
+
+    public static String ARGUMENT = "ger_2013";
 
     public static void main(String[] args) {
         LfsMain app = new LfsMain();
@@ -44,11 +49,14 @@ public class LfsMain {
     // claimRateKey -> ClaimRateSummary
     public Map<String, ClaimRateSummary> rateSummaries = new HashMap<String, ClaimRateSummary>();
 
+    // name -> Category
+    private Map<String, Category> categoryCount = new HashMap<>();
+
     private void startApp() {
         logger.info("Starting application.");
 
-        MatchParser mParser = new MatchParser();
-        mParser.parse("2013", matches, claimRateKeys);
+        String year = ARGUMENT.substring((ARGUMENT.length() - 4), ARGUMENT.length());
+        MatchParser.parse(year, matches, claimRateKeys);
         logger.debug(claimRateKeys);
         logger.debug(matches);
 
@@ -58,18 +66,84 @@ public class LfsMain {
         }
 
         for (String key : claimRateKeys) {
-            ClaimRateSummary sum = AppContextFactory.getClaimRateParser().parse(key);
+            ClaimRateSummary sum = ClaimRateParser.parse(ARGUMENT, key);
+            sum.initCategory();
             ScoreResult score = matchMap.get(key).getScoreResult();
             sum.initPass(score);
             sum.initPassOdds(score);
             sum.initRateResult(CompanyMgr.ODDSET);
             sum.initRateResult(CompanyMgr.WILLIAM_HILL);
             sum.initRateResult(CompanyMgr.LIBO);
+            logger.debug(sum);
             rateSummaries.put(key, sum);
+
+            String category = sum.getCategory();
+            if (!categoryCount.containsKey(category)) {
+                categoryCount.put(category, new Category());
+            }
+
+            if (sum.isPassStart()) {
+                categoryCount.get(category).addPassNum();
+            } else {
+                categoryCount.get(category).addFailNum();
+            }
         }
 
+        exportFile();
+        exportStatis();
+    }
+
+    private void exportStatis() {
+        List<String> cates = new ArrayList<>();
+        cates.addAll(categoryCount.keySet());
+        Collections.sort(cates, cmp);
+        int total = claimRateKeys.size();
+
         StringBuilder content = new StringBuilder();
-        content.append("KEY,HOST,GUEST,SCORE,RATE_AVG,PASS(S->E),ODDS,PASS,WilliamHill,Libo\n");
+        content.append("CATEGORY,NUM,PERCENT,P_NUM,F_NUM,P_PERCENT,F_PERCENT\n");
+        for (String name : cates) {
+            Category cate = categoryCount.get(name);
+            int passNum = cate.getPassNum();
+            int failNum = cate.getFailNum();
+            int per = (int) (100 * (float) (passNum + failNum) / (float) total);
+            int passPer = (int) (100 * (float) passNum / (float) (passNum + failNum));
+            int failPer = (int) (100 * (float) failNum / (float) (passNum + failNum));
+            content.append(name);
+            content.append(",").append(passNum + failNum);
+            content.append(",").append(per);
+            content.append(",").append(passNum);
+            content.append(",").append(failNum);
+            content.append(",").append(passPer);
+            content.append(",").append(failPer);
+            content.append("\n");
+        }
+        FileLineIterator.createFile("ger_2013_statis.csv");
+        FileLineIterator.writeFile("ger_2013_statis.csv", content.toString());
+    }
+
+    private Comparator<String> cmp = new Comparator<String>() {
+        @Override
+        public int compare(String o1, String o2) {
+            String[] str1 = o1.trim().split("-");
+            String[] str2 = o2.trim().split("-");
+            int ret = Float.compare(Float.parseFloat(str1[0]), Float.parseFloat(str2[0]));
+            if (ret == 0) {
+                ret = Float.compare(Float.parseFloat(str1[1]), Float.parseFloat(str2[1]));
+                if (ret == 0) {
+                    ret = Float.compare(Float.parseFloat(str1[2]), Float.parseFloat(str2[2]));
+                    return ret;
+                } else {
+                    return ret;
+                }
+            } else {
+                return ret;
+            }
+        }
+    };
+
+    private void exportFile() {
+        StringBuilder content = new StringBuilder();
+        content.append("KEY,HOST,GUEST,SCORE,RESULT,RATE_AVG,CATEGORY,PASS,Oddset,PASS,William,Libo\n");
         for (String key : claimRateKeys) {
             Match mat = matchMap.get(key);
             ClaimRateSummary rate = rateSummaries.get(key);
@@ -77,7 +151,9 @@ public class LfsMain {
             content.append(",").append(mat.getHost());
             content.append(",").append(mat.getGuest());
             content.append(",").append(" " + mat.getScore());
+            content.append(",").append(matchMap.get(key).getScoreResultStr());
             content.append(",").append(rate.getRateAvg());
+            content.append(",").append(rate.getCategory());
             content.append(",").append(rate.getPassResult());
             content.append(",").append(rate.getRateString(CompanyMgr.ODDSET));
             content.append(",").append(rate.getPassResultOdds());
@@ -85,8 +161,8 @@ public class LfsMain {
             content.append(",").append(rate.getRateString(CompanyMgr.LIBO));
             content.append("\n");
         }
-        FileLineIterator.createFile("2013.csv");
-        FileLineIterator.writeFile("2013.csv", content.toString());
+        FileLineIterator.createFile("ger_2013.csv");
+        FileLineIterator.writeFile("ger_2013.csv", content.toString());
     }
 
     private static void init() {

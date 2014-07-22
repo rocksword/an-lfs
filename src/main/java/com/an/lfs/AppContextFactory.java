@@ -26,15 +26,4 @@ public class AppContextFactory {
         LfsDao result = (LfsDao) appContext.getBean("lfsDao");
         return result;
     }
-
-    public static LfsConfMgr getConfMgr() {
-        LfsConfMgr result = (LfsConfMgr) appContext.getBean("lfsConfMgr");
-        return result;
-    }
-
-    public static ClaimRateParser getClaimRateParser() {
-        ClaimRateParser result = (ClaimRateParser) appContext.getBean("claimRateParser");
-        return result;
-    }
-
 }

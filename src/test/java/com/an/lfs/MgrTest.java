@@ -6,7 +6,6 @@ public class MgrTest {
     @Test
     public void test() {
         AppContextFactory.init();
-        System.out.println(AppContextFactory.getConfMgr().getConf());
     }
 
     @Test

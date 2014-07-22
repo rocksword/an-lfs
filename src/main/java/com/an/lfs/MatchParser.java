@@ -14,9 +14,9 @@ public class MatchParser {
     public MatchParser() {
     }
 
-    public boolean parse(String year, List<Match> matchs, List<String> claimRateKeys) {
+    public static boolean parse(String year, List<Match> matchs, List<String> claimRateKeys) {
         String filename = year + ".txt";
-        String filepath = LfsUtil.getInputFilePath(filename);
+        String filepath = LfsUtil.getInputFilePath(LfsMain.ARGUMENT, filename);
         FileLineIterator iter = new FileLineIterator(filepath);
         Pattern pat = Pattern.compile("\t");
         String line = null;

@@ -1,11 +1,7 @@
 package com.an.lfs;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class LfsUtil {
-    private static final Log logger = LogFactory.getLog(LfsConfMgr.class);
+    private static final Log logger = LogFactory.getLog(LfsUtil.class);
     private static final String DIR_CONF = "conf";
     private static final String DIR_INPUT = "input";
     private static final String DIR_OUTPUT = "output";
@@ -34,11 +30,11 @@ public class LfsUtil {
                 .append(File.separator).append(filename).toString();
     }
 
-    public synchronized static String getInputFilePath(String filename) {
+    public synchronized static String getInputFilePath(String relativeDir, String filename) {
         String home = getLfsHome();
         File file = new File(home);
         return new StringBuilder().append(file.getAbsolutePath()).append(File.separator).append(DIR_INPUT)
-                .append(File.separator).append(filename).toString();
+                .append(File.separator).append(relativeDir).append(File.separator).append(filename).toString();
     }
 
     public synchronized static String getOutputFilePath(String filename) {

@@ -4,32 +4,22 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.an.lfs.vo.ClaimRate;
 import com.an.lfs.vo.ClaimRateSummary;
 
-@Component
-@Scope("singleton")
 public class ClaimRateParser {
     private static final Log logger = LogFactory.getLog(ClaimRateParser.class);
-
-    @Autowired
-    private LfsConfMgr lfsConfMgr;
 
     public ClaimRateParser() {
     }
 
-    private boolean matched = false;
-
-    public ClaimRateSummary parse(String key) {
+    public static ClaimRateSummary parse(String relativeDir, String key) {
         ClaimRateSummary result = new ClaimRateSummary();
         result.setKey(key);
 
         String filename = key + ".txt";
-        String filepath = LfsUtil.getInputFilePath(filename);
+        String filepath = LfsUtil.getInputFilePath(relativeDir, filename);
         logger.debug("Parse file: " + filepath);
 
         FileLineIterator iter = new FileLineIterator(filepath);
@@ -37,18 +27,18 @@ public class ClaimRateParser {
         Pattern pat = Pattern.compile("\t");
 
         boolean avgLine = false;
-        boolean endPart = false;
+        boolean sumSegBegin = false;
         while ((line = iter.nextLine()) != null) {
             if (line.trim().isEmpty()) {
                 continue;
             }
 
             if (line.trim().startsWith("胜")) {
-                endPart = true;
+                sumSegBegin = true;
                 continue;
             }
 
-            if (endPart) {
+            if (sumSegBegin) {
                 String[] strs = pat.split(line.toString());
                 if (line.trim().startsWith("平均值")) {
                     avgLine = true;
@@ -74,11 +64,6 @@ public class ClaimRateParser {
                 if (len == 13) {
                     int id = Integer.parseInt(strs[0].trim());
                     String comp = CompanyMgr.getName(strs[1].trim());
-                    if (!lfsConfMgr.isContainCompany(comp)) {
-                        matched = false;
-                        continue;
-                    }
-                    matched = true;
 
                     float win = Float.parseFloat(strs[2].trim());
                     float draw = Float.parseFloat(strs[3].trim());
@@ -92,12 +77,10 @@ public class ClaimRateParser {
                     logger.debug(rate);
                     result.addClaimRate(rate);
                 } else if (len == 10) {
-                    if (matched) {
-                        float winEnd = Float.parseFloat(strs[0].trim());
-                        float drawEnd = Float.parseFloat(strs[1].trim());
-                        float loseEnd = Float.parseFloat(strs[2].trim());
-                        result.addEndValues(winEnd, drawEnd, loseEnd);
-                    }
+                    float winEnd = Float.parseFloat(strs[0].trim());
+                    float drawEnd = Float.parseFloat(strs[1].trim());
+                    float loseEnd = Float.parseFloat(strs[2].trim());
+                    result.addEndValues(winEnd, drawEnd, loseEnd);
                 } else {
                     logger.error("key: " + key + ", invalid line: " + line);
                     continue;

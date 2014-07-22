@@ -1,4 +1,4 @@
-*.log
+*.log*
 input*
 output*
 # Windows image file caches

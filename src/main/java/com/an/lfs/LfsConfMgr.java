@@ -5,26 +5,24 @@ import java.io.File;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
-@Component
-@Scope("singleton")
 public class LfsConfMgr {
     private static final Log logger = LogFactory.getLog(LfsConfMgr.class);
 
-    private LfsConf conf;
-
-    public LfsConfMgr() {
+    private static LfsConf conf;
+    static {
         init();
     }
 
+    public LfsConfMgr() {
+    }
+
     /**
-     * @param comp
+     * @param company
      * @return
      */
-    public boolean isContainCompany(String comp) {
-        return conf.getCompanys().contains(comp);
+    public static boolean isContains(String company) {
+        return conf.getCompanys().contains(company);
     }
 
     @Override
@@ -32,7 +30,7 @@ public class LfsConfMgr {
         return "LfsConfMgr [" + (conf != null ? "conf=" + conf : "") + "]";
     }
 
-    private void init() {
+    private static void init() {
         ObjectMapper mapper = new ObjectMapper();
         try {
             logger.info("Initialize conf.");

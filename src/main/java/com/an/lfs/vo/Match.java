@@ -14,6 +14,16 @@ public class Match {
     private String score;
     private ScoreResult scoreResult = ScoreResult.WIN;
 
+    public String getScoreResultStr() {
+        if (scoreResult.getVal() == ScoreResult.WIN.getVal()) {
+            return "+";
+        } else if (scoreResult.getVal() == ScoreResult.DRAW.getVal()) {
+            return "=";
+        } else {
+            return "-";
+        }
+    }
+
     public void initScoreResult() {
         String[] strs = score.split("-");
         if (strs.length != 2) {

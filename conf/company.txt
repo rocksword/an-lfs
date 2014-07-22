@@ -192,3 +192,12 @@ Sports-1(哥斯达黎加),Sports-1
 bwin.fr,bwin
 ifortuna.eu,ifortuna
 Jenningsbet,Jenningsbet
+William Hill.it（意大利）,WilliamHill.It
+Denmark(丹麦),Denmark
+Skiller.it(意大利),Skiller
+Bookmaker.eu(厄瓜多尔),Bookmaker
+bets4all(奥地利),bets4all
+Jazz(哥斯达黎加),Jazz
+888Sport(直布罗陀),888Sport
+Merkur-win(意大利),Merkur-win
+Toals(英国),Toals

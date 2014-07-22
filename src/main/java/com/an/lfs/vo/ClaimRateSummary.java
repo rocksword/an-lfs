@@ -1,14 +1,13 @@
 package com.an.lfs.vo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.an.lfs.CompanyMgr;
+import com.an.lfs.LfsConfMgr;
 
 public class ClaimRateSummary {
     private static final Log logger = LogFactory.getLog(ClaimRateSummary.class);
@@ -21,13 +20,11 @@ public class ClaimRateSummary {
     private float winEnd;
     private float drawEnd;
     private float loseEnd;
-
-    private List<String> compareAvg = new ArrayList<>();
-    private List<String> trendStartEnd = new ArrayList<>();
     private boolean passStart = false;
     private boolean passEnd = false;
-
     private boolean passStartOdds = false;
+    private Map<String, RateResult> compRateResult = new HashMap<>();
+    private String category = null;
 
     public String getPassResult() {
         StringBuilder result = new StringBuilder();
@@ -47,14 +44,15 @@ public class ClaimRateSummary {
         return winAvg + " " + drawAvg + " " + loseAvg + " | " + winEnd + " " + drawEnd + " " + loseEnd;
     }
 
-    // 1 2 3 -> WIN, 3 2 3 -> DRAW, 3 2 1 -> LOSE
-    private Map<String, RateResult> compRateResult = new HashMap<>();
-
     public void initRateResult(String company) {
         float win = 0;
         float draw = 0;
         float lose = 0;
         ClaimRate rate = rates.get(company);
+        if (rate == null) {
+            logger.warn(company + " rate is null, " + " " + this.toString());
+            return;
+        }
         win = rate.getWin();
         draw = rate.getDraw();
         lose = rate.getLose();
@@ -73,11 +71,6 @@ public class ClaimRateSummary {
     }
 
     public void initPass(ScoreResult score) {
-        initPassStart(score);
-        initPassEnd(score);
-    }
-
-    private void initPassStart(ScoreResult score) {
         float min = winAvg;
         RateResult rateResult = RateResult.WIN;
         if (Float.compare(drawAvg, min) < 0) {
@@ -96,11 +89,9 @@ public class ClaimRateSummary {
         } else if ((rateResult.getVal() == RateResult.LOSE.getVal()) && (score.getVal() == ScoreResult.LOSE.getVal())) {
             passStart = true;
         }
-    }
 
-    private void initPassEnd(ScoreResult score) {
-        float min = winEnd;
-        RateResult rateResult = RateResult.WIN;
+        min = winEnd;
+        rateResult = RateResult.WIN;
         if (Float.compare(drawEnd, min) < 0) {
             min = drawEnd;
             rateResult = RateResult.DRAW;
@@ -119,6 +110,24 @@ public class ClaimRateSummary {
         }
     }
 
+    public String getCategory() {
+        return " " + category;
+    }
+
+    public void initCategory() {
+        if (Float.compare(1.5f, winAvg) > 0) {
+            category = "1" + "-" + (int) Math.floor(drawAvg) + "-" + (int) Math.floor(loseAvg);
+        } else if (winAvg < 2 && Float.compare(winAvg, 1.5f) > 0) {
+            category = "1.5" + "-" + (int) Math.floor(drawAvg) + "-" + (int) Math.floor(loseAvg);
+        } else if (Float.compare(1.5f, loseAvg) > 0) {
+            category = (int) Math.floor(winAvg) + "-" + (int) Math.floor(drawAvg) + "-" + 1;
+        } else if (loseAvg < 2 && Float.compare(loseAvg, 1.5f) > 0) {
+            category = (int) Math.floor(winAvg) + "-" + (int) Math.floor(drawAvg) + "-" + 1.5;
+        } else {
+            category = (int) Math.floor(winAvg) + "-" + (int) Math.floor(drawAvg) + "-" + (int) Math.floor(loseAvg);
+        }
+    }
+
     public void initPassOdds(ScoreResult score) {
         initPassStartOdds(score);
     }
@@ -128,6 +137,10 @@ public class ClaimRateSummary {
         float drawOdds = 0;
         float loseOdds = 0;
         ClaimRate rate = rates.get(CompanyMgr.ODDSET);
+        if (rate == null) {
+            logger.warn("Oddset rate is null. " + this.toString());
+            return;
+        }
         winOdds = rate.getWin();
         drawOdds = rate.getDraw();
         loseOdds = rate.getLose();
@@ -153,6 +166,9 @@ public class ClaimRateSummary {
 
     public String getRateString(String company) {
         ClaimRate rate = rates.get(company);
+        if (rate == null) {
+            return "NULL";
+        }
         if (company.equals(rate.getComp())) {
             return rate.getWin() + " " + rate.getDraw() + " " + rate.getLose() + " | " + rate.getWinEnd() + " "
                     + rate.getDrawEnd() + " " + rate.getLoseEnd();
@@ -160,76 +176,14 @@ public class ClaimRateSummary {
         return null;
     }
 
-    public void computeRate(ClaimRate rate) {
-        String compareAvgWin = " ";
-        String compareAvgDraw = " ";
-        String compareAvgLose = " ";
-        if ((rate.getWin() - winAvg) < 0) {
-            compareAvgWin = "-";
-        } else if ((rate.getWin() - winAvg) == 0) {
-            compareAvgWin = "-";
-        } else {
-            compareAvgWin = "+";
-        }
-
-        if ((rate.getDraw() - drawAvg) < 0) {
-            compareAvgDraw = "-";
-        } else if ((rate.getDraw() - drawAvg) == 0) {
-            compareAvgDraw = "=";
-        } else {
-            compareAvgDraw = "+";
-        }
-
-        if ((rate.getLose() - loseAvg) < 0) {
-            compareAvgLose = "-";
-        } else if ((rate.getLose() - loseAvg) == 0) {
-            compareAvgLose = "=";
-        } else {
-            compareAvgLose = "+";
-        }
-
-        compareAvg.add(compareAvgWin);
-        compareAvg.add(compareAvgDraw);
-        compareAvg.add(compareAvgLose);
-
-        if (rate.getWinEnd() > 0 && rate.getDrawEnd() > 0 && rate.getLoseEnd() > 0) {
-            String trendSEWin = " ";
-            String trendSEDraw = " ";
-            String trendSELose = " ";
-            if ((rate.getWinEnd() - rate.getWin()) < 0) {
-                trendSEWin = "-";
-            } else if ((rate.getWinEnd() - rate.getWin()) == 0) {
-                trendSEWin = "=";
-            } else {
-                trendSEWin = "+";
-            }
-
-            if ((rate.getDrawEnd() - rate.getDraw()) < 0) {
-                trendSEDraw = "-";
-            } else if ((rate.getDrawEnd() - rate.getDraw()) == 0) {
-                trendSEDraw = "=";
-            } else {
-                trendSEDraw = "+";
-            }
-
-            if ((rate.getLoseEnd() - rate.getLose()) < 0) {
-                trendSELose = "-";
-            } else if ((rate.getLoseEnd() - rate.getLose()) == 0) {
-                trendSELose = "=";
-            } else {
-                trendSELose = "+";
-            }
-
-            trendStartEnd.add(trendSEWin);
-            trendStartEnd.add(trendSEDraw);
-            trendStartEnd.add(trendSELose);
-        }
-    }
-
     private String latestComp = null;
 
     public void addClaimRate(ClaimRate rate) {
-        logger.debug("add " + rate);
+        if (!LfsConfMgr.isContains(rate.getComp())) {
+            latestComp = null;
+            return;
+        }
+
         latestComp = rate.getComp();
         logger.debug("addClaimRate latestComp " + latestComp);
         rates.put(latestComp, rate);
@@ -242,8 +196,6 @@ public class ClaimRateSummary {
             rate.setWinEnd(winEnd);
             rate.setDrawEnd(drawEnd);
             rate.setLoseEnd(loseEnd);
-        } else {
-            logger.error("latestComp is null.");
         }
     }
 
@@ -262,12 +214,46 @@ public class ClaimRateSummary {
     public ClaimRateSummary() {
     }
 
-    public List<String> getCompareAvg() {
-        return compareAvg;
+    @Override
+    public String toString() {
+        return "ClaimRateSummary [" + (key != null ? "key=" + key + ", " : "")
+                + (rates != null ? "rates=" + rates + ", " : "") + "winAvg=" + winAvg + ", drawAvg=" + drawAvg
+                + ", loseAvg=" + loseAvg + ", winEnd=" + winEnd + ", drawEnd=" + drawEnd + ", loseEnd=" + loseEnd
+                + ", passStart=" + passStart + ", passEnd=" + passEnd + ", passStartOdds=" + passStartOdds + ", "
+                + (compRateResult != null ? "compRateResult=" + compRateResult + ", " : "")
+                + (latestComp != null ? "latestComp=" + latestComp : "") + "]";
     }
 
-    public List<String> getTrendStartEnd() {
-        return trendStartEnd;
+    public boolean isPassStart() {
+        return passStart;
+    }
+
+    public void setPassStart(boolean passStart) {
+        this.passStart = passStart;
+    }
+
+    public boolean isPassEnd() {
+        return passEnd;
+    }
+
+    public void setPassEnd(boolean passEnd) {
+        this.passEnd = passEnd;
+    }
+
+    public boolean isPassStartOdds() {
+        return passStartOdds;
+    }
+
+    public void setPassStartOdds(boolean passStartOdds) {
+        this.passStartOdds = passStartOdds;
+    }
+
+    public Map<String, RateResult> getCompRateResult() {
+        return compRateResult;
+    }
+
+    public void setCompRateResult(Map<String, RateResult> compRateResult) {
+        this.compRateResult = compRateResult;
     }
 
     public String getKey() {
