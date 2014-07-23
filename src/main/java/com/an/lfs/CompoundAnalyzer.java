@@ -27,20 +27,37 @@ public class CompoundAnalyzer implements Analyzer {
     public Map<String, ClaimRateSummary> rateSummaries = new HashMap<String, ClaimRateSummary>();
     // 1.2 -> Category
     private Map<String, Category> hostCatMap = new HashMap<>();
-    // 1.2 -> Category
     private Map<String, Category> guestCatMap = new HashMap<>();
-    //
     private Map<String, Category> middleCatMap = new HashMap<>();
 
     @Override
-    public void analyze(String country, int year) throws IOException {
-        logger.info("Parse match.");
+    public void exportReport(String country, int year) throws IOException {
         String dirName = LfsUtil.getMatchDirName(country, year);
-        MatchParser.parse(country, year, dirName, matchMap, rateKeyList);
+        analyzeMatch(dirName, country, year);
+        analyzeRate(country, dirName);
 
+        logger.info("Generate reports.");
+        exportSummary(dirName);
+        String filepath = LfsUtil.getStatisFilepath(dirName);
+        LfsUtil.exportStatis(filepath, hostCatMap, guestCatMap, middleCatMap, matchMap.values());
+    }
+
+    public void generateRateFiles(String country, int year) throws IOException {
+        String dirName = LfsUtil.getMatchDirName(country, year);
+        analyzeMatch(dirName, country, year);
+        analyzeRate(country, dirName);
+
+        logger.info("Create claim rate files.");
+        for (String key : rateKeyList) {
+            String filename = key + ".txt";
+            FileLineIterator.writeFile(filename, "中");
+        }
+    }
+
+    private void analyzeRate(String country, String dirName) {
         logger.info("Parse claim rate.");
         for (String key : rateKeyList) {
-            ClaimRateSummary sum = ClaimRateParser.parse(dirName, key);
+            ClaimRateSummary sum = ClaimRateParser.parse(country, dirName, key);
             ScoreResult score = matchMap.get(key).getScoreResult();
             sum.initPass(score);
             sum.initPassOdds(score);
@@ -49,13 +66,11 @@ public class CompoundAnalyzer implements Analyzer {
 
             initCategoryMap(sum);
         }
+    }
 
-        logger.info("Generate reports.");
-        exportSummary(dirName);
-        String filepath = LfsUtil.getStatisFilepath(dirName);
-        LfsUtil.exportStatis(filepath, hostCatMap, guestCatMap, middleCatMap, matchMap.values());
-        // logger.info("Create claim rate files.");
-        // createClaimRateFiles();
+    private void analyzeMatch(String dirName, String country, int year) {
+        logger.info("Parse match.");
+        MatchParser.parse(country, year, dirName, matchMap, rateKeyList);
     }
 
     private void initCategoryMap(ClaimRateSummary sum) {
@@ -95,21 +110,13 @@ public class CompoundAnalyzer implements Analyzer {
             content.append(LfsConst.COMMA).append(rate.getHostCat());
             content.append(LfsConst.COMMA).append(rate.getGuestCat());
             content.append(LfsConst.COMMA).append(rate.getPassResult());
-            content.append(LfsConst.COMMA).append(rate.getRateString(CompanyMgr.ODDSET));
+            content.append(LfsConst.COMMA).append(rate.getRateString(LfsConst.ODDSET));
             content.append(LfsConst.COMMA).append(rate.getPassResultOdds());
-            content.append(LfsConst.COMMA).append(rate.getRateString(CompanyMgr.WILLIAM_HILL));
-            content.append(LfsConst.COMMA).append(rate.getRateString(CompanyMgr.LIBO));
+            content.append(LfsConst.COMMA).append(rate.getRateString(LfsConst.WILLIAM_HILL));
+            content.append(LfsConst.COMMA).append(rate.getRateString(LfsConst.LIBO));
             content.append(LfsConst.NEXT_LINE);
         }
 
         FileLineIterator.writeFile(outputFile + "_sum.csv", content.toString());
-    }
-
-    // Create claim rate files
-    public void createClaimRateFiles() throws IOException {
-        for (String key : rateKeyList) {
-            String filename = key + ".txt";
-            FileLineIterator.writeFile(filename, "中");
-        }
     }
 }

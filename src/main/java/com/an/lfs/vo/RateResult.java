@@ -6,9 +6,14 @@ package com.an.lfs.vo;
  * 3 2 1 -> LOSE<br>
  */
 public enum RateResult {
+    INVALID(-9), //
     WIN(1), //
     DRAW(0), //
     LOSE(-1);
+
+    public boolean isInvalid() {
+        return val == INVALID.getVal();
+    }
 
     public boolean isWin() {
         return val == WIN.getVal();

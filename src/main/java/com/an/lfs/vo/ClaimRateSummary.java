@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.an.lfs.CompanyMgr;
 import com.an.lfs.LfsConfMgr;
 import com.an.lfs.LfsConst;
 
@@ -99,7 +98,7 @@ public class ClaimRateSummary {
         float winOdds = 0;
         float drawOdds = 0;
         float loseOdds = 0;
-        ClaimRate rate = rates.get(CompanyMgr.ODDSET);
+        ClaimRate rate = rates.get(LfsConst.ODDSET);
         if (rate == null) {
             logger.warn("Oddset rate is null. " + this.toString());
             return;
@@ -141,8 +140,8 @@ public class ClaimRateSummary {
 
     private String latestComp = null;
 
-    public void addClaimRate(ClaimRate rate) {
-        if (!LfsConfMgr.isContains(rate.getComp())) {
+    public void addClaimRate(String country, ClaimRate rate) {
+        if (!LfsConfMgr.contains(country, rate.getComp())) {
             latestComp = null;
             return;
         }

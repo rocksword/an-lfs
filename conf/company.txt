@@ -1,18 +1,20 @@
+威廉希尔(英国),William
+立博(英国),LiBo
+bet 365(英国),Bet365
+伟德(直布罗陀),WeiDe
+bwin(奥地利),Bwin
+SNAI(意大利),SNAI
+Oddset(德国),Oddset
+澳门,AoMen
 10BET(英国),10BET
 Expekt(马耳他),Expekt
 伟德(直布罗陀),WeiDe
-立博(英国),LiBo
 Coral(英国),Coral
 易胜博(安提瓜和巴布达),YiShengBo
 Stan James(直布罗陀),StanJames
 Interwetten(塞浦路斯),Interwetten
-SNAI(意大利),SNAI
-威廉希尔(英国),WilliamHill
 gamebookers(安提瓜和巴布达),gamebookers
 PinnacleSports(荷兰),PinnacleSports
-bwin(奥地利),bwin
-bet 365(英国),bet365
-Oddset(德国),Oddset
 优胜客(马耳他),YouShengKe
 利记sbobet(英国),sbobet
 金宝博(马恩岛),JinBaoBo
@@ -178,7 +180,6 @@ Intralot.it(意大利),Intralot
 totesport(英国),totesport
 Unibet.fr(法国),Unibet
 Paddypower.it(意大利),Paddypower
-澳门,AoMen
 SB,SB
 Sports.com(英国),Sports
 Hooball(安提瓜和巴布达),Hooball

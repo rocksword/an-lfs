@@ -18,19 +18,20 @@ public class MatchParser {
     public MatchParser() {
     }
 
-    public static boolean parse(String cty, int year, String relativeDir, Map<String, Match> matchMap,
-            List<String> rateKeyList) {
-        String filepath = LfsUtil.getInputFilePath(relativeDir, LfsConst.MATCH_FILE);
+    public static boolean parse(String cty, int year, String dir, Map<String, Match> matchMap, List<String> rateKeyList) {
+        String filepath = LfsUtil.getInputFilePath(dir, LfsConst.MATCH_FILE);
+        logger.debug("filepath: " + filepath);
+
+        String line = null;
         try (FileLineIterator iter = new FileLineIterator(filepath);) {
             Pattern pat = Pattern.compile("\t");
-            String line = null;
             while ((line = iter.nextLine()) != null) {
                 if (line.trim().isEmpty()) {
                     continue;
                 }
                 String[] splits = pat.split(line.toString());
                 if (splits.length < 8) {
-                    logger.warn("Invalid line " + line);
+                    logger.warn("Invalid line: " + line);
                     continue;
                 }
                 Match mat = new Match();
@@ -39,11 +40,18 @@ public class MatchParser {
                 String host = TeamMgr.getName(cty, splits[2].trim());
                 String score = splits[3].trim();
                 String guest = TeamMgr.getName(cty, splits[4].trim());
-                // Simple
-                float win = Float.parseFloat(splits[5].trim());
-                float draw = Float.parseFloat(splits[6].trim());
-                float lose = Float.parseFloat(splits[7].trim());
 
+                // Simple
+                float win = 0f;
+                float draw = 0f;
+                float lose = 0f;
+                try {
+                    win = Float.parseFloat(splits[5].trim());
+                    draw = Float.parseFloat(splits[6].trim());
+                    lose = Float.parseFloat(splits[7].trim());
+                } catch (Exception e) {
+                    logger.debug("Line: " + line);
+                }
                 mat.setIndex(index);
                 mat.setYear(year);
                 mat.setTime(time);
@@ -55,13 +63,15 @@ public class MatchParser {
                 mat.setDraw(draw);
                 mat.setLose(lose);
                 //
-                if (score.isEmpty()) {
-                    logger.warn("Invalid line " + line);
-                    continue;
+                ScoreResult scoreResult = ScoreResult.INVALID;
+                if (!score.isEmpty()) {
+                    scoreResult = LfsUtil.getScoreResult(score);
+                } else {
+                    logger.debug("Line: " + line);
                 }
-                ScoreResult scoreResult = LfsUtil.getScoreResult(score);
-                RateResult rateResult = LfsUtil.getRateResult(win, draw, lose);
                 mat.setScoreResult(scoreResult);
+
+                RateResult rateResult = LfsUtil.getRateResult(win, draw, lose);
                 mat.setRateResult(rateResult);
 
                 String hostCat = LfsUtil.getCat(win);
@@ -80,7 +90,8 @@ public class MatchParser {
                 }
             }
         } catch (Exception e) {
-            logger.error("Error: " + e);
+            logger.error("Line: " + line);
+            e.printStackTrace();
         }
         return true;
     }

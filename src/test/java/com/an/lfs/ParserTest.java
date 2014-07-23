@@ -9,7 +9,7 @@ public class ParserTest {
     public void testClaimRateParser() {
         String key = "2013_01_Ao_Duo";
         String dirName = LfsUtil.getMatchDirName(LfsConst.GER, 2013);
-        ClaimRateSummary sum = ClaimRateParser.parse(dirName, key);
+        ClaimRateSummary sum = ClaimRateParser.parse(LfsConst.GER, dirName, key);
         System.out.println(sum);
     }
 }

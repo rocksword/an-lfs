@@ -27,17 +27,37 @@ public class Match {
     private String guestCat = null;
     private String middleCat = null;
 
+    public boolean isWin() {
+        return scoreResult.isWin();
+    }
+
+    public boolean isLose() {
+        return scoreResult.isLose();
+    }
+
+    public boolean isDraw() {
+        return scoreResult.isDraw();
+    }
+
     //
-    public boolean isPass() {
-        boolean pass = false;
-        if (rateResult.isWin() && scoreResult.isWin()) {
-            pass = true;
-        } else if (rateResult.isDraw() && scoreResult.isDraw()) {
-            pass = true;
-        } else if (rateResult.isLose() && scoreResult.isLose()) {
-            pass = true;
+    /**
+     * @return -1:ignore result, 1: pass, 0: failed
+     */
+    public int getBetResult() {
+        if (scoreResult == null) {
+            logger.error(this.toString());
         }
-        return pass;
+        if (rateResult.isInvalid() || scoreResult.isInvalid()) {
+            return -1;
+        }
+        if (rateResult.isWin() && scoreResult.isWin()) {
+            return 1;
+        } else if (rateResult.isDraw() && scoreResult.isDraw()) {
+            return 1;
+        } else if (rateResult.isLose() && scoreResult.isLose()) {
+            return 1;
+        }
+        return 0;
     }
 
     public String getScoreResultStr() {
@@ -45,8 +65,10 @@ public class Match {
             return "+";
         } else if (scoreResult.isDraw()) {
             return "=";
-        } else {
+        } else if (scoreResult.isLose()) {
             return "-";
+        } else {
+            return "NULL";
         }
     }
 

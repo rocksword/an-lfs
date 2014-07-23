@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -23,11 +24,15 @@ public class SimpleAnalyzer implements Analyzer {
     private Map<String, Category> middleCatMap = new HashMap<>();
 
     @Override
-    public void analyze(String country, int year) throws IOException {
+    public void exportReport(String country, int year) throws IOException {
         logger.info("Parse match.");
 
         String dirName = LfsUtil.getMatchDirName(country, year);
+        logger.debug("dirName: " + dirName);
+
         MatchParser.parse(country, year, dirName, matchMap, null);
+        logger.debug("matchMap size: " + matchMap.size());
+
         for (Match mat : matchMap.values()) {
             String hostCat = mat.getHostCat();
             String guestCat = mat.getGuestCat();
@@ -42,19 +47,29 @@ public class SimpleAnalyzer implements Analyzer {
                 middleCatMap.put(middleCat, new Category(middleCat));
             }
 
-            if (mat.isPass()) {
+            int pass = mat.getBetResult();
+            if (pass == 1) {
                 hostCatMap.get(hostCat).addPassNum();
                 guestCatMap.get(guestCat).addPassNum();
                 middleCatMap.get(middleCat).addPassNum();
-            } else {
+            } else if (pass == 0) {
                 hostCatMap.get(hostCat).addFailNum();
                 guestCatMap.get(guestCat).addFailNum();
                 middleCatMap.get(middleCat).addFailNum();
+            } else {
+                logger.debug("Ignore: " + mat);
             }
         }
 
         logger.info("Generate reports.");
         String filepath = LfsUtil.getStatisFilepath(dirName);
+        logger.debug("filepath: " + filepath);
+
         LfsUtil.exportStatis(filepath, hostCatMap, guestCatMap, middleCatMap, matchMap.values());
+    }
+
+    @Override
+    public void generateRateFiles(String country, int year) throws IOException {
+        throw new NotImplementedException("Not supported");
     }
 }

@@ -41,6 +41,7 @@ public class LfsUtil {
         List<String> hostCats = new ArrayList<>();
         hostCats.addAll(hostCatMap.keySet());
         Collections.sort(hostCats, floatCompare);
+
         for (String hostCat : hostCats) {
             Category cat = hostCatMap.get(hostCat);
             int passNum = cat.getPassNum();
@@ -57,6 +58,7 @@ public class LfsUtil {
         List<String> guestCats = new ArrayList<>();
         guestCats.addAll(guestCatMap.keySet());
         Collections.sort(guestCats, floatCompare);
+
         for (String guestCat : guestCats) {
             Category cat = guestCatMap.get(guestCat);
             int passNum = cat.getPassNum();
@@ -73,8 +75,9 @@ public class LfsUtil {
         List<String> middleCats = new ArrayList<>();
         middleCats.addAll(middleCatMap.keySet());
         Collections.sort(middleCats, floatCompare);
+
         for (String middleCat : middleCats) {
-            Category cat = guestCatMap.get(middleCat);
+            Category cat = middleCatMap.get(middleCat);
             int passNum = cat.getPassNum();
             int failNum = cat.getFailNum();
             String per = getPercent(total, passNum, failNum) + "%";
@@ -88,9 +91,9 @@ public class LfsUtil {
         int drawNum = 0;
         int loseNum = 0;
         for (Match mat : matches) {
-            if (mat.getScoreResult().isWin()) {
+            if (mat.isWin()) {
                 winNum++;
-            } else if (mat.getScoreResult().isDraw()) {
+            } else if (mat.isDraw()) {
                 drawNum++;
             } else {
                 loseNum++;
@@ -177,7 +180,7 @@ public class LfsUtil {
         String[] strs = score.trim().split("-");
         if (strs.length != 2) {
             logger.error("Invalid score: " + score);
-            return null;
+            return ScoreResult.INVALID;
         }
 
         ScoreResult scoreResult = ScoreResult.WIN;
@@ -196,6 +199,10 @@ public class LfsUtil {
      * @return
      */
     public static RateResult getRateResult(float win, float draw, float lose) {
+        if ((win == 0.0f) || (draw == 0.0f) || (lose == 0.0f)) {
+            return RateResult.INVALID;
+        }
+
         float min = win;
         RateResult rateResult = RateResult.WIN;
         if (Float.compare(draw, min) < 0) {

@@ -12,11 +12,17 @@ public class LfsConst {
     public static final String FRA = "fra";
     public static final String GER = "ger";
     public static final String ITA = "ita";
-    public static final String JPA = "jpa";
-    public static final String SPA = "spa";
-    public static String[] COUNTRIES = new String[] { ENG, FRA, GER, ITA, JPA, SPA };
+    public static final String JPN = "jpn";
+    public static final String KOR = "kor";
+    public static final String ESP = "esp";
+    public static String[] COUNTRIES = new String[] { ENG, FRA, GER, ITA, JPN, KOR, ESP };
 
     public static String MATCH_FILE = "match.txt";
+    public static final String COMPANY_FILE = "company.txt";
+
+    public static String WILLIAM_HILL = "WilliamHill";
+    public static String LIBO = "LiBo";
+    public static String ODDSET = "Oddset";
 
     public static String PASS = "T";
     public static String FAIL = "F";

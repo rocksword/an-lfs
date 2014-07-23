@@ -9,35 +9,31 @@ import org.apache.commons.logging.LogFactory;
 import com.an.lfs.tool.FileLineIterator;
 
 public class CompanyMgr {
-    public static String WILLIAM_HILL = "WilliamHill";
-    public static String LIBO = "LiBo";
-    public static String ODDSET = "Oddset";
-
     private static final Log logger = LogFactory.getLog(CompanyMgr.class);
     // Raw company name -> companyKey
-    private static Map<String, String> companys = new HashMap<>();
+    private static Map<String, String> companyMap = new HashMap<>();
+
+    public static String getName(String company) {
+        if (companyMap.containsKey(company)) {
+            logger.warn("Not found company: " + company);
+            return companyMap.get(company);
+        }
+        return company;
+    }
+
+    public static Map<String, String> getCompanyMap() {
+        return companyMap;
+    }
 
     public CompanyMgr() {
-        init();
     }
 
     static {
         init();
     }
 
-    /**
-     * @param comp
-     * @return
-     */
-    public static String getName(String comp) {
-        if (companys.containsKey(comp)) {
-            return companys.get(comp);
-        }
-        return comp;
-    }
-
     private static void init() {
-        String filepath = LfsUtil.getConfFilePath("company.txt");
+        String filepath = LfsUtil.getConfFilePath(LfsConst.COMPANY_FILE);
         try (FileLineIterator iter = new FileLineIterator(filepath);) {
             String line = null;
             while ((line = iter.nextLine()) != null) {
@@ -46,7 +42,7 @@ public class CompanyMgr {
                     logger.info("Invalid line: " + line);
                     continue;
                 }
-                companys.put(strs[0].trim(), strs[1].trim());
+                companyMap.put(strs[0].trim(), strs[1].trim());
             }
         } catch (Exception e) {
             logger.error("Error: " + e);

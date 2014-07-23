@@ -1,3 +1,20 @@
 {
-    "companys": ["LiBo","WilliamHill","Oddset"]
+    "countries": [
+        "eng",
+        "fra",
+        "ger",
+        "ita",
+        "jpn",
+        "kor",
+        "esp"
+    ],
+    "companys": 
+    [
+        ["William", "LiBo", "Bet365"],
+        ["William"], ["Oddset", "William"],
+        ["SNAI", "William"],
+        ["AoMen", "William"],
+        ["AoMen", "William"],
+        ["WeiDe", "Bwin", "William"]
+    ]
 }

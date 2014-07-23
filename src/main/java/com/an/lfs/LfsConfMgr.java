@@ -1,6 +1,11 @@
 package com.an.lfs;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -9,25 +14,31 @@ import org.codehaus.jackson.map.ObjectMapper;
 public class LfsConfMgr {
     private static final Log logger = LogFactory.getLog(LfsConfMgr.class);
 
+    private static Map<String, Set<String>> ctyCompanys = new HashMap<>();
+
+    public static boolean contains(String country, String company) {
+        if (ctyCompanys.isEmpty()) {
+            List<String> countries = conf.getCountries();
+            List<List<String>> companys = conf.getCompanys();
+            if (countries.size() != companys.size()) {
+                logger.error("Invalid country and company.");
+                logger.error(countries);
+                logger.error(companys);
+            }
+            for (int i = 0; i < countries.size(); i++) {
+                ctyCompanys.put(countries.get(i), new HashSet<>(companys.get(i)));
+            }
+        }
+
+        if (ctyCompanys.containsKey(country)) {
+            return ctyCompanys.get(country).contains(company);
+        }
+        return false;
+    }
+
     private static LfsConf conf;
     static {
         init();
-    }
-
-    public LfsConfMgr() {
-    }
-
-    /**
-     * @param company
-     * @return
-     */
-    public static boolean isContains(String company) {
-        return conf.getCompanys().contains(company);
-    }
-
-    @Override
-    public String toString() {
-        return "LfsConfMgr [" + (conf != null ? "conf=" + conf : "") + "]";
     }
 
     private static void init() {
@@ -43,5 +54,13 @@ public class LfsConfMgr {
             logger.error("Error: " + e);
             throw new RuntimeException("Failed to initialize configuration, error: " + e);
         }
+    }
+
+    public LfsConfMgr() {
+    }
+
+    @Override
+    public String toString() {
+        return "LfsConfMgr [" + (conf != null ? "conf=" + conf : "") + "]";
     }
 }

@@ -15,7 +15,7 @@ public class ClaimRateParser {
     public ClaimRateParser() {
     }
 
-    public static ClaimRateSummary parse(String relativeDir, String key) {
+    public static ClaimRateSummary parse(String country, String relativeDir, String key) {
         ClaimRateSummary result = new ClaimRateSummary();
         result.setKey(key);
 
@@ -82,7 +82,7 @@ public class ClaimRateParser {
                         rate.setDraw(draw);
                         rate.setLose(lose);
                         logger.debug(rate);
-                        result.addClaimRate(rate);
+                        result.addClaimRate(country, rate);
                     } else if (len == 10) {
                         float winEnd = Float.parseFloat(strs[0].trim());
                         float drawEnd = Float.parseFloat(strs[1].trim());

@@ -23,10 +23,13 @@ public class TeamMgr {
             Map<String, String> teamMap = ctyTeamMap.get(country);
             String filepath = LfsUtil.getConfFilePath(String.format("team_%s.txt", country));
             try (FileLineIterator iter = new FileLineIterator(filepath);) {
-
                 String line = null;
                 while ((line = iter.nextLine()) != null) {
-                    String[] strs = line.split(",");
+                    if (line.trim().isEmpty()) {
+                        continue;
+                    }
+
+                    String[] strs = line.trim().split(",");
                     if (strs.length != 2) {
                         logger.info("Invalid line: " + line);
                         continue;
@@ -39,7 +42,16 @@ public class TeamMgr {
         }
     }
 
-    public static String getName(String country, String team) {
-        return ctyTeamMap.get(country).get(team);
+    public static String getName(String cty, String team) {
+        Map<String, String> teamMap = ctyTeamMap.get(cty);
+        if (!teamMap.containsKey(team)) {
+            logger.warn("Not found team: " + team);
+            return null;
+        }
+        return teamMap.get(team);
+    }
+
+    public static Map<String, Map<String, String>> getCtyTeamMap() {
+        return ctyTeamMap;
     }
 }
