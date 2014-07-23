@@ -10,7 +10,7 @@ public class LfsConf {
 
     @Override
     public String toString() {
-        return "LfsConf [companys=" + companys + "]";
+        return "LfsConf [" + (companys != null ? "companys=" + companys : "") + "]";
     }
 
     public List<String> getCompanys() {

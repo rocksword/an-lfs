@@ -2,21 +2,15 @@ package com.an.lfs;
 
 import org.junit.Test;
 
-import com.an.lfs.vo.Country;
-
 public class MgrTest {
-    @Test
-    public void test() {
-        AppContextFactory.init();
-    }
 
     @Test
     public void testCompMgr() {
-        CompanyMgr.getName("test");
+        System.out.println(CompanyMgr.getName("test"));
     }
 
     @Test
     public void testTeamMgr() {
-        TeamMgr.getName(Country.ENG, "test");
+        System.out.println(TeamMgr.getName(LfsConst.GER, "test"));
     }
 }

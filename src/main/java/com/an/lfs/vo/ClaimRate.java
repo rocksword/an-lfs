@@ -1,5 +1,7 @@
 package com.an.lfs.vo;
 
+import com.an.lfs.LfsUtil;
+
 public class ClaimRate {
     private int id;
     private String comp;
@@ -9,6 +11,10 @@ public class ClaimRate {
     private float winEnd;
     private float drawEnd;
     private float loseEnd;
+
+    public RateResult getRateResult() {
+        return LfsUtil.getRateResult(win, draw, lose);
+    }
 
     public ClaimRate() {
     }

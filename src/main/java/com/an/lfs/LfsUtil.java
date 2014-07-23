@@ -1,7 +1,13 @@
 package com.an.lfs;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,21 +15,212 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.an.lfs.vo.Country;
+import com.an.lfs.tool.FileLineIterator;
+import com.an.lfs.vo.Category;
+import com.an.lfs.vo.Match;
+import com.an.lfs.vo.RateResult;
+import com.an.lfs.vo.ScoreResult;
 
 public class LfsUtil {
     private static final Log logger = LogFactory.getLog(LfsUtil.class);
     private static final String DIR_CONF = "conf";
     private static final String DIR_INPUT = "input";
     private static final String DIR_OUTPUT = "output";
+    private static String STATIS_HEADER = "CATEGORY,NUM,PER,PASS_NUM,FAIL_NUM,PASS_PER,FAIL_PER\n";
+    private static String MATCH_HEADER = "CATEGORY,NUM,PER\n";
+
+    public static void exportStatis(String filepath, Map<String, Category> hostCatMap,
+            Map<String, Category> guestCatMap, Map<String, Category> middleCatMap, Collection<Match> matches)
+            throws IOException {
+
+        int total = matches.size();
+        StringBuilder content = new StringBuilder();
+        // Host oriented category
+        content.append("Host,,,,,,\n");
+        content.append(STATIS_HEADER);
+        List<String> hostCats = new ArrayList<>();
+        hostCats.addAll(hostCatMap.keySet());
+        Collections.sort(hostCats, floatCompare);
+        for (String hostCat : hostCats) {
+            Category cat = hostCatMap.get(hostCat);
+            int passNum = cat.getPassNum();
+            int failNum = cat.getFailNum();
+            String per = getPercent(total, passNum, failNum) + "%";
+            String passPer = getPassPer(passNum, failNum) + "%";
+            String failPer = getFailPer(passNum, failNum) + "%";
+            appendLine(content, hostCat, passNum, failNum, per, passPer, failPer);
+        }
+
+        // Guest oriented category
+        content.append("Guest,,,,,,\n");
+        content.append(STATIS_HEADER);
+        List<String> guestCats = new ArrayList<>();
+        guestCats.addAll(guestCatMap.keySet());
+        Collections.sort(guestCats, floatCompare);
+        for (String guestCat : guestCats) {
+            Category cat = guestCatMap.get(guestCat);
+            int passNum = cat.getPassNum();
+            int failNum = cat.getFailNum();
+            String per = getPercent(total, passNum, failNum) + "%";
+            String passPer = getPassPer(passNum, failNum) + "%";
+            String failPer = getFailPer(passNum, failNum) + "%";
+            appendLine(content, guestCat, passNum, failNum, per, passPer, failPer);
+        }
+
+        // Middle category
+        content.append("Middle,,,,,,\n");
+        content.append(STATIS_HEADER);
+        List<String> middleCats = new ArrayList<>();
+        middleCats.addAll(middleCatMap.keySet());
+        Collections.sort(middleCats, floatCompare);
+        for (String middleCat : middleCats) {
+            Category cat = guestCatMap.get(middleCat);
+            int passNum = cat.getPassNum();
+            int failNum = cat.getFailNum();
+            String per = getPercent(total, passNum, failNum) + "%";
+            String passPer = getPassPer(passNum, failNum) + "%";
+            String failPer = getFailPer(passNum, failNum) + "%";
+            appendLine(content, middleCat, passNum, failNum, per, passPer, failPer);
+        }
+
+        // All match
+        int winNum = 0;
+        int drawNum = 0;
+        int loseNum = 0;
+        for (Match mat : matches) {
+            if (mat.getScoreResult().isWin()) {
+                winNum++;
+            } else if (mat.getScoreResult().isDraw()) {
+                drawNum++;
+            } else {
+                loseNum++;
+            }
+        }
+        String winPer = (int) (100 * (float) winNum / (float) total) + "%";
+        String drawPer = (int) (100 * (float) drawNum / (float) total) + "%";
+        String losePer = (int) (100 * (float) loseNum / (float) total) + "%";
+        content.append(",,,,,,\n");
+        content.append(MATCH_HEADER);
+        content.append("Win").append(",").append(winNum).append(",").append(winPer).append("\n");
+        content.append("Draw").append(",").append(drawNum).append(",").append(drawPer).append("\n");
+        content.append("Lose").append(",").append(loseNum).append(",").append(losePer).append("\n");
+
+        FileLineIterator.writeFile(filepath, content.toString());
+    }
+
+    private static void appendLine(StringBuilder content, String name, int passNum, int failNum, String per,
+            String passPer, String failPer) {
+        content.append(name);
+        content.append(LfsConst.COMMA).append(passNum + failNum);
+        content.append(LfsConst.COMMA).append(per);
+        content.append(LfsConst.COMMA).append(passNum);
+        content.append(LfsConst.COMMA).append(failNum);
+        content.append(LfsConst.COMMA).append(passPer);
+        content.append(LfsConst.COMMA).append(failPer);
+        content.append(LfsConst.NEXT_LINE);
+    }
+
+    private static int getFailPer(int passNum, int failNum) {
+        return (int) (100 * (float) failNum / (float) (passNum + failNum));
+    }
+
+    private static int getPassPer(int passNum, int failNum) {
+        return (int) (100 * (float) passNum / (float) (passNum + failNum));
+    }
+
+    private static int getPercent(int total, int passNum, int failNum) {
+        return (int) (100 * (float) (passNum + failNum) / (float) total);
+    }
+
+    private static Comparator<String> floatCompare = new Comparator<String>() {
+        @Override
+        public int compare(String o1, String o2) {
+            return Float.compare(Float.parseFloat(o1), Float.parseFloat(o2));
+        }
+    };
+
+    public static String getCat(float val) {
+        String result = null;
+        if (Float.compare(1.2f, val) >= 0) {
+            result = "1.2";
+        } else if (Float.compare(1.4f, val) >= 0) {
+            result = "1.4";
+        } else if (Float.compare(1.6f, val) >= 0) {
+            result = "1.6";
+        } else if (Float.compare(1.8f, val) >= 0) {
+            result = "1.8";
+        } else if (Float.compare(2.0f, val) >= 0) {
+            result = "2.0";
+        } else if (Float.compare(2.3f, val) >= 0) {
+            result = "2.3";
+        } else if (Float.compare(2.6f, val) >= 0) {
+            result = "2.6";
+        } else if (Float.compare(3.0f, val) >= 0) {
+            result = "3.0";
+        } else if (Float.compare(4.0f, val) >= 0) {
+            result = "4.0";
+        } else if (Float.compare(5.0f, val) >= 0) {
+            result = "5.0";
+        } else if (Float.compare(6.0f, val) >= 0) {
+            result = "6.0";
+        } else if (Float.compare(7.0f, val) >= 0) {
+            result = "7.0";
+        } else if (Float.compare(8.0f, val) >= 0) {
+            result = "8.0";
+        } else {
+            result = "9.0";
+        }
+        return result;
+    }
+
+    public static ScoreResult getScoreResult(String score) {
+        String[] strs = score.trim().split("-");
+        if (strs.length != 2) {
+            logger.error("Invalid score: " + score);
+            return null;
+        }
+
+        ScoreResult scoreResult = ScoreResult.WIN;
+        if (strs[0].trim().compareTo(strs[1].trim()) == 0) {
+            scoreResult = ScoreResult.DRAW;
+        } else if (strs[0].trim().compareTo(strs[1].trim()) < 0) {
+            scoreResult = ScoreResult.LOSE;
+        }
+        return scoreResult;
+    }
+
+    /**
+     * @param win
+     * @param draw
+     * @param lose
+     * @return
+     */
+    public static RateResult getRateResult(float win, float draw, float lose) {
+        float min = win;
+        RateResult rateResult = RateResult.WIN;
+        if (Float.compare(draw, min) < 0) {
+            min = draw;
+            rateResult = RateResult.DRAW;
+        }
+        if (Float.compare(lose, min) < 0) {
+            min = lose;
+            rateResult = RateResult.LOSE;
+        }
+        return rateResult;
+    }
 
     /**
      * @param country
      * @param year
      * @return spa_2013
      */
-    public static String getMatchDirName(Country country, int year) {
-        return String.format("%s_%s", country.getVal(), year);
+    public static String getMatchDirName(String country, int year) {
+        return String.format("%s_%s", country, year);
+    }
+
+    public static String getStatisFilepath(String dirName) {
+        String filepath = dirName + "_statis.csv";
+        return filepath;
     }
 
     public synchronized static String getLfsHome() {

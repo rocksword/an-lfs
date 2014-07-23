@@ -6,6 +6,8 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.an.lfs.tool.FileLineIterator;
+
 public class CompanyMgr {
     public static String WILLIAM_HILL = "WilliamHill";
     public static String LIBO = "LiBo";
@@ -36,15 +38,18 @@ public class CompanyMgr {
 
     private static void init() {
         String filepath = LfsUtil.getConfFilePath("company.txt");
-        FileLineIterator iter = new FileLineIterator(filepath);
-        String line = null;
-        while ((line = iter.nextLine()) != null) {
-            String[] strs = line.split(",");
-            if (strs.length != 2) {
-                logger.info("Invalid line: " + line);
-                continue;
+        try (FileLineIterator iter = new FileLineIterator(filepath);) {
+            String line = null;
+            while ((line = iter.nextLine()) != null) {
+                String[] strs = line.split(",");
+                if (strs.length != 2) {
+                    logger.info("Invalid line: " + line);
+                    continue;
+                }
+                companys.put(strs[0].trim(), strs[1].trim());
             }
-            companys.put(strs[0].trim(), strs[1].trim());
+        } catch (Exception e) {
+            logger.error("Error: " + e);
         }
     }
 }

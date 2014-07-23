@@ -1,4 +1,4 @@
-package com.an.lfs;
+package com.an.lfs.tool;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,7 +13,9 @@ import java.io.Writer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class FileLineIterator {
+import com.an.lfs.LfsUtil;
+
+public class FileLineIterator implements AutoCloseable {
     private static final Log logger = LogFactory.getLog(FileLineIterator.class);
     private String filepath;
     private BufferedReader br;
@@ -46,17 +48,6 @@ public class FileLineIterator {
         return line;
     }
 
-    public void close() {
-        if (br != null) {
-            try {
-                logger.debug("Close BufferedReader " + br);
-                br.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public static void writeFile(String filename, String content) throws IOException {
         String filepath = LfsUtil.getOutputFilePath(filename);
         logger.info("filepath: " + filepath);
@@ -69,6 +60,18 @@ public class FileLineIterator {
         try (FileOutputStream fos = new FileOutputStream(filepath);
                 Writer writer = new BufferedWriter(new OutputStreamWriter(fos, "UTF-8"));) {
             writer.write(content);
+        }
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (br != null) {
+            try {
+                logger.debug("Close BufferedReader " + br);
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

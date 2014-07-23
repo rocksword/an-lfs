@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class Match {
     private static final Log logger = LogFactory.getLog(Match.class);
+    // Common
     private int id;
     private int index;
     private int year; // yyyy
@@ -12,8 +13,32 @@ public class Match {
     private String host;
     private String guest;
     private String score;
+    // Simple analyzer
+    private float win;
+    private float draw;
+    private float lose;
     //
-    private ScoreResult scoreResult = ScoreResult.WIN;
+    private ScoreResult scoreResult;
+    private RateResult rateResult;
+    //
+    // 1.2,1.4,1.6,1.8,2.0,2.3,2.6,3.0,4.0,5.0
+    private String hostCat = null;
+    // 1.2,1.4,1.6,1.8,2.0,2.3,2.6,3.0,4.0,5.0
+    private String guestCat = null;
+    private String middleCat = null;
+
+    //
+    public boolean isPass() {
+        boolean pass = false;
+        if (rateResult.isWin() && scoreResult.isWin()) {
+            pass = true;
+        } else if (rateResult.isDraw() && scoreResult.isDraw()) {
+            pass = true;
+        } else if (rateResult.isLose() && scoreResult.isLose()) {
+            pass = true;
+        }
+        return pass;
+    }
 
     public String getScoreResultStr() {
         if (scoreResult.isWin()) {
@@ -22,20 +47,6 @@ public class Match {
             return "=";
         } else {
             return "-";
-        }
-    }
-
-    public void initScoreResult() {
-        String[] strs = score.split("-");
-        if (strs.length != 2) {
-            logger.error("Invalid score: " + score);
-            return;
-        }
-
-        if (strs[0].compareTo(strs[1]) == 0) {
-            scoreResult = ScoreResult.DRAW;
-        } else if (strs[0].compareTo(strs[1]) < 0) {
-            scoreResult = ScoreResult.LOSE;
         }
     }
 
@@ -56,6 +67,19 @@ public class Match {
     }
 
     public Match() {
+    }
+
+    @Override
+    public String toString() {
+        return "Match [id=" + id + ", index=" + index + ", year=" + year + ", "
+                + (time != null ? "time=" + time + ", " : "") + (host != null ? "host=" + host + ", " : "")
+                + (guest != null ? "guest=" + guest + ", " : "") + (score != null ? "score=" + score + ", " : "")
+                + "win=" + win + ", draw=" + draw + ", lose=" + lose + ", "
+                + (scoreResult != null ? "scoreResult=" + scoreResult + ", " : "")
+                + (rateResult != null ? "rateResult=" + rateResult + ", " : "")
+                + (hostCat != null ? "hostCat=" + hostCat + ", " : "")
+                + (guestCat != null ? "guestCat=" + guestCat + ", " : "")
+                + (middleCat != null ? "middleCat=" + middleCat : "") + "]";
     }
 
     public int getId() {
@@ -120,5 +144,61 @@ public class Match {
 
     public void setScoreResult(ScoreResult scoreResult) {
         this.scoreResult = scoreResult;
+    }
+
+    public float getWin() {
+        return win;
+    }
+
+    public void setWin(float win) {
+        this.win = win;
+    }
+
+    public float getDraw() {
+        return draw;
+    }
+
+    public void setDraw(float draw) {
+        this.draw = draw;
+    }
+
+    public float getLose() {
+        return lose;
+    }
+
+    public void setLose(float lose) {
+        this.lose = lose;
+    }
+
+    public RateResult getRateResult() {
+        return rateResult;
+    }
+
+    public void setRateResult(RateResult rateResult) {
+        this.rateResult = rateResult;
+    }
+
+    public String getHostCat() {
+        return hostCat;
+    }
+
+    public void setHostCat(String hostCat) {
+        this.hostCat = hostCat;
+    }
+
+    public String getGuestCat() {
+        return guestCat;
+    }
+
+    public void setGuestCat(String guestCat) {
+        this.guestCat = guestCat;
+    }
+
+    public String getMiddleCat() {
+        return middleCat;
+    }
+
+    public void setMiddleCat(String middleCat) {
+        this.middleCat = middleCat;
     }
 }

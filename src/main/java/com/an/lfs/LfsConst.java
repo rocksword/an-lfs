@@ -1,7 +1,5 @@
 package com.an.lfs;
 
-import com.an.lfs.vo.Country;
-
 public class LfsConst {
     public static final String LFS_HOME = "LFS_HOME";
 
@@ -10,7 +8,13 @@ public class LfsConst {
     public static final String HADOOP_INSTALL = "HADOOP_INSTALL";
     public static final String HBASE_INSTALL = "HBASE_INSTALL";
 
-    public static Country[] COUNTRIES = new Country[] { Country.ENG, Country.GER, Country.FRA, Country.ITA, Country.SPA };
+    public static final String ENG = "eng";
+    public static final String FRA = "fra";
+    public static final String GER = "ger";
+    public static final String ITA = "ita";
+    public static final String JPA = "jpa";
+    public static final String SPA = "spa";
+    public static String[] COUNTRIES = new String[] { ENG, FRA, GER, ITA, JPA, SPA };
 
     public static String MATCH_FILE = "match.txt";
 

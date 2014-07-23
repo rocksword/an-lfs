@@ -15,23 +15,24 @@ public class ClaimRateSummary {
     private String key;
     // Company -> ClaimRate
     private Map<String, ClaimRate> rates = new HashMap<>();
-    private float winAvg;
-    private float drawAvg;
-    private float loseAvg;
+    private float win;
+    private float draw;
+    private float lose;
+    //
     private float winEnd;
     private float drawEnd;
     private float loseEnd;
     //
     private boolean passStart = false;
-    private boolean passEnd = false;
     private boolean passStartOdds = false;
-    private Map<String, RateResult> companyRateResult = new HashMap<>();
-    // 1.5~3~5
-    private String category = null;
+    private boolean passEnd = false;
+    //
     // 1.2,1.4,1.6,1.8,2.0,2.3,2.6,3.0,4.0,5.0
-    private String hostCategory = null;
+    private String hostCat = null;
     // 1.2,1.4,1.6,1.8,2.0,2.3,2.6,3.0,4.0,5.0
-    private String guestCategory = null;
+    private String guestCat = null;
+    //
+    private String middleCat = null;
 
     public String getPassResult() {
         StringBuilder result = new StringBuilder();
@@ -48,22 +49,10 @@ public class ClaimRateSummary {
     }
 
     public String getRateAvg() {
-        return winAvg + " " + drawAvg + " " + loseAvg + LfsConst.SEPARATOR + winEnd + " " + drawEnd + " " + loseEnd;
+        return win + " " + draw + " " + lose + LfsConst.SEPARATOR + winEnd + " " + drawEnd + " " + loseEnd;
     }
 
-    public void initRateResult(String company) {
-        float win = 0;
-        float draw = 0;
-        float lose = 0;
-        ClaimRate rate = rates.get(company);
-        if (rate == null) {
-            logger.warn(company + " rate is null, " + " " + this.toString());
-            return;
-        }
-        win = rate.getWin();
-        draw = rate.getDraw();
-        lose = rate.getLose();
-
+    public void initPass(ScoreResult scoreResult) {
         float min = win;
         RateResult rateResult = RateResult.WIN;
         if (Float.compare(draw, min) < 0) {
@@ -72,20 +61,6 @@ public class ClaimRateSummary {
         }
         if (Float.compare(lose, min) < 0) {
             min = lose;
-            rateResult = RateResult.LOSE;
-        }
-        companyRateResult.put(company, rateResult);
-    }
-
-    public void initPass(ScoreResult scoreResult) {
-        float min = winAvg;
-        RateResult rateResult = RateResult.WIN;
-        if (Float.compare(drawAvg, min) < 0) {
-            min = drawAvg;
-            rateResult = RateResult.DRAW;
-        }
-        if (Float.compare(loseAvg, min) < 0) {
-            min = loseAvg;
             rateResult = RateResult.LOSE;
         }
 
@@ -113,108 +88,6 @@ public class ClaimRateSummary {
             passEnd = true;
         } else if (rateResult.isLose() && scoreResult.isLose()) {
             passEnd = true;
-        }
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public String getHostCategory() {
-        return hostCategory;
-    }
-
-    public String getGuestCategory() {
-        return guestCategory;
-    }
-
-    // 1.20以内（不包括） 6胜
-    // 1.20-1.40 26胜7平7负
-    // 1.40-1.60 23胜11平4负
-    // 1.60-1.80 14胜12平7负
-    // 1.80-2.00 15胜3平12负
-    // 2.00-2.30 20胜21平18负
-    // 2.30-2.60 8胜8平15负
-    // 2.60-3.00 3胜3平4负
-    // 3.00-4.00 6胜12平22负
-    // 4.00-5.00 2胜6平4负
-    // 5.00以上（包括） 2胜3平2负
-    public void initCategory() {
-        if (Float.compare(1.5f, winAvg) > 0) {
-            category = "1" + LfsConst.SEPARATOR + (int) Math.floor(drawAvg) + LfsConst.SEPARATOR
-                    + (int) Math.floor(loseAvg);
-        } else if (winAvg < 2 && Float.compare(winAvg, 1.5f) > 0) {
-            category = "1.5" + LfsConst.SEPARATOR + (int) Math.floor(drawAvg) + LfsConst.SEPARATOR
-                    + (int) Math.floor(loseAvg);
-        } else if (Float.compare(1.5f, loseAvg) > 0) {
-            category = (int) Math.floor(winAvg) + LfsConst.SEPARATOR + (int) Math.floor(drawAvg) + LfsConst.SEPARATOR
-                    + 1;
-        } else if (loseAvg < 2 && Float.compare(loseAvg, 1.5f) > 0) {
-            category = (int) Math.floor(winAvg) + LfsConst.SEPARATOR + (int) Math.floor(drawAvg) + LfsConst.SEPARATOR
-                    + 1.5;
-        } else {
-            category = (int) Math.floor(winAvg) + LfsConst.SEPARATOR + (int) Math.floor(drawAvg) + LfsConst.SEPARATOR
-                    + (int) Math.floor(loseAvg);
-        }
-
-        if (Float.compare(1.2f, winAvg) >= 0) {
-            hostCategory = "1.2";
-        } else if (Float.compare(1.4f, winAvg) >= 0) {
-            hostCategory = "1.4";
-        } else if (Float.compare(1.6f, winAvg) >= 0) {
-            hostCategory = "1.6";
-        } else if (Float.compare(1.8f, winAvg) >= 0) {
-            hostCategory = "1.8";
-        } else if (Float.compare(2.0f, winAvg) >= 0) {
-            hostCategory = "2.0";
-        } else if (Float.compare(2.3f, winAvg) >= 0) {
-            hostCategory = "2.3";
-        } else if (Float.compare(2.6f, winAvg) >= 0) {
-            hostCategory = "2.6";
-        } else if (Float.compare(3.0f, winAvg) >= 0) {
-            hostCategory = "3.0";
-        } else if (Float.compare(4.0f, winAvg) >= 0) {
-            hostCategory = "4.0";
-        } else if (Float.compare(5.0f, winAvg) >= 0) {
-            hostCategory = "5.0";
-        } else if (Float.compare(6.0f, winAvg) >= 0) {
-            hostCategory = "6.0";
-        } else if (Float.compare(7.0f, winAvg) >= 0) {
-            hostCategory = "7.0";
-        } else if (Float.compare(8.0f, winAvg) >= 0) {
-            hostCategory = "8.0";
-        } else {
-            hostCategory = "9.0";
-        }
-
-        if (Float.compare(1.2f, loseAvg) >= 0) {
-            guestCategory = "1.2";
-        } else if (Float.compare(1.4f, loseAvg) >= 0) {
-            guestCategory = "1.4";
-        } else if (Float.compare(1.6f, loseAvg) >= 0) {
-            guestCategory = "1.6";
-        } else if (Float.compare(1.8f, loseAvg) >= 0) {
-            guestCategory = "1.8";
-        } else if (Float.compare(2.0f, loseAvg) >= 0) {
-            guestCategory = "2.0";
-        } else if (Float.compare(2.3f, loseAvg) >= 0) {
-            guestCategory = "2.3";
-        } else if (Float.compare(2.6f, loseAvg) >= 0) {
-            guestCategory = "2.6";
-        } else if (Float.compare(3.0f, loseAvg) >= 0) {
-            guestCategory = "3.0";
-        } else if (Float.compare(4.0f, loseAvg) >= 0) {
-            guestCategory = "4.0";
-        } else if (Float.compare(5.0f, loseAvg) >= 0) {
-            guestCategory = "5.0";
-        } else if (Float.compare(6.0f, loseAvg) >= 0) {
-            guestCategory = "6.0";
-        } else if (Float.compare(7.0f, loseAvg) >= 0) {
-            guestCategory = "7.0";
-        } else if (Float.compare(8.0f, loseAvg) >= 0) {
-            guestCategory = "8.0";
-        } else {
-            guestCategory = "9.0";
         }
     }
 
@@ -279,6 +152,12 @@ public class ClaimRateSummary {
         rates.put(latestComp, rate);
     }
 
+    public void addRates(float win, float draw, float lose) {
+        this.win = win;
+        this.draw = draw;
+        this.lose = lose;
+    }
+
     public void addEndValues(float winEnd, float drawEnd, float loseEnd) {
         logger.debug("addEndValues latestComp " + latestComp);
         if (latestComp != null) {
@@ -287,12 +166,6 @@ public class ClaimRateSummary {
             rate.setDrawEnd(drawEnd);
             rate.setLoseEnd(loseEnd);
         }
-    }
-
-    public void addRateAvg(float winAvg, float drawAvg, float loseAvg) {
-        this.winAvg = winAvg;
-        this.drawAvg = drawAvg;
-        this.loseAvg = loseAvg;
     }
 
     public void addRateEnd(float winEnd, float drawEnd, float loseEnd) {
@@ -307,11 +180,12 @@ public class ClaimRateSummary {
     @Override
     public String toString() {
         return "ClaimRateSummary [" + (key != null ? "key=" + key + ", " : "")
-                + (rates != null ? "rates=" + rates + ", " : "") + "winAvg=" + winAvg + ", drawAvg=" + drawAvg
-                + ", loseAvg=" + loseAvg + ", winEnd=" + winEnd + ", drawEnd=" + drawEnd + ", loseEnd=" + loseEnd
-                + ", passStart=" + passStart + ", passEnd=" + passEnd + ", passStartOdds=" + passStartOdds + ", "
-                + (companyRateResult != null ? "companyRateResult=" + companyRateResult + ", " : "")
-                + (category != null ? "category=" + category + ", " : "")
+                + (rates != null ? "rates=" + rates + ", " : "") + "win=" + win + ", draw=" + draw + ", lose=" + lose
+                + ", winEnd=" + winEnd + ", drawEnd=" + drawEnd + ", loseEnd=" + loseEnd + ", passStart=" + passStart
+                + ", passStartOdds=" + passStartOdds + ", passEnd=" + passEnd + ", "
+                + (hostCat != null ? "hostCat=" + hostCat + ", " : "")
+                + (guestCat != null ? "guestCat=" + guestCat + ", " : "")
+                + (middleCat != null ? "middleCat=" + middleCat + ", " : "")
                 + (latestComp != null ? "latestComp=" + latestComp : "") + "]";
     }
 
@@ -339,14 +213,6 @@ public class ClaimRateSummary {
         this.passStartOdds = passStartOdds;
     }
 
-    public Map<String, RateResult> getCompRateResult() {
-        return companyRateResult;
-    }
-
-    public void setCompRateResult(Map<String, RateResult> compRateResult) {
-        this.companyRateResult = compRateResult;
-    }
-
     public String getKey() {
         return key;
     }
@@ -363,28 +229,28 @@ public class ClaimRateSummary {
         this.rates = rates;
     }
 
-    public float getWinAvg() {
-        return winAvg;
+    public float getWin() {
+        return win;
     }
 
-    public void setWinAvg(float winAvg) {
-        this.winAvg = winAvg;
+    public void setWin(float win) {
+        this.win = win;
     }
 
-    public float getDrawAvg() {
-        return drawAvg;
+    public float getDraw() {
+        return draw;
     }
 
-    public void setDrawAvg(float drawAvg) {
-        this.drawAvg = drawAvg;
+    public void setDraw(float draw) {
+        this.draw = draw;
     }
 
-    public float getLoseAvg() {
-        return loseAvg;
+    public float getLose() {
+        return lose;
     }
 
-    public void setLoseAvg(float loseAvg) {
-        this.loseAvg = loseAvg;
+    public void setLose(float lose) {
+        this.lose = lose;
     }
 
     public float getWinEnd() {
@@ -409,5 +275,29 @@ public class ClaimRateSummary {
 
     public void setLoseEnd(float loseEnd) {
         this.loseEnd = loseEnd;
+    }
+
+    public String getHostCat() {
+        return hostCat;
+    }
+
+    public void setHostCat(String hostCat) {
+        this.hostCat = hostCat;
+    }
+
+    public String getGuestCat() {
+        return guestCat;
+    }
+
+    public void setGuestCat(String guestCat) {
+        this.guestCat = guestCat;
+    }
+
+    public String getMiddleCat() {
+        return middleCat;
+    }
+
+    public void setMiddleCat(String middleCat) {
+        this.middleCat = middleCat;
     }
 }
