@@ -18,6 +18,7 @@ public class ClaimRateParser {
     public static ClaimRateSummary parse(String country, String dir, String filename) {
         logger.debug("country: " + country + ", dir: " + dir + ", filename: " + filename);
         ClaimRateSummary result = new ClaimRateSummary();
+        result.setFilename(filename);
 
         String filepath = LfsUtil.getInputFilePath(dir, filename);
         logger.debug("Parse file: " + filepath);
@@ -32,6 +33,9 @@ public class ClaimRateParser {
             while ((line = iter.nextLine()) != null) {
                 line = line.trim();
                 if (line.isEmpty()) {
+                    continue;
+                }
+                if (line.startsWith("中")) {
                     continue;
                 }
 
@@ -102,6 +106,7 @@ public class ClaimRateParser {
         } catch (Exception e) {
             logger.error("Error: " + e);
         }
+
         return result;
     }
 }

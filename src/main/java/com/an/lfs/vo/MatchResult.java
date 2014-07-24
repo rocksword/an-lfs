@@ -1,6 +1,6 @@
 package com.an.lfs.vo;
 
-public enum ScoreResult {
+public enum MatchResult {
     INVALID(-9), //
     WIN(1), //
     DRAW(0), //
@@ -24,7 +24,7 @@ public enum ScoreResult {
 
     private int val;
 
-    private ScoreResult(int val) {
+    private MatchResult(int val) {
         this.val = val;
     }
 

@@ -19,8 +19,8 @@ public class LfsMain {
         try {
             init();
             // new CompoundAnalyzer().generateRateFiles(LfsConst.USA, 2014);
+            new SimpleAnalyzer().exportReport(LfsConst.USA, 2014);
             new CompoundAnalyzer().exportReport(LfsConst.USA, 2014);
-            // new SimpleAnalyzer().exportReport(LfsConst.USA, 2014);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);

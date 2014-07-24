@@ -3,6 +3,7 @@ package com.an.lfs.vo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.an.lfs.LfsConst;
 import com.an.lfs.LfsUtil;
 
 public class LfsBase {
@@ -13,7 +14,7 @@ public class LfsBase {
     private String score;
 
     private RateResult rateResult;
-    private ScoreResult scoreResult;
+    private MatchResult matchResult;
 
     // 1.2,1.4,1.6,1.8,2.0,2.3,2.6,3.0,4.0,5.0
     private String hostCat = null;
@@ -22,7 +23,7 @@ public class LfsBase {
 
     public void addScore(String score) {
         this.score = score;
-        this.scoreResult = LfsUtil.getScoreResult(score);
+        this.matchResult = LfsUtil.getMatchResult(score);
     }
 
     public void addRate(float win, float draw, float lose) {
@@ -40,56 +41,63 @@ public class LfsBase {
      * @return
      */
     public BetResult getBetResult() {
-        return getBetResult(this.rateResult, this.scoreResult);
+        return getBetResult(this.rateResult, this.matchResult);
     }
 
     /**
      * @param rateResult
-     * @param scoreResult
+     * @param matchResult
      * @return
      */
-    protected BetResult getBetResult(RateResult rateResult, ScoreResult scoreResult) {
-        if (rateResult == null || scoreResult == null) {
+    protected BetResult getBetResult(RateResult rateResult, MatchResult matchResult) {
+        if (rateResult == null || matchResult == null) {
             return BetResult.INVALID;
         }
-        if (rateResult.isInvalid() || scoreResult.isInvalid()) {
+        if (rateResult.isInvalid() || matchResult.isInvalid()) {
             return BetResult.INVALID;
         }
-        if (rateResult.isWin() && scoreResult.isWin()) {
+        if (rateResult.isWin() && matchResult.isWin()) {
             return BetResult.PASS;
-        } else if (rateResult.isDraw() && scoreResult.isDraw()) {
+        } else if (rateResult.isDraw() && matchResult.isDraw()) {
             return BetResult.PASS;
-        } else if (rateResult.isLose() && scoreResult.isLose()) {
+        } else if (rateResult.isLose() && matchResult.isLose()) {
             return BetResult.PASS;
         }
         return BetResult.FAIL;
     }
 
     public boolean isWin() {
-        return scoreResult.isWin();
+        return matchResult.isWin();
     }
 
     public boolean isLose() {
-        return scoreResult.isLose();
+        return matchResult.isLose();
     }
 
     public boolean isDraw() {
-        return scoreResult.isDraw();
+        return matchResult.isDraw();
     }
 
-    public String getScoreResultStr() {
-        if (scoreResult.isWin()) {
-            return "+";
-        } else if (scoreResult.isDraw()) {
-            return "=";
-        } else if (scoreResult.isLose()) {
-            return "-";
+    public String getMatchResultStr() {
+        if (matchResult.isWin()) {
+            return LfsConst.WIN;
+        } else if (matchResult.isDraw()) {
+            return LfsConst.DRAW;
+        } else if (matchResult.isLose()) {
+            return LfsConst.LOSE;
         } else {
-            return "NULL";
+            return LfsConst.NULL;
         }
     }
 
     public LfsBase() {
+    }
+
+    @Override
+    public String toString() {
+        return "LfsBase [win=" + win + ", draw=" + draw + ", lose=" + lose + ", score=" + score + ", rateResult="
+                + rateResult + ", matchResult=" + matchResult + ", hostCat=" + hostCat + ", guestCat=" + guestCat
+                + ", middleCat=" + middleCat + "]";
     }
 
     public float getWin() {
@@ -132,12 +140,12 @@ public class LfsBase {
         this.rateResult = rateResult;
     }
 
-    public ScoreResult getScoreResult() {
-        return scoreResult;
+    public MatchResult getMatchResult() {
+        return matchResult;
     }
 
-    public void setScoreResult(ScoreResult scoreResult) {
-        this.scoreResult = scoreResult;
+    public void setMatchResult(MatchResult matchResult) {
+        this.matchResult = matchResult;
     }
 
     public String getHostCat() {

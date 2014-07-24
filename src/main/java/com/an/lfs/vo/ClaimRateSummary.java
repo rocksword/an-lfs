@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.an.lfs.LfsConst;
 import com.an.lfs.LfsUtil;
 
 public class ClaimRateSummary extends LfsBase {
@@ -19,66 +18,40 @@ public class ClaimRateSummary extends LfsBase {
     private RateResult endRateResult;
 
     public BetResult getEndBetResult() {
-        return super.getBetResult(endRateResult, super.getScoreResult());
-    }
-
-    public String getBetResultStr() {
-        StringBuilder result = new StringBuilder();
-        BetResult betRet = this.getBetResult();
-        if (betRet.isPass()) {
-            result.append(LfsConst.PASS);
-        } else if (betRet.isFail()) {
-            result.append(LfsConst.FAIL);
-        } else {
-            result.append(LfsConst.IGNORE);
-        }
-
-        result.append(LfsConst.SEPARATOR);
-
-        betRet = this.getEndBetResult();
-        if (betRet.isPass()) {
-            result.append(LfsConst.PASS);
-        } else if (betRet.isFail()) {
-            result.append(LfsConst.FAIL);
-        } else {
-            result.append(LfsConst.IGNORE);
-        }
-
-        return result.toString();
+        return super.getBetResult(endRateResult, super.getMatchResult());
     }
 
     public BetResult getBetResult(String company) {
         ClaimRate rate = companyRateMap.get(company);
         if (rate == null) {
-            logger.warn("Rate is null, company: " + company);
+            logger.warn("Rate is null, " + this.toString());
             return BetResult.INVALID;
         }
 
         RateResult rateResult = rate.getRateResult();
-        return super.getBetResult(rateResult, super.getScoreResult());
+        return super.getBetResult(rateResult, super.getMatchResult());
     }
 
     public String getBetResultStr(String company) {
         BetResult betRet = this.getBetResult(company);
-
-        if (betRet.isPass()) {
-            return LfsConst.PASS;
-        } else if (betRet.isFail()) {
-            return LfsConst.FAIL;
-        } else {
-            return LfsConst.IGNORE;
-        }
+        return LfsUtil.getBetStr(betRet);
     }
 
     /**
      * @return average rate
      */
     public String getRate() {
+        return getWin() + " " + getDraw() + " " + getLose();
+    }
+
+    /**
+     * @return end average rate
+     */
+    public String getEndRate() {
         if (isValidEndRate()) {
-            return getWin() + " " + getDraw() + " " + getLose() + LfsConst.SEPARATOR + winEnd + " " + drawEnd + " "
-                    + loseEnd;
+            return winEnd + " " + drawEnd + " " + loseEnd;
         } else {
-            return getWin() + " " + getDraw() + " " + getLose() + LfsConst.SEPARATOR + " NULL";
+            return "NULL";
         }
     }
 
@@ -91,12 +64,19 @@ public class ClaimRateSummary extends LfsBase {
         if (rate == null) {
             return "NULL";
         }
+        return rate.getWin() + " " + rate.getDraw() + " " + rate.getLose();
+    }
+
+    public String getEndRateStr(String company) {
+        ClaimRate rate = companyRateMap.get(company);
+        if (rate == null) {
+            return "NULL";
+        }
 
         if (rate.isValidEndRate()) {
-            return rate.getWin() + " " + rate.getDraw() + " " + rate.getLose() + LfsConst.SEPARATOR + rate.getWinEnd()
-                    + " " + rate.getDrawEnd() + " " + rate.getLoseEnd();
+            return rate.getWinEnd() + " " + rate.getDrawEnd() + " " + rate.getLoseEnd();
         } else {
-            return rate.getWin() + " " + rate.getDraw() + " " + rate.getLose() + LfsConst.SEPARATOR + " NULL";
+            return "NULL";
         }
     }
 
@@ -122,15 +102,23 @@ public class ClaimRateSummary extends LfsBase {
         rate.addEndRate(winEnd, drawEnd, loseEnd);
     }
 
+    private String filename;
+
     public ClaimRateSummary() {
     }
 
-    public Map<String, ClaimRate> getRates() {
+    @Override
+    public String toString() {
+        return "ClaimRateSummary [winEnd=" + winEnd + ", drawEnd=" + drawEnd + ", loseEnd=" + loseEnd
+                + ", endRateResult=" + endRateResult + ", filename=" + filename + "]";
+    }
+
+    public Map<String, ClaimRate> getCompanyRateMap() {
         return companyRateMap;
     }
 
-    public void setRates(Map<String, ClaimRate> rates) {
-        this.companyRateMap = rates;
+    public void setCompanyRateMap(Map<String, ClaimRate> companyRateMap) {
+        this.companyRateMap = companyRateMap;
     }
 
     public float getWinEnd() {
@@ -163,5 +151,13 @@ public class ClaimRateSummary extends LfsBase {
 
     public void setEndRateResult(RateResult endRateResult) {
         this.endRateResult = endRateResult;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

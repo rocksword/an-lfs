@@ -16,11 +16,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.an.lfs.tool.FileLineIterator;
+import com.an.lfs.vo.BetResult;
 import com.an.lfs.vo.Category;
 import com.an.lfs.vo.Match;
 import com.an.lfs.vo.MatchCategory;
+import com.an.lfs.vo.MatchResult;
 import com.an.lfs.vo.RateResult;
-import com.an.lfs.vo.ScoreResult;
 
 public class LfsUtil {
     private static final Log logger = LogFactory.getLog(LfsUtil.class);
@@ -29,6 +30,16 @@ public class LfsUtil {
     private static final String DIR_OUTPUT = "output";
     private static String STATIS_HEADER = "CATEGORY,NUM,PER,PASS_NUM,FAIL_NUM,PASS_PER,FAIL_PER\n";
     private static String MATCH_HEADER = "CATEGORY,NUM,PER\n";
+
+    public static String getBetStr(BetResult betRet) {
+        if (betRet.isPass()) {
+            return LfsConst.PASS;
+        } else if (betRet.isFail()) {
+            return LfsConst.FAIL;
+        } else {
+            return LfsConst.NULL;
+        }
+    }
 
     public static void exportStatis(String filepath, MatchCategory matchCategory, Collection<Match> matches)
             throws IOException {
@@ -179,24 +190,24 @@ public class LfsUtil {
         return result;
     }
 
-    public static ScoreResult getScoreResult(String score) {
+    public static MatchResult getMatchResult(String score) {
         if (score == null || score.trim().isEmpty()) {
-            return ScoreResult.INVALID;
+            return MatchResult.INVALID;
         }
 
         String[] strs = score.trim().split("-");
         if (strs.length != 2) {
             logger.error("Invalid score: " + score);
-            return ScoreResult.INVALID;
+            return MatchResult.INVALID;
         }
 
-        ScoreResult scoreResult = ScoreResult.WIN;
+        MatchResult matResult = MatchResult.WIN;
         if (strs[0].trim().compareTo(strs[1].trim()) == 0) {
-            scoreResult = ScoreResult.DRAW;
+            matResult = MatchResult.DRAW;
         } else if (strs[0].trim().compareTo(strs[1].trim()) < 0) {
-            scoreResult = ScoreResult.LOSE;
+            matResult = MatchResult.LOSE;
         }
-        return scoreResult;
+        return matResult;
     }
 
     /**

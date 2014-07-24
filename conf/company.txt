@@ -254,3 +254,6 @@ novibet,novibet
 Betpeople,Betpeople
 YayBet,YayBet
 Rebatewager,Rebatewager
+Eurobet(英国),Eurobet
+Wilson(爱尔兰),Wilson
+Guts,Guts

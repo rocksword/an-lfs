@@ -10,13 +10,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.an.lfs.tool.FileLineIterator;
+import com.an.lfs.vo.BetResult;
 import com.an.lfs.vo.ClaimRateSummary;
 import com.an.lfs.vo.Match;
 import com.an.lfs.vo.MatchCategory;
 
 public class CompoundAnalyzer implements Analyzer {
     private static final Log logger = LogFactory.getLog(CompoundAnalyzer.class);
-    private String SUM_HEADER = "KEY,HOST,GUEST,SCORE,RESULT,RATE_AVG,HOST_CAT,GUEST_CAT,PASS,Oddset,PASS,William,Libo\n";
     // Key -> Match, get from match.txt
     public Map<String, Match> matchMap = new HashMap<>();
     // year_index_host_guest: 2013_01_Bai_Men.txt
@@ -56,38 +56,54 @@ public class CompoundAnalyzer implements Analyzer {
         for (String key : rateKeyList) {
             String filename = key + ".txt";
             ClaimRateSummary sum = ClaimRateParser.parse(country, dir, filename);
-
-            String score = matchMap.get(key).getScore();
-            sum.addScore(score);
-            rateSummaries.put(key, sum);
-
-            matchCategory.addCategory(sum.getHostCat(), sum.getGuestCat(), sum.getMiddleCat(), sum.getBetResult());
+            if (!sum.getCompanyRateMap().isEmpty()) {
+                String score = matchMap.get(key).getScore();
+                sum.addScore(score);
+                rateSummaries.put(key, sum);
+                matchCategory.addCategory(sum.getHostCat(), sum.getGuestCat(), sum.getMiddleCat(), sum.getBetResult());
+            } else {
+                logger.warn("Empty company rate map, " + sum);
+            }
         }
     }
 
     private void exportSummary(String country, String outputFile) throws IOException {
         StringBuilder content = new StringBuilder();
-        content.append(SUM_HEADER);
+        content.append("KEY,H,G,S,R,H,G,M,START RATE,END,B");
+
+        List<String> comps = LfsConfMgr.getCompany(country);
+        for (String comp : comps) {
+            content.append(LfsConst.COMMA).append(comp);
+            content.append(LfsConst.COMMA).append("END");
+            content.append(LfsConst.COMMA).append("B");
+        }
+        content.append(LfsConst.NEXT_LINE);
 
         for (String key : rateKeyList) {
             Match mat = matchMap.get(key);
             ClaimRateSummary sum = rateSummaries.get(key);
+            if (sum == null) {
+                logger.warn("Rate summary is null, " + key);
+                continue;
+            }
             content.append(mat.getSimpleKey());
             content.append(LfsConst.COMMA).append(mat.getHost());
             content.append(LfsConst.COMMA).append(mat.getGuest());
             content.append(LfsConst.COMMA).append(" " + mat.getScore());
-            content.append(LfsConst.COMMA).append(matchMap.get(key).getScoreResultStr());
-            content.append(LfsConst.COMMA).append(sum.getRate());
-            content.append(LfsConst.COMMA).append(sum.getBetResultStr());
+            content.append(LfsConst.COMMA).append(matchMap.get(key).getMatchResultStr());
 
             content.append(LfsConst.COMMA).append(sum.getHostCat());
             content.append(LfsConst.COMMA).append(sum.getGuestCat());
             content.append(LfsConst.COMMA).append(sum.getMiddleCat());
 
-            List<String> comps = LfsConfMgr.getCompany(country);
+            content.append(LfsConst.COMMA).append(sum.getRate());
+            content.append(LfsConst.COMMA).append(sum.getEndRate());
+            content.append(LfsConst.COMMA).append(LfsUtil.getBetStr(sum.getBetResult()));
+
             for (String comp : comps) {
                 content.append(LfsConst.COMMA).append(sum.getRateStr(comp));
-                content.append(LfsConst.COMMA).append(sum.getBetResultStr(comp));
+                content.append(LfsConst.COMMA).append(sum.getEndRateStr(comp));
+                content.append(LfsConst.COMMA).append(LfsUtil.getBetStr(sum.getBetResult(comp)));
             }
             content.append(LfsConst.NEXT_LINE);
         }

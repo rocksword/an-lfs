@@ -34,10 +34,14 @@ public class LfsConst {
     public static String LIBO = "LiBo";
     public static String ODDSET = "Oddset";
 
-    public static String PASS = "PASS";
-    public static String FAIL = "FAIL";
-    public static String IGNORE = "NULL";
+    public static String PASS = "P +";
+    public static String FAIL = "F -";
+    public static String NULL = "N";
     public static String SEPARATOR = "~";
     public static String COMMA = ",";
     public static String NEXT_LINE = "\n";
+
+    public static String WIN = "W +";
+    public static String DRAW = "D =";
+    public static String LOSE = "L -";
 }

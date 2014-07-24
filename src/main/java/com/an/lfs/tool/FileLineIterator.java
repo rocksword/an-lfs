@@ -31,7 +31,7 @@ public class FileLineIterator implements AutoCloseable {
     public String nextLine() {
         File file = new File(filepath);
         if (!file.exists()) {
-            logger.info("File: " + file.getName() + " not exists.");
+            logger.warn("File: " + file.getName() + " not exists.");
             return null;
         }
 
