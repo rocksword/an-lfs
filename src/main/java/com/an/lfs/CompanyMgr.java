@@ -14,11 +14,12 @@ public class CompanyMgr {
     private static Map<String, String> companyMap = new HashMap<>();
 
     public static String getName(String company) {
-        if (companyMap.containsKey(company)) {
+        if (!companyMap.containsKey(company)) {
             logger.warn("Not found company: " + company);
-            return companyMap.get(company);
+            return company;
         }
-        return company;
+
+        return companyMap.get(company);
     }
 
     public static Map<String, String> getCompanyMap() {
@@ -34,9 +35,15 @@ public class CompanyMgr {
 
     private static void init() {
         String filepath = LfsUtil.getConfFilePath(LfsConst.COMPANY_FILE);
+        logger.info("filepath: " + filepath);
+
         try (FileLineIterator iter = new FileLineIterator(filepath);) {
             String line = null;
             while ((line = iter.nextLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+
                 String[] strs = line.split(",");
                 if (strs.length != 2) {
                     logger.info("Invalid line: " + line);

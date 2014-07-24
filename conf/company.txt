@@ -111,7 +111,9 @@ Singapore Pools(新加坡),SingaporePools
 Miseojeu(加拿大),Miseojeu
 Match Point(意大利),MatchPoint
 Jetbull(俄罗斯),Jetbull
-intralot(意大利),intralot
+intralot(意大利),Intralot
+Intralot.it(意大利),Intralot
+Intralot Italia,Intralot
 HappyBet(瑞典),HappyBet
 gioco digitale(意大利),giocodigitale
 Fubo(加拿大),Fubo
@@ -176,7 +178,6 @@ Tattsbet(澳大利亚),Tattsbet
 Sweden(瑞典),Sweden
 Paddy Power(爱尔兰),PaddyPower
 BetClic.fr(法国),BetClic
-Intralot.it(意大利),Intralot
 totesport(英国),totesport
 Unibet.fr(法国),Unibet
 Paddypower.it(意大利),Paddypower
@@ -196,9 +197,60 @@ Jenningsbet,Jenningsbet
 William Hill.it（意大利）,WilliamHill.It
 Denmark(丹麦),Denmark
 Skiller.it(意大利),Skiller
-Bookmaker.eu(厄瓜多尔),Bookmaker
+Bookmaker.eu(厄瓜多尔),Bookmaker.eu
 bets4all(奥地利),bets4all
 Jazz(哥斯达黎加),Jazz
 888Sport(直布罗陀),888Sport
 Merkur-win(意大利),Merkur-win
 Toals(英国),Toals
+Unitab,Unitab
+ABC Islands,ABCIslands
+BetAdria,BetAdria
+DiamondSportsBook,DiamondSportsBook
+betclick.fr,BetClick
+france-pari.fr,france-pari
+Island Casino,IslandCasino
+Offsidebet,Offsidebet
+Parionsweb,Parionsweb
+SAjOO,SAjOO
+PMU,PMU
+SAjOO.fr,SAjOO.fr
+Gamenet,Gamenet
+Betngo,Betngo
+32Red Bet,32RedBet
+Gamblers Palace,GamblersPalace
+youwin,youwin
+Betonline,Betonline
+1Bet,1Bet
+BetRedKings,BetRedKings
+Sisal,Sisal
+Bookmaker.ag,Bookmaker.ag
+Marathon,Marathon
+Tempobet,Tempobet
+Betcity,Betcity
+Efbet,Efbet
+Goalbet,Goalbet
+Marathonbet,Marathonbet
+tipp3,tipp3
+VivaroBet,VivaroBet
+Bodog.eu,Bodog.eu
+Betsafe.DK,Betsafe.DK
+BetSonic,BetSonic
+ComeOn,ComeOn
+FavBet,FavBet
+Mermaidbet,Mermaidbet
+Smarkets,Smarkets
+Teambet,Teambet
+TonyBet,TonyBet
+Iziplay,Iziplay
+as3388,as3388
+isibet,isibet
+Millenniumbet,Millenniumbet
+nikebet,nikebet
+Victoriatip,Victoriatip
+Vietbet,Vietbet
+SuperSport,SuperSport
+novibet,novibet
+Betpeople,Betpeople
+YayBet,YayBet
+Rebatewager,Rebatewager

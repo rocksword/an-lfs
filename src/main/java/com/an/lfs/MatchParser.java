@@ -9,8 +9,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.an.lfs.tool.FileLineIterator;
 import com.an.lfs.vo.Match;
-import com.an.lfs.vo.RateResult;
-import com.an.lfs.vo.ScoreResult;
 
 public class MatchParser {
     private static final Log logger = LogFactory.getLog(MatchParser.class);
@@ -38,8 +36,16 @@ public class MatchParser {
                 int index = Integer.parseInt(splits[0].trim());
                 String time = splits[1].trim();
                 String host = TeamMgr.getName(cty, splits[2].trim());
+
                 String score = splits[3].trim();
+                mat.addScore(score);
+
                 String guest = TeamMgr.getName(cty, splits[4].trim());
+                mat.setIndex(index);
+                mat.setYear(year);
+                mat.setTime(time);
+                mat.setHost(host);
+                mat.setGuest(guest);
 
                 // Simple
                 float win = 0f;
@@ -52,41 +58,13 @@ public class MatchParser {
                 } catch (Exception e) {
                     logger.debug("Line: " + line);
                 }
-                mat.setIndex(index);
-                mat.setYear(year);
-                mat.setTime(time);
-                mat.setHost(host);
-                mat.setScore(score);
-                mat.setGuest(guest);
-                //
-                mat.setWin(win);
-                mat.setDraw(draw);
-                mat.setLose(lose);
-                //
-                ScoreResult scoreResult = ScoreResult.INVALID;
-                if (!score.isEmpty()) {
-                    scoreResult = LfsUtil.getScoreResult(score);
-                } else {
-                    logger.debug("Line: " + line);
-                }
-                mat.setScoreResult(scoreResult);
 
-                RateResult rateResult = LfsUtil.getRateResult(win, draw, lose);
-                mat.setRateResult(rateResult);
+                mat.addRate(win, draw, lose);
 
-                String hostCat = LfsUtil.getCat(win);
-                String guestCat = LfsUtil.getCat(lose);
-                String middleCat = LfsUtil.getCat(draw);
-                mat.setHostCat(hostCat);
-                mat.setGuestCat(guestCat);
-                mat.setMiddleCat(middleCat);
-
-                String key = mat.getKey();
-                matchMap.put(key, mat);
-
+                matchMap.put(mat.getKey(), mat);
                 // Compound
                 if (rateKeyList != null) {
-                    rateKeyList.add(key);
+                    rateKeyList.add(mat.getKey());
                 }
             }
         } catch (Exception e) {

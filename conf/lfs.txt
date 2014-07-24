@@ -6,7 +6,8 @@
         "ita",
         "jpn",
         "kor",
-        "esp"
+        "esp",
+        "usa"
     ],
     "companys": 
     [
@@ -15,6 +16,7 @@
         ["SNAI", "William"],
         ["AoMen", "William"],
         ["AoMen", "William"],
-        ["WeiDe", "Bwin", "William"]
+        ["WeiDe", "Bwin", "William"],
+        ["William"]
     ]
 }

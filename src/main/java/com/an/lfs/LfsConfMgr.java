@@ -1,6 +1,8 @@
 package com.an.lfs;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,24 +18,47 @@ public class LfsConfMgr {
 
     private static Map<String, Set<String>> ctyCompanys = new HashMap<>();
 
+    /**
+     * @param country
+     * @return
+     */
+    public static List<String> getCompany(String country) {
+        if (ctyCompanys.isEmpty()) {
+            initMap();
+        }
+        List<String> list = new ArrayList<>();
+
+        Set<String> set = ctyCompanys.get(country);
+        if (!set.isEmpty()) {
+            list.addAll(set);
+        }
+
+        Collections.sort(list);
+        return list;
+    }
+
     public static boolean contains(String country, String company) {
         if (ctyCompanys.isEmpty()) {
-            List<String> countries = conf.getCountries();
-            List<List<String>> companys = conf.getCompanys();
-            if (countries.size() != companys.size()) {
-                logger.error("Invalid country and company.");
-                logger.error(countries);
-                logger.error(companys);
-            }
-            for (int i = 0; i < countries.size(); i++) {
-                ctyCompanys.put(countries.get(i), new HashSet<>(companys.get(i)));
-            }
+            initMap();
         }
 
         if (ctyCompanys.containsKey(country)) {
             return ctyCompanys.get(country).contains(company);
         }
         return false;
+    }
+
+    private static void initMap() {
+        List<String> countries = conf.getCountries();
+        List<List<String>> companys = conf.getCompanys();
+        if (countries.size() != companys.size()) {
+            logger.error("Invalid country and company.");
+            logger.error(countries);
+            logger.error(companys);
+        }
+        for (int i = 0; i < countries.size(); i++) {
+            ctyCompanys.put(countries.get(i), new HashSet<>(companys.get(i)));
+        }
     }
 
     private static LfsConf conf;

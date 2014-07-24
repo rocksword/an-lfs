@@ -18,8 +18,9 @@ public class LfsMain {
     public static void main(String[] args) {
         try {
             init();
-            // new SimpleAnalyzer().generateRateFiles(LfsConst.JPN, year);
-            new SimpleAnalyzer().exportReport(LfsConst.JPN, 2014);
+            // new CompoundAnalyzer().generateRateFiles(LfsConst.USA, 2014);
+            new CompoundAnalyzer().exportReport(LfsConst.USA, 2014);
+            // new SimpleAnalyzer().exportReport(LfsConst.USA, 2014);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);

@@ -5,24 +5,42 @@ import com.an.lfs.LfsUtil;
 public class ClaimRate {
     private int id;
     private String comp;
+
     private float win;
     private float draw;
     private float lose;
+
     private float winEnd;
     private float drawEnd;
     private float loseEnd;
+    //
+    private RateResult rateResult;
+    private RateResult endRateResult;
 
-    public RateResult getRateResult() {
-        return LfsUtil.getRateResult(win, draw, lose);
+    public boolean isValidEndRate() {
+        return LfsUtil.isValidRate(winEnd, drawEnd, loseEnd);
     }
 
     public ClaimRate() {
     }
 
-    @Override
-    public String toString() {
-        return "ClaimRate [id=" + id + ", comp=" + comp + ", win=" + win + ", draw=" + draw + ", lose=" + lose
-                + ", winEnd=" + winEnd + ", drawEnd=" + drawEnd + ", loseEnd=" + loseEnd + "]";
+    public ClaimRate(int id, String comp) {
+        this.id = id;
+        this.comp = comp;
+    }
+
+    public void addRate(float win, float draw, float lose) {
+        this.win = win;
+        this.draw = draw;
+        this.lose = lose;
+        this.rateResult = LfsUtil.getRateResult(win, draw, lose);
+    }
+
+    public void addEndRate(float winEnd, float drawEnd, float loseEnd) {
+        this.winEnd = winEnd;
+        this.drawEnd = drawEnd;
+        this.loseEnd = loseEnd;
+        this.endRateResult = LfsUtil.getRateResult(winEnd, drawEnd, loseEnd);
     }
 
     public int getId() {
@@ -87,5 +105,21 @@ public class ClaimRate {
 
     public void setLoseEnd(float loseEnd) {
         this.loseEnd = loseEnd;
+    }
+
+    public RateResult getRateResult() {
+        return rateResult;
+    }
+
+    public void setRateResult(RateResult rateResult) {
+        this.rateResult = rateResult;
+    }
+
+    public RateResult getEndRateResult() {
+        return endRateResult;
+    }
+
+    public void setEndRateResult(RateResult endRateResult) {
+        this.endRateResult = endRateResult;
     }
 }

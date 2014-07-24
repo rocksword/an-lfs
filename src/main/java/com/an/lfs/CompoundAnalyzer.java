@@ -10,10 +10,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.an.lfs.tool.FileLineIterator;
-import com.an.lfs.vo.Category;
 import com.an.lfs.vo.ClaimRateSummary;
 import com.an.lfs.vo.Match;
-import com.an.lfs.vo.ScoreResult;
+import com.an.lfs.vo.MatchCategory;
 
 public class CompoundAnalyzer implements Analyzer {
     private static final Log logger = LogFactory.getLog(CompoundAnalyzer.class);
@@ -25,10 +24,8 @@ public class CompoundAnalyzer implements Analyzer {
     //
     // claimRateKey -> ClaimRateSummary
     public Map<String, ClaimRateSummary> rateSummaries = new HashMap<String, ClaimRateSummary>();
-    // 1.2 -> Category
-    private Map<String, Category> hostCatMap = new HashMap<>();
-    private Map<String, Category> guestCatMap = new HashMap<>();
-    private Map<String, Category> middleCatMap = new HashMap<>();
+
+    private MatchCategory matchCategory = new MatchCategory();
 
     @Override
     public void exportReport(String country, int year) throws IOException {
@@ -37,9 +34,9 @@ public class CompoundAnalyzer implements Analyzer {
         analyzeRate(country, dirName);
 
         logger.info("Generate reports.");
-        exportSummary(dirName);
+        exportSummary(country, dirName);
         String filepath = LfsUtil.getStatisFilepath(dirName);
-        LfsUtil.exportStatis(filepath, hostCatMap, guestCatMap, middleCatMap, matchMap.values());
+        LfsUtil.exportStatis(filepath, matchCategory, matchMap.values());
     }
 
     public void generateRateFiles(String country, int year) throws IOException {
@@ -54,69 +51,52 @@ public class CompoundAnalyzer implements Analyzer {
         }
     }
 
-    private void analyzeRate(String country, String dirName) {
+    private void analyzeRate(String country, String dir) {
         logger.info("Parse claim rate.");
         for (String key : rateKeyList) {
-            ClaimRateSummary sum = ClaimRateParser.parse(country, dirName, key);
-            ScoreResult score = matchMap.get(key).getScoreResult();
-            sum.initPass(score);
-            sum.initPassOdds(score);
-            logger.debug(sum);
+            String filename = key + ".txt";
+            ClaimRateSummary sum = ClaimRateParser.parse(country, dir, filename);
+
+            String score = matchMap.get(key).getScore();
+            sum.addScore(score);
             rateSummaries.put(key, sum);
 
-            initCategoryMap(sum);
+            matchCategory.addCategory(sum.getHostCat(), sum.getGuestCat(), sum.getMiddleCat(), sum.getBetResult());
         }
     }
 
-    private void analyzeMatch(String dirName, String country, int year) {
-        logger.info("Parse match.");
-        MatchParser.parse(country, year, dirName, matchMap, rateKeyList);
-    }
-
-    private void initCategoryMap(ClaimRateSummary sum) {
-        String hostCat = sum.getHostCat();
-        String guestCat = sum.getGuestCat();
-        String middleCat = sum.getMiddleCat();
-        if (!hostCatMap.containsKey(hostCat)) {
-            hostCatMap.put(hostCat, new Category(hostCat));
-            guestCatMap.put(guestCat, new Category(guestCat));
-            middleCatMap.put(middleCat, new Category(middleCat));
-        }
-
-        if (sum.isPassStart()) {
-            hostCatMap.get(hostCat).addPassNum();
-            guestCatMap.get(guestCat).addPassNum();
-            middleCatMap.get(middleCat).addPassNum();
-        } else {
-            hostCatMap.get(hostCat).addFailNum();
-            guestCatMap.get(guestCat).addFailNum();
-            middleCatMap.get(middleCat).addFailNum();
-        }
-    }
-
-    private void exportSummary(String outputFile) throws IOException {
+    private void exportSummary(String country, String outputFile) throws IOException {
         StringBuilder content = new StringBuilder();
         content.append(SUM_HEADER);
 
         for (String key : rateKeyList) {
             Match mat = matchMap.get(key);
-            ClaimRateSummary rate = rateSummaries.get(key);
+            ClaimRateSummary sum = rateSummaries.get(key);
             content.append(mat.getSimpleKey());
             content.append(LfsConst.COMMA).append(mat.getHost());
             content.append(LfsConst.COMMA).append(mat.getGuest());
             content.append(LfsConst.COMMA).append(" " + mat.getScore());
             content.append(LfsConst.COMMA).append(matchMap.get(key).getScoreResultStr());
-            content.append(LfsConst.COMMA).append(rate.getRateAvg());
-            content.append(LfsConst.COMMA).append(rate.getHostCat());
-            content.append(LfsConst.COMMA).append(rate.getGuestCat());
-            content.append(LfsConst.COMMA).append(rate.getPassResult());
-            content.append(LfsConst.COMMA).append(rate.getRateString(LfsConst.ODDSET));
-            content.append(LfsConst.COMMA).append(rate.getPassResultOdds());
-            content.append(LfsConst.COMMA).append(rate.getRateString(LfsConst.WILLIAM_HILL));
-            content.append(LfsConst.COMMA).append(rate.getRateString(LfsConst.LIBO));
+            content.append(LfsConst.COMMA).append(sum.getRate());
+            content.append(LfsConst.COMMA).append(sum.getBetResultStr());
+
+            content.append(LfsConst.COMMA).append(sum.getHostCat());
+            content.append(LfsConst.COMMA).append(sum.getGuestCat());
+            content.append(LfsConst.COMMA).append(sum.getMiddleCat());
+
+            List<String> comps = LfsConfMgr.getCompany(country);
+            for (String comp : comps) {
+                content.append(LfsConst.COMMA).append(sum.getRateStr(comp));
+                content.append(LfsConst.COMMA).append(sum.getBetResultStr(comp));
+            }
             content.append(LfsConst.NEXT_LINE);
         }
 
         FileLineIterator.writeFile(outputFile + "_sum.csv", content.toString());
+    }
+
+    private void analyzeMatch(String dirName, String country, int year) {
+        logger.info("Parse match.");
+        MatchParser.parse(country, year, dirName, matchMap, rateKeyList);
     }
 }

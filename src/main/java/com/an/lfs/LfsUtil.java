@@ -18,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import com.an.lfs.tool.FileLineIterator;
 import com.an.lfs.vo.Category;
 import com.an.lfs.vo.Match;
+import com.an.lfs.vo.MatchCategory;
 import com.an.lfs.vo.RateResult;
 import com.an.lfs.vo.ScoreResult;
 
@@ -29,8 +30,7 @@ public class LfsUtil {
     private static String STATIS_HEADER = "CATEGORY,NUM,PER,PASS_NUM,FAIL_NUM,PASS_PER,FAIL_PER\n";
     private static String MATCH_HEADER = "CATEGORY,NUM,PER\n";
 
-    public static void exportStatis(String filepath, Map<String, Category> hostCatMap,
-            Map<String, Category> guestCatMap, Map<String, Category> middleCatMap, Collection<Match> matches)
+    public static void exportStatis(String filepath, MatchCategory matchCategory, Collection<Match> matches)
             throws IOException {
 
         int total = matches.size();
@@ -39,6 +39,7 @@ public class LfsUtil {
         content.append("Host,,,,,,\n");
         content.append(STATIS_HEADER);
         List<String> hostCats = new ArrayList<>();
+        Map<String, Category> hostCatMap = matchCategory.getHostCatMap();
         hostCats.addAll(hostCatMap.keySet());
         Collections.sort(hostCats, floatCompare);
 
@@ -56,6 +57,7 @@ public class LfsUtil {
         content.append("Guest,,,,,,\n");
         content.append(STATIS_HEADER);
         List<String> guestCats = new ArrayList<>();
+        Map<String, Category> guestCatMap = matchCategory.getGuestCatMap();
         guestCats.addAll(guestCatMap.keySet());
         Collections.sort(guestCats, floatCompare);
 
@@ -73,6 +75,7 @@ public class LfsUtil {
         content.append("Middle,,,,,,\n");
         content.append(STATIS_HEADER);
         List<String> middleCats = new ArrayList<>();
+        Map<String, Category> middleCatMap = matchCategory.getMiddleCatMap();
         middleCats.addAll(middleCatMap.keySet());
         Collections.sort(middleCats, floatCompare);
 
@@ -177,6 +180,10 @@ public class LfsUtil {
     }
 
     public static ScoreResult getScoreResult(String score) {
+        if (score == null || score.trim().isEmpty()) {
+            return ScoreResult.INVALID;
+        }
+
         String[] strs = score.trim().split("-");
         if (strs.length != 2) {
             logger.error("Invalid score: " + score);
@@ -190,6 +197,19 @@ public class LfsUtil {
             scoreResult = ScoreResult.LOSE;
         }
         return scoreResult;
+    }
+
+    /**
+     * @param win
+     * @param draw
+     * @param lose
+     * @return
+     */
+    public static boolean isValidRate(float win, float draw, float lose) {
+        if ((win != 0.0f) || (draw != 0.0f) || (lose != 0.0f)) {
+            return true;
+        }
+        return false;
     }
 
     /**

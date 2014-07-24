@@ -15,88 +15,87 @@ public class ClaimRateParser {
     public ClaimRateParser() {
     }
 
-    public static ClaimRateSummary parse(String country, String relativeDir, String key) {
+    public static ClaimRateSummary parse(String country, String dir, String filename) {
+        logger.debug("country: " + country + ", dir: " + dir + ", filename: " + filename);
         ClaimRateSummary result = new ClaimRateSummary();
-        result.setKey(key);
 
-        String filename = key + ".txt";
-        String filepath = LfsUtil.getInputFilePath(relativeDir, filename);
+        String filepath = LfsUtil.getInputFilePath(dir, filename);
         logger.debug("Parse file: " + filepath);
 
         try (FileLineIterator iter = new FileLineIterator(filepath);) {
+
             String line = null;
             Pattern pat = Pattern.compile("\t");
-
-            boolean startAvg = false;
-            boolean sumSegBegin = false;
+            boolean avgLine = false;
+            boolean lastSegBegin = false;
+            String lastComp = null;
             while ((line = iter.nextLine()) != null) {
-                if (line.trim().isEmpty()) {
+                line = line.trim();
+                if (line.isEmpty()) {
                     continue;
                 }
 
-                if (line.trim().startsWith("胜")) {
-                    sumSegBegin = true;
+                if (line.startsWith("胜")) {
+                    lastSegBegin = true;
                     continue;
                 }
 
-                if (sumSegBegin) {
-                    String[] strs = pat.split(line.toString());
-                    if (line.trim().startsWith("平均值")) {
-                        startAvg = true;
+                String[] strs = pat.split(line);
+                if (lastSegBegin) {
+
+                    if (line.startsWith("平均值")) {
                         float win = Float.parseFloat(strs[1].trim());
                         float draw = Float.parseFloat(strs[2].trim());
                         float lose = Float.parseFloat(strs[3].trim());
-                        result.addRates(win, draw, lose);
-                        String hostCat = LfsUtil.getCat(win);
-                        String middleCat = LfsUtil.getCat(draw);
-                        String guestCat = LfsUtil.getCat(lose);
-                        result.setHostCat(hostCat);
-                        result.setGuestCat(guestCat);
-                        result.setMiddleCat(middleCat);
-                        continue;
+
+                        result.addRate(win, draw, lose);
+                        avgLine = true;
+                    } else {
+                        if (avgLine) {
+                            float winEnd = Float.parseFloat(strs[0].trim());
+                            float drawEnd = Float.parseFloat(strs[1].trim());
+                            float loseEnd = Float.parseFloat(strs[2].trim());
+
+                            result.addEndRate(winEnd, drawEnd, loseEnd);
+                            avgLine = false;
+                        }
                     }
-                    if (startAvg) {
-                        float winEnd = Float.parseFloat(strs[0].trim());
-                        float drawEnd = Float.parseFloat(strs[1].trim());
-                        float loseEnd = Float.parseFloat(strs[2].trim());
-                        result.addRateEnd(winEnd, drawEnd, loseEnd);
-                        continue;
-                    }
+
                     continue;
                 }
 
-                String[] strs = pat.split(line.toString());
-                int len = strs.length;
                 try {
-                    if (len == 13) {
+                    if (strs.length == 13) {
                         int id = Integer.parseInt(strs[0].trim());
                         String comp = CompanyMgr.getName(strs[1].trim());
-
                         float win = Float.parseFloat(strs[2].trim());
                         float draw = Float.parseFloat(strs[3].trim());
                         float lose = Float.parseFloat(strs[4].trim());
-                        ClaimRate rate = new ClaimRate();
-                        rate.setId(id);
-                        rate.setComp(comp);
-                        rate.setWin(win);
-                        rate.setDraw(draw);
-                        rate.setLose(lose);
-                        logger.debug(rate);
-                        result.addClaimRate(country, rate);
-                    } else if (len == 10) {
+
+                        ClaimRate rate = new ClaimRate(id, comp);
+                        rate.addRate(win, draw, lose);
+                        result.addCompanyRate(rate);
+
+                        lastComp = comp;
+
+                    } else if (strs.length == 10) {
+                        if (lastComp == null) {
+                            logger.warn("lastComp is null.");
+                            continue;
+                        }
                         float winEnd = Float.parseFloat(strs[0].trim());
                         float drawEnd = Float.parseFloat(strs[1].trim());
                         float loseEnd = Float.parseFloat(strs[2].trim());
-                        result.addEndValues(winEnd, drawEnd, loseEnd);
+                        result.addCompanyEndRate(lastComp, winEnd, drawEnd, loseEnd);
                     } else {
-                        logger.error("key: " + key + ", invalid line: " + line);
+                        logger.error("filename: " + filename + ", line: " + line);
+                        lastComp = null;
                         continue;
                     }
                 } catch (Exception e) {
-                    logger.error("Key: " + key);
-                    logger.error("Error line: " + line);
-                    logger.error("strs len: " + len);
+                    logger.error("len: " + strs.length + ", filename: " + filename + ",  line: " + line);
                     logger.error("Error: " + e);
+                    lastComp = null;
                     return null;
                 }
             }
