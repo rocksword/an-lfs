@@ -17,7 +17,7 @@ public class CompanyParser {
 
     public Map<String, String> parse(String country, int year) {
         Map<String, String> companys = new HashMap<String, String>();
-        String filepath = LfsUtil.getInputFilePath(LfsUtil.getMatchDirName(country, year), "2013_01_Bai_Men.txt");
+        String filepath = LfsUtil.getInputFilePath(country, year, "2013_01_Bai_Men.txt");
         try (FileLineIterator iter = new FileLineIterator(filepath);) {
             Pattern pat = Pattern.compile("\t");
             String line = null;

@@ -15,12 +15,20 @@ public class LfsMain {
         PropertyConfigurator.configure(new FileInputStream(f));
     }
 
+    private static int BEGIN_YEAR = 2009;
+    private static String COUNTRY = LfsUtil.JPN;
+
     public static void main(String[] args) {
         try {
             init();
-            // new CompoundAnalyzer().generateRateFiles(LfsConst.USA, 2014);
-            new SimpleAnalyzer().exportReport(LfsConst.USA, 2014);
-            new CompoundAnalyzer().exportReport(LfsConst.USA, 2014);
+            for (int year = BEGIN_YEAR; year < 2015; year++) {
+                ReportMaker maker = new ReportMaker(COUNTRY, year);
+                maker.analyzeMatch();
+                maker.analyzeRate();
+                maker.exportStatis();
+                maker.exportSummary();
+                // maker.generateRateFiles();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);

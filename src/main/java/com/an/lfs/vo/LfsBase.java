@@ -3,7 +3,6 @@ package com.an.lfs.vo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.an.lfs.LfsConst;
 import com.an.lfs.LfsUtil;
 
 public class LfsBase {
@@ -80,13 +79,13 @@ public class LfsBase {
 
     public String getMatchResultStr() {
         if (matchResult.isWin()) {
-            return LfsConst.WIN;
+            return LfsUtil.WIN;
         } else if (matchResult.isDraw()) {
-            return LfsConst.DRAW;
+            return LfsUtil.DRAW;
         } else if (matchResult.isLose()) {
-            return LfsConst.LOSE;
+            return LfsUtil.LOSE;
         } else {
-            return LfsConst.NULL;
+            return LfsUtil.NULL;
         }
     }
 

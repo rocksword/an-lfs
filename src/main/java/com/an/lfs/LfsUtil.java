@@ -1,13 +1,8 @@
 package com.an.lfs;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,141 +10,86 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.an.lfs.tool.FileLineIterator;
 import com.an.lfs.vo.BetResult;
-import com.an.lfs.vo.Category;
-import com.an.lfs.vo.Match;
-import com.an.lfs.vo.MatchCategory;
 import com.an.lfs.vo.MatchResult;
 import com.an.lfs.vo.RateResult;
 
 public class LfsUtil {
     private static final Log logger = LogFactory.getLog(LfsUtil.class);
+
+    public static final String LFS_HOME = "LFS_HOME";
+
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DATE_FORMAT_FULL = "yyyy-MM-dd hh:mm:ss";
+    public static final String HADOOP_INSTALL = "HADOOP_INSTALL";
+    public static final String HBASE_INSTALL = "HBASE_INSTALL";
+
+    public static final String ENG = "eng";
+    public static final String FRA = "fra";
+    public static final String GER = "ger";
+    public static final String ITA = "ita";
+    public static final String JPN = "jpn";
+    public static final String KOR = "kor";
+    public static final String ESP = "esp";
+    public static final String USA = "usa";
+    public static String[] COUNTRIES = new String[] { ENG, FRA, GER, ITA, JPN, KOR, ESP, USA };
+
+    public static final String William = "William";
+    public static final String LiBo = "LiBo";
+    public static final String Bet365 = "Bet365";
+    public static final String Oddset = "Oddset";
+    public static final String SNAI = "SNAI";
+    public static final String AoMen = "AoMen";
+    public static final String WeiDe = "WeiDe";
+    public static final String Bwin = "Bwin";
+
+    public static String MATCH_FILE = "match.txt";
+    public static final String COMPANY_FILE = "company.txt";
+
+    public static String WILLIAM_HILL = "WilliamHill";
+    public static String LIBO = "LiBo";
+    public static String ODDSET = "Oddset";
+
+    public static String PASS = "P +";
+    public static String FAIL = "F -";
+    public static String NULL = "N";
+    public static String SEPARATOR = "~";
+    public static String COMMA = ",";
+    public static String NEXT_LINE = "\n";
+
+    public static String WIN = "W +";
+    public static String DRAW = "D =";
+    public static String LOSE = "L -";
+
     private static final String DIR_CONF = "conf";
     private static final String DIR_INPUT = "input";
     private static final String DIR_OUTPUT = "output";
-    private static String STATIS_HEADER = "CATEGORY,NUM,PER,PASS_NUM,FAIL_NUM,PASS_PER,FAIL_PER\n";
-    private static String MATCH_HEADER = "CATEGORY,NUM,PER\n";
+    public static String STATIS_HEADER = "TYPE,NUM,PER,PASS_NUM,FAIL_NUM,PASS_PER,FAIL_PER\n";
+    public static String MATCH_HEADER = "TYPE,NUM,PER\n";
 
     public static String getBetStr(BetResult betRet) {
         if (betRet.isPass()) {
-            return LfsConst.PASS;
+            return PASS;
         } else if (betRet.isFail()) {
-            return LfsConst.FAIL;
+            return FAIL;
         } else {
-            return LfsConst.NULL;
+            return NULL;
         }
     }
 
-    public static void exportStatis(String filepath, MatchCategory matchCategory, Collection<Match> matches)
-            throws IOException {
-
-        int total = matches.size();
-        StringBuilder content = new StringBuilder();
-        // Host oriented category
-        content.append("Host,,,,,,\n");
-        content.append(STATIS_HEADER);
-        List<String> hostCats = new ArrayList<>();
-        Map<String, Category> hostCatMap = matchCategory.getHostCatMap();
-        hostCats.addAll(hostCatMap.keySet());
-        Collections.sort(hostCats, floatCompare);
-
-        for (String hostCat : hostCats) {
-            Category cat = hostCatMap.get(hostCat);
-            int passNum = cat.getPassNum();
-            int failNum = cat.getFailNum();
-            String per = getPercent(total, passNum, failNum) + "%";
-            String passPer = getPassPer(passNum, failNum) + "%";
-            String failPer = getFailPer(passNum, failNum) + "%";
-            appendLine(content, hostCat, passNum, failNum, per, passPer, failPer);
-        }
-
-        // Guest oriented category
-        content.append("Guest,,,,,,\n");
-        content.append(STATIS_HEADER);
-        List<String> guestCats = new ArrayList<>();
-        Map<String, Category> guestCatMap = matchCategory.getGuestCatMap();
-        guestCats.addAll(guestCatMap.keySet());
-        Collections.sort(guestCats, floatCompare);
-
-        for (String guestCat : guestCats) {
-            Category cat = guestCatMap.get(guestCat);
-            int passNum = cat.getPassNum();
-            int failNum = cat.getFailNum();
-            String per = getPercent(total, passNum, failNum) + "%";
-            String passPer = getPassPer(passNum, failNum) + "%";
-            String failPer = getFailPer(passNum, failNum) + "%";
-            appendLine(content, guestCat, passNum, failNum, per, passPer, failPer);
-        }
-
-        // Middle category
-        content.append("Middle,,,,,,\n");
-        content.append(STATIS_HEADER);
-        List<String> middleCats = new ArrayList<>();
-        Map<String, Category> middleCatMap = matchCategory.getMiddleCatMap();
-        middleCats.addAll(middleCatMap.keySet());
-        Collections.sort(middleCats, floatCompare);
-
-        for (String middleCat : middleCats) {
-            Category cat = middleCatMap.get(middleCat);
-            int passNum = cat.getPassNum();
-            int failNum = cat.getFailNum();
-            String per = getPercent(total, passNum, failNum) + "%";
-            String passPer = getPassPer(passNum, failNum) + "%";
-            String failPer = getFailPer(passNum, failNum) + "%";
-            appendLine(content, middleCat, passNum, failNum, per, passPer, failPer);
-        }
-
-        // All match
-        int winNum = 0;
-        int drawNum = 0;
-        int loseNum = 0;
-        for (Match mat : matches) {
-            if (mat.isWin()) {
-                winNum++;
-            } else if (mat.isDraw()) {
-                drawNum++;
-            } else {
-                loseNum++;
-            }
-        }
-        String winPer = (int) (100 * (float) winNum / (float) total) + "%";
-        String drawPer = (int) (100 * (float) drawNum / (float) total) + "%";
-        String losePer = (int) (100 * (float) loseNum / (float) total) + "%";
-        content.append(",,,,,,\n");
-        content.append(MATCH_HEADER);
-        content.append("Win").append(",").append(winNum).append(",").append(winPer).append("\n");
-        content.append("Draw").append(",").append(drawNum).append(",").append(drawPer).append("\n");
-        content.append("Lose").append(",").append(loseNum).append(",").append(losePer).append("\n");
-
-        FileLineIterator.writeFile(filepath, content.toString());
-    }
-
-    private static void appendLine(StringBuilder content, String name, int passNum, int failNum, String per,
-            String passPer, String failPer) {
-        content.append(name);
-        content.append(LfsConst.COMMA).append(passNum + failNum);
-        content.append(LfsConst.COMMA).append(per);
-        content.append(LfsConst.COMMA).append(passNum);
-        content.append(LfsConst.COMMA).append(failNum);
-        content.append(LfsConst.COMMA).append(passPer);
-        content.append(LfsConst.COMMA).append(failPer);
-        content.append(LfsConst.NEXT_LINE);
-    }
-
-    private static int getFailPer(int passNum, int failNum) {
+    public static int getFailPer(int passNum, int failNum) {
         return (int) (100 * (float) failNum / (float) (passNum + failNum));
     }
 
-    private static int getPassPer(int passNum, int failNum) {
+    public static int getPassPer(int passNum, int failNum) {
         return (int) (100 * (float) passNum / (float) (passNum + failNum));
     }
 
-    private static int getPercent(int total, int passNum, int failNum) {
+    public static int getPercent(int total, int passNum, int failNum) {
         return (int) (100 * (float) (passNum + failNum) / (float) total);
     }
 
-    private static Comparator<String> floatCompare = new Comparator<String>() {
+    public static Comparator<String> floatCompare = new Comparator<String>() {
         @Override
         public int compare(String o1, String o2) {
             return Float.compare(Float.parseFloat(o1), Float.parseFloat(o2));
@@ -250,40 +190,51 @@ public class LfsUtil {
     /**
      * @param country
      * @param year
-     * @return spa_2013
+     * @param filename
+     * @return
      */
-    public static String getMatchDirName(String country, int year) {
-        return String.format("%s_%s", country, year);
+    public static String getInputFilePath(String country, int year, String filename) {
+        String home = getLfsHome();
+        String homeDir = new File(home).getAbsolutePath();
+        String subDir = String.format("%s_%s", country, year);
+        return new StringBuilder().append(homeDir).append(File.separator).append(DIR_INPUT).append(File.separator)
+                .append(subDir).append(File.separator).append(filename).toString();
     }
 
-    public static String getStatisFilepath(String dirName) {
-        String filepath = dirName + "_statis.csv";
-        return filepath;
+    /**
+     * @param country
+     * @param year
+     * @return
+     */
+    public static String getStatisFile(String country, int year) {
+        return String.format("%s_%s_statis.csv", country, year);
     }
 
-    public synchronized static String getLfsHome() {
-        String dir = System.getenv(LfsConst.LFS_HOME);
+    /**
+     * @param country
+     * @param year
+     * @return
+     */
+    public static String getSumFile(String country, int year) {
+        return String.format("%s_%s_sum.csv", country, year);
+    }
+
+    public static String getLfsHome() {
+        String dir = System.getenv(LFS_HOME);
         if (StringUtils.isEmpty(dir)) {
             throw new RuntimeException("Not found LFS_HOME, please set it.");
         }
         return dir;
     }
 
-    public synchronized static String getConfFilePath(String filename) {
+    public static String getConfFilePath(String filename) {
         String home = getLfsHome();
         File file = new File(home);
         return new StringBuilder().append(file.getAbsolutePath()).append(File.separator).append(DIR_CONF)
                 .append(File.separator).append(filename).toString();
     }
 
-    public synchronized static String getInputFilePath(String relativeDir, String filename) {
-        String home = getLfsHome();
-        File file = new File(home);
-        return new StringBuilder().append(file.getAbsolutePath()).append(File.separator).append(DIR_INPUT)
-                .append(File.separator).append(relativeDir).append(File.separator).append(filename).toString();
-    }
-
-    public synchronized static String getOutputFilePath(String filename) {
+    public static String getOutputFilePath(String filename) {
         String home = getLfsHome();
         File file = new File(home);
         return new StringBuilder().append(file.getAbsolutePath()).append(File.separator).append(DIR_OUTPUT)

@@ -1,4 +1,4 @@
-package com.an.lfs;
+package com.an.lfs.vo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.an.lfs.LfsUtil;
 import com.an.lfs.tool.FileLineIterator;
 
 public class CompanyMgr {
@@ -34,7 +35,7 @@ public class CompanyMgr {
     }
 
     private static void init() {
-        String filepath = LfsUtil.getConfFilePath(LfsConst.COMPANY_FILE);
+        String filepath = LfsUtil.getConfFilePath(LfsUtil.COMPANY_FILE);
         logger.info("filepath: " + filepath);
 
         try (FileLineIterator iter = new FileLineIterator(filepath);) {

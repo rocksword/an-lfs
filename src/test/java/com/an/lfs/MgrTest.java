@@ -6,6 +6,10 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.an.lfs.vo.CompanyMgr;
+import com.an.lfs.vo.LfsConfMgr;
+import com.an.lfs.vo.TeamMgr;
+
 public class MgrTest {
 
     @Test
@@ -29,8 +33,8 @@ public class MgrTest {
 
     @Test
     public void testLfsConfMgr() {
-        Assert.assertTrue(LfsConfMgr.contains(LfsConst.ENG, "LiBo"));
-        Assert.assertFalse(LfsConfMgr.contains(LfsConst.ENG, "Oddset"));
-        Assert.assertTrue(LfsConfMgr.contains(LfsConst.GER, "Oddset"));
+        Assert.assertTrue(LfsConfMgr.contains(LfsUtil.ENG, "LiBo"));
+        Assert.assertFalse(LfsConfMgr.contains(LfsUtil.ENG, "Oddset"));
+        Assert.assertTrue(LfsConfMgr.contains(LfsUtil.GER, "Oddset"));
     }
 }

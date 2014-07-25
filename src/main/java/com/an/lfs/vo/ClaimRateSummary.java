@@ -102,15 +102,16 @@ public class ClaimRateSummary extends LfsBase {
         rate.addEndRate(winEnd, drawEnd, loseEnd);
     }
 
-    private String filename;
+    private String filepath;
 
     public ClaimRateSummary() {
     }
 
     @Override
     public String toString() {
-        return "ClaimRateSummary [winEnd=" + winEnd + ", drawEnd=" + drawEnd + ", loseEnd=" + loseEnd
-                + ", endRateResult=" + endRateResult + ", filename=" + filename + "]";
+        return "ClaimRateSummary [winEnd=" + winEnd + ", drawEnd=" + drawEnd + ", loseEnd=" + loseEnd + ", "
+                + (endRateResult != null ? "endRateResult=" + endRateResult + ", " : "")
+                + (filepath != null ? "filepath=" + filepath : "") + "]";
     }
 
     public Map<String, ClaimRate> getCompanyRateMap() {
@@ -153,11 +154,11 @@ public class ClaimRateSummary extends LfsBase {
         this.endRateResult = endRateResult;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getFilepath() {
+        return filepath;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
     }
 }

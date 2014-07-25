@@ -1,4 +1,4 @@
-package com.an.lfs;
+package com.an.lfs.vo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.an.lfs.LfsUtil;
 import com.an.lfs.tool.FileLineIterator;
 
 public class TeamMgr {
@@ -18,7 +19,7 @@ public class TeamMgr {
     }
 
     static {
-        for (String country : LfsConst.COUNTRIES) {
+        for (String country : LfsUtil.COUNTRIES) {
             ctyTeamMap.put(country, new HashMap<String, String>());
             Map<String, String> teamMap = ctyTeamMap.get(country);
             String filepath = LfsUtil.getConfFilePath(String.format("team_%s.txt", country));

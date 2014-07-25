@@ -1,5 +1,7 @@
 package com.an.lfs;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
@@ -8,20 +10,44 @@ import org.apache.commons.logging.LogFactory;
 import com.an.lfs.tool.FileLineIterator;
 import com.an.lfs.vo.ClaimRate;
 import com.an.lfs.vo.ClaimRateSummary;
+import com.an.lfs.vo.CompanyMgr;
+import com.an.lfs.vo.MatchCategory;
 
-public class ClaimRateParser {
-    private static final Log logger = LogFactory.getLog(ClaimRateParser.class);
+public abstract class RateAnalyzer extends MatchAnalyzer {
+    private static final Log logger = LogFactory.getLog(RateAnalyzer.class);
+    // claimRateKey -> ClaimRateSummary
+    public Map<String, ClaimRateSummary> rateSummaries = new HashMap<String, ClaimRateSummary>();
+    protected MatchCategory matchCategory = new MatchCategory();
 
-    public ClaimRateParser() {
+    /**
+     * @param country
+     * @param year
+     */
+    public RateAnalyzer(String country, int year) {
+        super(country, year);
     }
 
-    public static ClaimRateSummary parse(String country, String dir, String filename) {
-        logger.debug("country: " + country + ", dir: " + dir + ", filename: " + filename);
-        ClaimRateSummary result = new ClaimRateSummary();
-        result.setFilename(filename);
+    public void analyzeRate() {
+        for (String key : rateKeyList) {
+            String filename = key + ".txt";
+            String filepath = LfsUtil.getInputFilePath(country, year, filename);
+            logger.debug("filepath: " + filepath);
+            ClaimRateSummary sum = parse(filepath);
+            if (!sum.getCompanyRateMap().isEmpty()) {
+                String score = matchMap.get(key).getScore();
+                sum.addScore(score);
+                rateSummaries.put(key, sum);
+                matchCategory.addCategory(sum.getHostCat(), sum.getGuestCat(), sum.getMiddleCat(), sum.getBetResult());
+            } else {
+                logger.warn("Empty company rate map, " + sum);
+            }
+        }
+    }
 
-        String filepath = LfsUtil.getInputFilePath(dir, filename);
-        logger.debug("Parse file: " + filepath);
+    private ClaimRateSummary parse(String filepath) {
+        logger.debug("filepath: " + filepath);
+        ClaimRateSummary result = new ClaimRateSummary();
+        result.setFilepath(filepath);
 
         try (FileLineIterator iter = new FileLineIterator(filepath);) {
 
@@ -92,12 +118,12 @@ public class ClaimRateParser {
                         float loseEnd = Float.parseFloat(strs[2].trim());
                         result.addCompanyEndRate(lastComp, winEnd, drawEnd, loseEnd);
                     } else {
-                        logger.error("filename: " + filename + ", line: " + line);
+                        logger.error("filepath: " + filepath + ", line: " + line);
                         lastComp = null;
                         continue;
                     }
                 } catch (Exception e) {
-                    logger.error("len: " + strs.length + ", filename: " + filename + ",  line: " + line);
+                    logger.error("len: " + strs.length + ", filepath: " + filepath + ",  line: " + line);
                     logger.error("Error: " + e);
                     lastComp = null;
                     return null;

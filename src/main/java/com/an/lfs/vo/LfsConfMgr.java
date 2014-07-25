@@ -1,4 +1,4 @@
-package com.an.lfs;
+package com.an.lfs.vo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,6 +12,8 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
+
+import com.an.lfs.LfsUtil;
 
 public class LfsConfMgr {
     private static final Log logger = LogFactory.getLog(LfsConfMgr.class);

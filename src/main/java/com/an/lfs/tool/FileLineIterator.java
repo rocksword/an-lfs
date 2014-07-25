@@ -13,8 +13,6 @@ import java.io.Writer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.an.lfs.LfsUtil;
-
 public class FileLineIterator implements AutoCloseable {
     private static final Log logger = LogFactory.getLog(FileLineIterator.class);
     private String filepath;
@@ -48,10 +46,7 @@ public class FileLineIterator implements AutoCloseable {
         return line;
     }
 
-    public static void writeFile(String filename, String content) throws IOException {
-        String filepath = LfsUtil.getOutputFilePath(filename);
-        logger.info("filepath: " + filepath);
-
+    public static void writeFile(String filepath, String content) throws IOException {
         File file = new File(filepath);
         if (!file.exists()) {
             file.createNewFile();

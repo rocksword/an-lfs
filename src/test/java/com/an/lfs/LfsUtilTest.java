@@ -5,7 +5,6 @@ import org.junit.Test;
 public class LfsUtilTest {
     @Test
     public void test() {
-        String dirName = LfsUtil.getMatchDirName(LfsConst.GER, 2013);
-        System.out.println(LfsUtil.getInputFilePath(dirName, LfsConst.MATCH_FILE));
+        System.out.println(LfsUtil.getInputFilePath(LfsUtil.GER, 2013, LfsUtil.MATCH_FILE));
     }
 }

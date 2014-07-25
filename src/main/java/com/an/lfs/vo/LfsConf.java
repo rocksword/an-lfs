@@ -1,4 +1,4 @@
-package com.an.lfs;
+package com.an.lfs.vo;
 
 import java.util.List;
 
