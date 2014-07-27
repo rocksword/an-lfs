@@ -15,7 +15,7 @@ public class LfsMain {
         PropertyConfigurator.configure(new FileInputStream(f));
     }
 
-    private static int BEGIN_YEAR = 2009;
+    private static int BEGIN_YEAR = 2014;
     private static String COUNTRY = LfsUtil.JPN;
 
     public static void main(String[] args) {
@@ -25,8 +25,7 @@ public class LfsMain {
                 ReportMaker maker = new ReportMaker(COUNTRY, year);
                 maker.analyzeMatch();
                 maker.analyzeRate();
-                maker.exportStatis();
-                maker.exportSummary();
+                maker.exportExcel();
                 // maker.generateRateFiles();
             }
         } catch (Exception e) {

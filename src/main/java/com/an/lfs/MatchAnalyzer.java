@@ -1,9 +1,7 @@
 package com.an.lfs;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -18,10 +16,8 @@ public abstract class MatchAnalyzer implements Analyze {
     private static final Log logger = LogFactory.getLog(MatchAnalyzer.class);
     protected String country;
     protected int year;
-    // Key -> Match, get from match.txt
+    // Match Key ( year_index_host_guest) -> Match, get from match.txt
     protected Map<String, Match> matchMap = new HashMap<>();
-    // year_index_host_guest: 2013_01_Bai_Men.txt
-    protected List<String> rateKeyList = new ArrayList<>();
 
     /**
      * @param country
@@ -30,6 +26,10 @@ public abstract class MatchAnalyzer implements Analyze {
     public MatchAnalyzer(String country, int year) {
         this.country = country;
         this.year = year;
+    }
+
+    public Match getMatch(String matchKey) {
+        return matchMap.get(matchKey);
     }
 
     @Override
@@ -68,22 +68,7 @@ public abstract class MatchAnalyzer implements Analyze {
                 mat.setHost(host);
                 mat.setGuest(guest);
 
-                // Simple
-                float win = 0f;
-                float draw = 0f;
-                float lose = 0f;
-                try {
-                    win = Float.parseFloat(splits[5].trim());
-                    draw = Float.parseFloat(splits[6].trim());
-                    lose = Float.parseFloat(splits[7].trim());
-                } catch (Exception e) {
-                    logger.debug("Line: " + line);
-                }
-
-                mat.addRate(win, draw, lose);
-
                 matchMap.put(mat.getKey(), mat);
-                rateKeyList.add(mat.getKey());
             }
         } catch (Exception e) {
             logger.error("Line: " + line);
@@ -97,9 +82,9 @@ public abstract class MatchAnalyzer implements Analyze {
     public void generateRateFiles() {
         try {
             logger.info("Create rate files.");
-            for (String key : rateKeyList) {
-                String filename = key + ".txt";
-                FileLineIterator.writeFile(filename, "中");
+            for (String key : matchMap.keySet()) {
+                String filepath = LfsUtil.getOutputFilePath(key + ".txt");
+                FileLineIterator.writeFile(filepath, "中");
             }
         } catch (Exception e) {
             e.printStackTrace();

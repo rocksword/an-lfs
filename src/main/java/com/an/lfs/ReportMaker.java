@@ -1,178 +1,305 @@
 package com.an.lfs;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import jxl.Workbook;
+import jxl.format.Colour;
+import jxl.format.UnderlineStyle;
+import jxl.write.Label;
+import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.an.lfs.tool.FileLineIterator;
-import com.an.lfs.vo.Category;
-import com.an.lfs.vo.ClaimRateSummary;
+import com.an.lfs.enu.CmpType;
+import com.an.lfs.enu.ForecastRetType;
+import com.an.lfs.enu.RateType;
+import com.an.lfs.enu.ScoreType;
+import com.an.lfs.enu.TeamType;
+import com.an.lfs.vo.BetResultNum;
+import com.an.lfs.vo.Cell;
 import com.an.lfs.vo.LfsConfMgr;
 import com.an.lfs.vo.Match;
+import com.an.lfs.vo.MatchRate;
+import com.an.lfs.vo.TeamMgr;
 
 public class ReportMaker extends RateAnalyzer {
-    private static final Log logger = LogFactory.getLog(RateAnalyzer.class);
+    private static final Log logger = LogFactory.getLog(ReportMaker.class);
+    // '- + -' -> [3,3]
+    private Map<CmpType, BetResultNum> cmpBetRetNumMap = new HashMap<>();
 
-    /**
-     * @param country
-     * @param year
-     */
     public ReportMaker(String country, int year) {
         super(country, year);
+        for (CmpType ct : CmpType.cmpTypeMap.values()) {
+            cmpBetRetNumMap.put(ct, new BetResultNum());
+        }
     }
 
-    @Override
-    public void exportStatis() throws IOException {
+    public void exportExcel() throws Exception {
+        String filepath = LfsUtil.getOutputFilePath(LfsUtil.getExcelFile(country, year));
+        logger.info("Generate file " + filepath);
+        // 1、Create WritableWorkbook, create new file if not exists
+        WritableWorkbook wb = Workbook.createWorkbook(new File(filepath));
+        // 2、Create sheet
 
-        String filename = LfsUtil.getStatisFile(country, year);
-        String filepath = LfsUtil.getOutputFilePath(filename);
-        logger.info("Generate statis file " + filepath);
-        int total = matchMap.keySet().size();
+        logger.info("Rate sheet.");
+        List<List<Cell>> rateRows = getRateSumRows();
+        addRows(wb.createSheet("Rate", 0), rateRows);
 
-        int winNum = 0;
-        int drawNum = 0;
-        int loseNum = 0;
-        for (Match mat : matchMap.values()) {
-            if (mat.isWin()) {
-                winNum++;
-            } else if (mat.isDraw()) {
-                drawNum++;
-            } else {
-                loseNum++;
-            }
+        logger.info("Rate compare sheet.");
+        List<List<Cell>> tmpRows = new ArrayList<>();
+        for (int i = 1; i < rateRows.size(); i++) {
+            tmpRows.add(rateRows.get(i));
         }
-        String winPer = (int) (100 * (float) winNum / (float) total) + "%";
-        String drawPer = (int) (100 * (float) drawNum / (float) total) + "%";
-        String losePer = (int) (100 * (float) loseNum / (float) total) + "%";
+        Collections.sort(tmpRows, cmpComparator);
 
-        StringBuilder content = new StringBuilder();
-        content.append(LfsUtil.MATCH_HEADER);
-        content.append(LfsUtil.WIN).append(",").append(winNum).append(",").append(winPer).append("\n");
-        content.append(LfsUtil.DRAW).append(",").append(drawNum).append(",").append(drawPer).append("\n");
-        content.append(LfsUtil.LOSE).append(",").append(loseNum).append(",").append(losePer).append("\n");
+        List<List<Cell>> rateCmpRows = new ArrayList<>();
+        rateCmpRows.add(rateRows.get(0));
+        rateCmpRows.addAll(tmpRows);
+        addRows(wb.createSheet("Rate CMP", 1), rateCmpRows);
 
-        // Host oriented category
-        content.append(",,,,,,\n");
-        content.append("Host,,,,,,\n");
-        content.append(LfsUtil.STATIS_HEADER);
-        List<String> hostCats = new ArrayList<>();
-        Map<String, Category> hostCatMap = matchCategory.getHostCatMap();
-        hostCats.addAll(hostCatMap.keySet());
-        Collections.sort(hostCats, LfsUtil.floatCompare);
+        logger.info("Match sheet.");
+        addRows(wb.createSheet("Match", 2), getMatSumRows());
 
-        for (String hostCat : hostCats) {
-            Category cat = hostCatMap.get(hostCat);
-            int passNum = cat.getPassNum();
-            int failNum = cat.getFailNum();
-            String per = LfsUtil.getPercent(total, passNum, failNum) + "%";
-            String passPer = LfsUtil.getPassPer(passNum, failNum) + "%";
-            String failPer = LfsUtil.getFailPer(passNum, failNum) + "%";
-            appendLine(content, hostCat, passNum, failNum, per, passPer, failPer);
-        }
-
-        // Guest oriented category
-        content.append(",,,,,,\n");
-        content.append("Guest,,,,,,\n");
-        content.append(LfsUtil.STATIS_HEADER);
-        List<String> guestCats = new ArrayList<>();
-        Map<String, Category> guestCatMap = matchCategory.getGuestCatMap();
-        guestCats.addAll(guestCatMap.keySet());
-        Collections.sort(guestCats, LfsUtil.floatCompare);
-
-        for (String guestCat : guestCats) {
-            Category cat = guestCatMap.get(guestCat);
-            int passNum = cat.getPassNum();
-            int failNum = cat.getFailNum();
-            String per = LfsUtil.getPercent(total, passNum, failNum) + "%";
-            String passPer = LfsUtil.getPassPer(passNum, failNum) + "%";
-            String failPer = LfsUtil.getFailPer(passNum, failNum) + "%";
-            appendLine(content, guestCat, passNum, failNum, per, passPer, failPer);
-        }
-
-        // Middle category
-        content.append(",,,,,,\n");
-        content.append("Middle,,,,,,\n");
-        content.append(LfsUtil.STATIS_HEADER);
-        List<String> middleCats = new ArrayList<>();
-        Map<String, Category> middleCatMap = matchCategory.getMiddleCatMap();
-        middleCats.addAll(middleCatMap.keySet());
-        Collections.sort(middleCats, LfsUtil.floatCompare);
-
-        for (String middleCat : middleCats) {
-            Category cat = middleCatMap.get(middleCat);
-            int passNum = cat.getPassNum();
-            int failNum = cat.getFailNum();
-            String per = LfsUtil.getPercent(total, passNum, failNum) + "%";
-            String passPer = LfsUtil.getPassPer(passNum, failNum) + "%";
-            String failPer = LfsUtil.getFailPer(passNum, failNum) + "%";
-            appendLine(content, middleCat, passNum, failNum, per, passPer, failPer);
-        }
-
-        FileLineIterator.writeFile(filepath, content.toString());
+        wb.write();
+        wb.close();
     }
 
-    private static void appendLine(StringBuilder content, String name, int passNum, int failNum, String per,
-            String passPer, String failPer) {
-        content.append(name);
-        content.append(LfsUtil.COMMA).append(passNum + failNum);
-        content.append(LfsUtil.COMMA).append(per);
-        content.append(LfsUtil.COMMA).append(passNum);
-        content.append(LfsUtil.COMMA).append(failNum);
-        content.append(LfsUtil.COMMA).append(passPer);
-        content.append(LfsUtil.COMMA).append(failPer);
-        content.append(LfsUtil.NEXT_LINE);
-    }
+    String[] headers = new String[] { "KEY", "Host", "Guest", "S", "H", "M", "G",//
+            "W", "D", "L", "Fc", "Sc", "B" };
+    private int CMP_INDEX = headers.length + 8 - 1;
 
-    @Override
-    public void exportSummary() throws IOException {
-        String filename = LfsUtil.getSumFile(country, year);
-        String filepath = LfsUtil.getOutputFilePath(filename);
-        logger.info("Generate summary file " + filepath);
-        StringBuilder content = new StringBuilder();
-        content.append("KEY,H,G,S,R,H,G,M,START RATE,END,B");
+    private List<String> rateKeyList = new ArrayList<>();
 
-        List<String> comps = LfsConfMgr.getCompany(country);
-        for (String comp : comps) {
-            content.append(LfsUtil.COMMA).append(comp);
-            content.append(LfsUtil.COMMA).append("END");
-            content.append(LfsUtil.COMMA).append("B");
-        }
-        content.append(LfsUtil.NEXT_LINE);
+    private List<List<Cell>> getRateSumRows() throws WriteException {
+        rateKeyList.addAll(matchMap.keySet());
+        Collections.sort(rateKeyList);
+
+        List<List<Cell>> rows = new ArrayList<>();
+        rows.add(getRatHead());
 
         for (String key : rateKeyList) {
             Match mat = matchMap.get(key);
-            ClaimRateSummary sum = rateSummaries.get(key);
-            if (sum == null) {
-                logger.warn("Rate summary is null, " + key);
+            MatchRate matRate = matRateMap.get(key);
+            if (matRate == null) {
+                logger.warn("Match rate is null, " + key);
                 continue;
             }
-            content.append(mat.getSimpleKey());
-            content.append(LfsUtil.COMMA).append(mat.getHost());
-            content.append(LfsUtil.COMMA).append(mat.getGuest());
-            content.append(LfsUtil.COMMA).append(" " + mat.getScore());
-            content.append(LfsUtil.COMMA).append(matchMap.get(key).getMatchResultStr());
-
-            content.append(LfsUtil.COMMA).append(sum.getHostCat());
-            content.append(LfsUtil.COMMA).append(sum.getGuestCat());
-            content.append(LfsUtil.COMMA).append(sum.getMiddleCat());
-
-            content.append(LfsUtil.COMMA).append(sum.getRate());
-            content.append(LfsUtil.COMMA).append(sum.getEndRate());
-            content.append(LfsUtil.COMMA).append(LfsUtil.getBetStr(sum.getBetResult()));
-
-            for (String comp : comps) {
-                content.append(LfsUtil.COMMA).append(sum.getRateStr(comp));
-                content.append(LfsUtil.COMMA).append(sum.getEndRateStr(comp));
-                content.append(LfsUtil.COMMA).append(LfsUtil.getBetStr(sum.getBetResult(comp)));
+            ScoreType scoreType = matRate.getScoreType();
+            List<Cell> row = new ArrayList<>();
+            row.add(new Cell(mat.getSimpleKey()));// key
+            row.add(new Cell(TeamMgr.getName(country, mat.getHost())));
+            row.add(new Cell(TeamMgr.getName(country, mat.getGuest())));
+            row.add(new Cell(mat.getScore()));
+            row.add(new Cell(matRate.getRateType(TeamType.HOST).getVal()));
+            row.add(new Cell(matRate.getRateType(TeamType.MID).getVal()));
+            row.add(new Cell(matRate.getRateType(TeamType.GUEST).getVal()));
+            if (scoreType.isWin()) {// Win rate
+                row.add(new Cell(matRate.getWin(), getRedFont()));
+            } else {
+                row.add(new Cell(matRate.getWin()));
             }
-            content.append(LfsUtil.NEXT_LINE);
+            if (scoreType.isDraw()) {// Draw rate
+                row.add(new Cell(matRate.getDraw(), getRedFont()));
+            } else {
+                row.add(new Cell(matRate.getDraw()));
+            }
+            if (scoreType.isLose()) {// Lose rate
+                row.add(new Cell(matRate.getLose(), getRedFont()));
+            } else {
+                row.add(new Cell(matRate.getLose()));
+            }
+            row.add(new Cell(matRate.getFcStr()));
+            row.add(new Cell(mat.getScoreTypeStr()));
+            row.add(new Cell(matRate.getBetRetStr()));
+
+            int i = 0;
+            for (String com : LfsConfMgr.getCompany(country)) {
+                if (scoreType.isWin()) {
+                    row.add(new Cell(matRate.getWin(com), getRedFont()));
+                } else {
+                    row.add(new Cell(matRate.getWin(com)));
+                }
+                if (scoreType.isDraw()) {
+                    row.add(new Cell(matRate.getDraw(com), getRedFont()));
+                } else {
+                    row.add(new Cell(matRate.getDraw(com)));
+                }
+                if (scoreType.isLose()) {
+                    row.add(new Cell(matRate.getLose(com), getRedFont()));
+                } else {
+                    row.add(new Cell(matRate.getLose(com)));
+                }
+                row.add(new Cell(matRate.getBetRetStr(com)));
+                CmpType cmp = matRate.getComparator(com);
+                if (i == 0) {
+                    BetResultNum betResultNum = cmpBetRetNumMap.get(cmp);
+                    betResultNum.addBetResult(matRate.getBetRet(com));
+                    cmpBetRetNumMap.put(cmp, betResultNum);
+                }
+                i++;
+                row.add(new Cell(cmp.getVal()));
+            }
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    private List<Cell> getRatHead() {
+        List<Cell> headRow = new ArrayList<>();
+        for (String header : headers) {
+            headRow.add(new Cell(header));
+        }
+        for (String comp : LfsConfMgr.getCompany(country)) {
+            headRow.add(new Cell(comp));
+            headRow.add(new Cell("D"));
+            headRow.add(new Cell("L"));
+            headRow.add(new Cell("B"));
+            headRow.add(new Cell("CMP"));
+        }
+        return headRow;
+    }
+
+    private List<List<Cell>> getMatSumRows() {
+        List<List<Cell>> rows = new ArrayList<>();
+        addBetHeadRow(rows);
+
+        // Total
+        List<Cell> totalRow = new ArrayList<>();
+        BetResultNum betRet = matSum.getBetRetNum();
+        totalRow.add(new Cell("TOTAL"));
+        totalRow.add(new Cell(betRet.getPassNum() + ""));
+        totalRow.add(new Cell(betRet.getPassPer()));
+        totalRow.add(new Cell(betRet.getFailNum() + ""));
+        totalRow.add(new Cell(betRet.getFailPer()));
+        rows.add(totalRow);
+
+        // Team type
+        for (TeamType tt : TeamType.allTeamTypes) {
+            addBetHeadRow(rows);
+            for (RateType st : RateType.allRateTypes) {
+                BetResultNum br = matSum.getBetRetNum(tt, st);
+                if (br.getPassNum() != 0 && br.getFailNum() != 0) {
+                    List<Cell> row = new ArrayList<>();
+                    row.add(new Cell(st.getVal()));
+                    row.add(new Cell(br.getPassNum() + ""));
+                    row.add(new Cell(br.getPassPer()));
+                    row.add(new Cell(br.getFailNum() + ""));
+                    row.add(new Cell(br.getFailPer()));
+                    rows.add(row);
+                }
+            }
         }
 
-        FileLineIterator.writeFile(filepath, content.toString());
+        // Comparator type
+        addBetHeadRow(rows);
+        for (CmpType ct : CmpType.cmpTypeList) {
+            BetResultNum br = cmpBetRetNumMap.get(ct);
+            if (br.getPassNum() != 0 || br.getFailNum() != 0) {
+                List<Cell> row = new ArrayList<>();
+                row.add(new Cell(ct.getVal()));
+                row.add(new Cell(br.getPassNum() + ""));
+                row.add(new Cell(br.getPassPer()));
+                row.add(new Cell(br.getFailNum() + ""));
+                row.add(new Cell(br.getFailPer()));
+                rows.add(row);
+            }
+        }
+
+        addMatRetHead(rows);
+        for (ForecastRetType ft : ForecastRetType.allFcRetTypes) {
+            List<Cell> row = new ArrayList<>();
+            row.add(new Cell(ft.getVal()));
+            row.add(new Cell(matSum.getFcRetNum(ft) + ""));
+            row.add(new Cell(matSum.getFcRetPer(ft)));
+            rows.add(row);
+        }
+
+        addMatRetHead(rows);
+        for (ScoreType st : ScoreType.allScoreTypes) {
+            List<Cell> row = new ArrayList<>();
+            row.add(new Cell(st.getVal()));
+            row.add(new Cell(matSum.getScoreTypeNum(st) + ""));
+            row.add(new Cell(matSum.getScoreTypePer(st)));
+            rows.add(row);
+        }
+
+        return rows;
     }
+
+    private void addBetHeadRow(List<List<Cell>> rows) {
+        List<Cell> blackRow = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            blackRow.add(new Cell(""));
+        }
+        rows.add(blackRow);
+        List<Cell> headRow = new ArrayList<>();
+        headRow.add(new Cell("Type"));
+        headRow.add(new Cell("Pass"));
+        headRow.add(new Cell("Percent"));
+        headRow.add(new Cell("Fail"));
+        headRow.add(new Cell("Percent"));
+        rows.add(headRow);
+    }
+
+    private void addMatRetHead(List<List<Cell>> rows) {
+        List<Cell> blackRow = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            blackRow.add(new Cell(""));
+        }
+        rows.add(blackRow);
+        List<Cell> headRow = new ArrayList<>();
+        headRow.add(new Cell("Type"));
+        headRow.add(new Cell("Count"));
+        headRow.add(new Cell("Percent"));
+        rows.add(headRow);
+    }
+
+    private void addRows(WritableSheet sSheet, List<List<Cell>> rows) throws Exception {
+        Label label = null;
+        for (int rowNum = 0; rowNum < rows.size(); rowNum++) {
+            List<Cell> row = rows.get(rowNum);
+            for (int colNum = 0; colNum < row.size(); colNum++) {
+                Cell cell = row.get(colNum);
+                if (cell.getFmt() != null) {
+                    label = new Label(colNum, rowNum, cell.getVal(), cell.getFmt());
+                } else {
+                    label = new Label(colNum, rowNum, cell.getVal());
+                }
+                sSheet.addCell(label);
+            }
+        }
+    }
+
+    private WritableCellFormat getRedFont() throws WriteException {
+        WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
+                UnderlineStyle.NO_UNDERLINE, Colour.RED);
+        WritableCellFormat wcf = new WritableCellFormat(wf);
+        return wcf;
+    }
+
+    private WritableCellFormat getRedFmt() throws WriteException {
+        WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
+                UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
+        WritableCellFormat wcf = new WritableCellFormat(wf);
+        wcf.setBackground(Colour.RED);
+        return wcf;
+    }
+
+    Comparator<List<Cell>> cmpComparator = new Comparator<List<Cell>>() {
+        @Override
+        public int compare(List<Cell> o1, List<Cell> o2) {
+            return o1.get(CMP_INDEX).getVal().compareTo(o2.get(CMP_INDEX).getVal());
+        }
+    };
 }

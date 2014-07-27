@@ -31,9 +31,7 @@ public class LfsConfMgr {
         List<String> list = new ArrayList<>();
 
         Set<String> set = ctyCompanys.get(country);
-        if (!set.isEmpty()) {
-            list.addAll(set);
-        }
+        list.addAll(set);
 
         Collections.sort(list);
         return list;
@@ -71,12 +69,12 @@ public class LfsConfMgr {
     private static void init() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            logger.info("Initialize conf.");
+            logger.debug("Initialize conf.");
             String filepath = LfsUtil.getConfFilePath("lfs.txt");
             File f = new File(filepath);
-            logger.info("file: " + f.getPath());
+            logger.debug("file: " + f.getPath());
             conf = mapper.readValue(f, LfsConf.class);
-            logger.info("conf: " + conf.toString());
+            logger.debug("conf: " + conf.toString());
         } catch (Exception e) {
             logger.error("Error: " + e);
             throw new RuntimeException("Failed to initialize configuration, error: " + e);

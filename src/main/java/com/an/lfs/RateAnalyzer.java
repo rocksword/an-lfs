@@ -7,17 +7,19 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.an.lfs.enu.BetRet;
+import com.an.lfs.enu.TeamType;
 import com.an.lfs.tool.FileLineIterator;
-import com.an.lfs.vo.ClaimRate;
-import com.an.lfs.vo.ClaimRateSummary;
+import com.an.lfs.vo.Rate;
 import com.an.lfs.vo.CompanyMgr;
-import com.an.lfs.vo.MatchCategory;
+import com.an.lfs.vo.MatchSummary;
+import com.an.lfs.vo.MatchRate;
 
 public abstract class RateAnalyzer extends MatchAnalyzer {
     private static final Log logger = LogFactory.getLog(RateAnalyzer.class);
-    // claimRateKey -> ClaimRateSummary
-    public Map<String, ClaimRateSummary> rateSummaries = new HashMap<String, ClaimRateSummary>();
-    protected MatchCategory matchCategory = new MatchCategory();
+    protected MatchSummary matSum = new MatchSummary();
+    // rateKey -> RateSummary
+    protected Map<String, MatchRate> matRateMap = new HashMap<String, MatchRate>();
 
     /**
      * @param country
@@ -28,29 +30,34 @@ public abstract class RateAnalyzer extends MatchAnalyzer {
     }
 
     public void analyzeRate() {
-        for (String key : rateKeyList) {
-            String filename = key + ".txt";
-            String filepath = LfsUtil.getInputFilePath(country, year, filename);
+        for (String matchKey : super.matchMap.keySet()) {
+            String filepath = LfsUtil.getInputFilePath(country, year, matchKey + ".txt");
             logger.debug("filepath: " + filepath);
-            ClaimRateSummary sum = parse(filepath);
-            if (!sum.getCompanyRateMap().isEmpty()) {
-                String score = matchMap.get(key).getScore();
-                sum.addScore(score);
-                rateSummaries.put(key, sum);
-                matchCategory.addCategory(sum.getHostCat(), sum.getGuestCat(), sum.getMiddleCat(), sum.getBetResult());
+            MatchRate matRate = parse(filepath);
+            matRate.setScoreType(super.getMatch(matchKey).getScoreType());
+
+            if (!matRate.getCompanyRateMap().isEmpty()) {
+                matRateMap.put(matchKey, matRate);
+
+                matSum.addForecastScoreRet(matRate.getFcRet(), matchMap.get(matchKey).getScoreType());
+                matSum.addBetRet(matRate.getBetRet());
+
+                BetRet betRet = matRate.getBetRet();
+                matSum.addTeamBetResult(TeamType.HOST, matRate.getRateType(TeamType.HOST), betRet);
+                matSum.addTeamBetResult(TeamType.MID, matRate.getRateType(TeamType.MID), betRet);
+                matSum.addTeamBetResult(TeamType.GUEST, matRate.getRateType(TeamType.GUEST), betRet);
             } else {
-                logger.warn("Empty company rate map, " + sum);
+                logger.warn("Empty company rate map, " + matRate);
             }
         }
     }
 
-    private ClaimRateSummary parse(String filepath) {
+    private MatchRate parse(String filepath) {
         logger.debug("filepath: " + filepath);
-        ClaimRateSummary result = new ClaimRateSummary();
-        result.setFilepath(filepath);
+        MatchRate matRate = new MatchRate();
+        matRate.setFilepath(filepath);
 
         try (FileLineIterator iter = new FileLineIterator(filepath);) {
-
             String line = null;
             Pattern pat = Pattern.compile("\t");
             boolean avgLine = false;
@@ -78,7 +85,7 @@ public abstract class RateAnalyzer extends MatchAnalyzer {
                         float draw = Float.parseFloat(strs[2].trim());
                         float lose = Float.parseFloat(strs[3].trim());
 
-                        result.addRate(win, draw, lose);
+                        matRate.addRate(win, draw, lose);
                         avgLine = true;
                     } else {
                         if (avgLine) {
@@ -86,7 +93,7 @@ public abstract class RateAnalyzer extends MatchAnalyzer {
                             float drawEnd = Float.parseFloat(strs[1].trim());
                             float loseEnd = Float.parseFloat(strs[2].trim());
 
-                            result.addEndRate(winEnd, drawEnd, loseEnd);
+                            matRate.addEndRate(winEnd, drawEnd, loseEnd);
                             avgLine = false;
                         }
                     }
@@ -102,9 +109,9 @@ public abstract class RateAnalyzer extends MatchAnalyzer {
                         float draw = Float.parseFloat(strs[3].trim());
                         float lose = Float.parseFloat(strs[4].trim());
 
-                        ClaimRate rate = new ClaimRate(id, comp);
+                        Rate rate = new Rate(id, comp);
                         rate.addRate(win, draw, lose);
-                        result.addCompanyRate(rate);
+                        matRate.addComRate(rate);
 
                         lastComp = comp;
 
@@ -116,7 +123,7 @@ public abstract class RateAnalyzer extends MatchAnalyzer {
                         float winEnd = Float.parseFloat(strs[0].trim());
                         float drawEnd = Float.parseFloat(strs[1].trim());
                         float loseEnd = Float.parseFloat(strs[2].trim());
-                        result.addCompanyEndRate(lastComp, winEnd, drawEnd, loseEnd);
+                        matRate.addComEndRate(lastComp, winEnd, drawEnd, loseEnd);
                     } else {
                         logger.error("filepath: " + filepath + ", line: " + line);
                         lastComp = null;
@@ -133,6 +140,6 @@ public abstract class RateAnalyzer extends MatchAnalyzer {
             logger.error("Error: " + e);
         }
 
-        return result;
+        return matRate;
     }
 }

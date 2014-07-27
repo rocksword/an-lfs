@@ -3,8 +3,13 @@ package com.an.lfs.vo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class Match extends LfsBase {
+import com.an.lfs.LfsUtil;
+import com.an.lfs.enu.ScoreType;
+
+public class Match {
     private static final Log logger = LogFactory.getLog(Match.class);
+    private String score;
+    protected ScoreType scoreType;
     // Common
     private int id;
     private int index;
@@ -27,6 +32,47 @@ public class Match extends LfsBase {
     public String getKey() {
         String result = String.format("%s_%02d_%s_%s", year, index, host, guest);
         return result;
+    }
+
+    public String getScoreTypeStr() {
+        if (scoreType.isWin()) {
+            return LfsUtil.WIN;
+        } else if (scoreType.isDraw()) {
+            return LfsUtil.DRAW;
+        } else if (scoreType.isLose()) {
+            return LfsUtil.LOSE;
+        } else {
+            return LfsUtil.NULL;
+        }
+    }
+
+    public ScoreType getScoreType() {
+        return scoreType;
+    }
+
+    public void addScore(String score) {
+        if (score == null || score.trim().isEmpty()) {
+            scoreType = ScoreType.INVALID;
+        } else {
+            String[] strs = score.trim().split("-");
+            if (strs.length != 2) {
+                logger.error("Invalid score: " + score);
+                scoreType = ScoreType.INVALID;
+            } else {
+                scoreType = ScoreType.WIN;
+                if (strs[0].trim().compareTo(strs[1].trim()) == 0) {
+                    scoreType = ScoreType.DRAW;
+                } else if (strs[0].trim().compareTo(strs[1].trim()) < 0) {
+                    scoreType = ScoreType.LOSE;
+                }
+            }
+        }
+
+        this.score = " " + score;
+    }
+
+    public String getScore() {
+        return score;
     }
 
     public Match() {

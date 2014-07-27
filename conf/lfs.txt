@@ -12,9 +12,10 @@
     "companys": 
     [
         ["William", "LiBo", "Bet365"],
-        ["William"], ["Oddset", "William"],
+        ["William"],
+        ["Oddset", "William"],
         ["SNAI", "William"],
-        ["AoMen", "William"],
+        ["AoMen", "William","LiBo", "Bet365"],
         ["AoMen", "William"],
         ["WeiDe", "Bwin", "William"],
         ["William"]

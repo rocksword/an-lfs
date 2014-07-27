@@ -1,8 +1,10 @@
 package com.an.lfs.vo;
 
 import com.an.lfs.LfsUtil;
+import com.an.lfs.enu.CmpType;
+import com.an.lfs.enu.ForecastRet;
 
-public class ClaimRate {
+public class Rate {
     private int id;
     private String comp;
 
@@ -14,17 +16,21 @@ public class ClaimRate {
     private float drawEnd;
     private float loseEnd;
     //
-    private RateResult rateResult;
-    private RateResult endRateResult;
+    private ForecastRet rateResult;
+    private ForecastRet endRateResult;
 
     public boolean isValidEndRate() {
         return LfsUtil.isValidRate(winEnd, drawEnd, loseEnd);
     }
 
-    public ClaimRate() {
+    public CmpType getTrend() {
+        return LfsUtil.getTrend(win, draw, lose, winEnd, drawEnd, loseEnd);
     }
 
-    public ClaimRate(int id, String comp) {
+    public Rate() {
+    }
+
+    public Rate(int id, String comp) {
         this.id = id;
         this.comp = comp;
     }
@@ -33,14 +39,14 @@ public class ClaimRate {
         this.win = win;
         this.draw = draw;
         this.lose = lose;
-        this.rateResult = LfsUtil.getRateResult(win, draw, lose);
+        this.rateResult = LfsUtil.getRateForecast(win, draw, lose);
     }
 
     public void addEndRate(float winEnd, float drawEnd, float loseEnd) {
         this.winEnd = winEnd;
         this.drawEnd = drawEnd;
         this.loseEnd = loseEnd;
-        this.endRateResult = LfsUtil.getRateResult(winEnd, drawEnd, loseEnd);
+        this.endRateResult = LfsUtil.getRateForecast(winEnd, drawEnd, loseEnd);
     }
 
     public int getId() {
@@ -107,19 +113,19 @@ public class ClaimRate {
         this.loseEnd = loseEnd;
     }
 
-    public RateResult getRateResult() {
+    public ForecastRet getRateResult() {
         return rateResult;
     }
 
-    public void setRateResult(RateResult rateResult) {
+    public void setRateResult(ForecastRet rateResult) {
         this.rateResult = rateResult;
     }
 
-    public RateResult getEndRateResult() {
+    public ForecastRet getEndRateResult() {
         return endRateResult;
     }
 
-    public void setEndRateResult(RateResult endRateResult) {
+    public void setEndRateResult(ForecastRet endRateResult) {
         this.endRateResult = endRateResult;
     }
 }

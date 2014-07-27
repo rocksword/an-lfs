@@ -16,7 +16,7 @@ public class MgrTest {
     public void testCompMgr() {
         Map<String, String> companyMap = CompanyMgr.getCompanyMap();
         for (String company : companyMap.keySet()) {
-            System.out.println(company + " -> " + companyMap.get(company));
+            // System.out.println(company + " -> " + companyMap.get(company));
         }
     }
 
@@ -26,7 +26,8 @@ public class MgrTest {
         for (String cty : ctyTeamMap.keySet()) {
             Map<String, String> teamMap = ctyTeamMap.get(cty);
             for (String team : teamMap.keySet()) {
-                System.out.println(cty + " -> " + team + " -> " + teamMap.get(team));
+                // System.out.println(cty + " -> " + team + " -> " +
+                // teamMap.get(team));
             }
         }
     }

@@ -257,3 +257,4 @@ Rebatewager,Rebatewager
 Eurobet(英国),Eurobet
 Wilson(爱尔兰),Wilson
 Guts,Guts
+Interwetten.it（意大利）,Interwetten.it

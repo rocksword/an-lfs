@@ -1,7 +1,5 @@
 package com.an.lfs;
 
-import java.io.IOException;
-
 public interface Analyze {
     public boolean analyzeMatch();
 
@@ -9,7 +7,5 @@ public interface Analyze {
 
     public void generateRateFiles();
 
-    public void exportSummary() throws IOException;
-
-    public void exportStatis() throws IOException;
+    public void exportExcel() throws Exception;
 }
