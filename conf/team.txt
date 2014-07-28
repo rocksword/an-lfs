@@ -39,6 +39,7 @@ KeLiDi    ,科里蒂巴
 FuLa      ,弗拉门戈
 Ba        ,巴伊亚
 Fei       ,费古埃伦斯
+end:bra
 
 country:eng
 曼彻斯特城     ,ManC
@@ -81,6 +82,7 @@ XiBu      ,西布罗姆维奇
 Nuo       ,诺维奇
 Fu        ,富勒姆
 Ka        ,卡迪夫城
+end:eng
 
 country:esp
 马德里竞技     ,MaDe
@@ -123,6 +125,7 @@ A        ,阿尔梅里亚
 Ao       ,奥萨苏纳
 Wa       ,瓦拉多利德
 HBei     ,皇家贝蒂斯
+end:esp
 
 country:fra
 巴黎圣日尔曼  ,BaLi
@@ -165,6 +168,7 @@ Meng    ,蒙彼利埃
 Suo     ,索肖
 Wa      ,瓦朗谢纳
 AYa     ,阿雅克肖
+end:fra
 
 country:ger
 拜仁慕尼黑       ,Bai
@@ -203,6 +207,7 @@ Si          ,斯图加特
 HanB        ,汉堡
 Niu         ,纽伦堡
 Bu          ,布伦斯维克
+end:ger
 
 country:ita
 尤文图斯    ,You
@@ -245,6 +250,7 @@ Seng    ,森索罗
 KaTa    ,卡塔尼亚
 Bo      ,博洛尼亚
 Li      ,利沃诺
+end:ita
 
 country:jpn
 浦和红钻      ,Pu
@@ -364,6 +370,7 @@ XiangNanB     ,湘南比马
 Ai            ,爱嫒FC
 Cao           ,草津温泉
 Shui          ,水户蜀葵
+end:jpn
 
 country:kor
 浦项制铁       ,Pu
@@ -424,6 +431,7 @@ Guang       ,光州市民
 ChengZu     ,城南足球俱乐部 
 FCGuang     ,FC光州
 FCGuang     ,光州FC
+end:kor
 
 country:nor
 莫尔德         ,Mo
@@ -480,6 +488,7 @@ BuLai   ,布莱尼
 MoSi    ,莫斯
 SiTuo   ,斯托姆加斯特
 Hao     ,豪桑
+end:nor
 
 country:swe
 马尔默         ,Ma
@@ -544,6 +553,7 @@ Suo      ,索尔纳
 EnKe     ,恩科平
 Jia      ,加尔斯
 VFu      ,V.弗罗伦达
+end:swe
 
 country:usa
 西雅图海湾人    ,Xi
@@ -629,3 +639,4 @@ Sheng   ,圣何塞地震
 Sheng   ,聖荷西地震
 Meng    ,蒙特利尔冲击
 Meng    ,蒙特利爾衝擊
+end:usa

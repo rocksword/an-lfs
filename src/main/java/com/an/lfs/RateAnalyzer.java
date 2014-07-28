@@ -8,12 +8,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.an.lfs.enu.BetRet;
+import com.an.lfs.enu.Country;
 import com.an.lfs.enu.TeamType;
 import com.an.lfs.tool.FileLineIterator;
-import com.an.lfs.vo.Rate;
 import com.an.lfs.vo.CompanyMgr;
-import com.an.lfs.vo.MatchSummary;
 import com.an.lfs.vo.MatchRate;
+import com.an.lfs.vo.MatchSummary;
+import com.an.lfs.vo.Rate;
 
 public abstract class RateAnalyzer extends MatchAnalyzer {
     private static final Log logger = LogFactory.getLog(RateAnalyzer.class);
@@ -25,7 +26,7 @@ public abstract class RateAnalyzer extends MatchAnalyzer {
      * @param country
      * @param year
      */
-    public RateAnalyzer(String country, int year) {
+    public RateAnalyzer(Country country, int year) {
         super(country, year);
     }
 

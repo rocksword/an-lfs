@@ -10,8 +10,26 @@ public class Cell {
         this.val = val;
     }
 
+    public Cell(int val) {
+        this.val = String.valueOf(val);
+    }
+
+    public Cell(float val) {
+        this.val = String.valueOf(val);
+    }
+
     public Cell(String val, WritableCellFormat fmt) {
         this.val = val;
+        this.fmt = fmt;
+    }
+
+    public Cell(int val, WritableCellFormat fmt) {
+        this.val = String.valueOf(val);
+        this.fmt = fmt;
+    }
+
+    public Cell(float val, WritableCellFormat fmt) {
+        this.val = String.valueOf(val);
         this.fmt = fmt;
     }
 

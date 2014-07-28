@@ -9,19 +9,17 @@ import java.util.List;
 import java.util.Map;
 
 import jxl.Workbook;
-import jxl.format.Colour;
-import jxl.format.UnderlineStyle;
 import jxl.write.Label;
-import jxl.write.WritableCellFormat;
-import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.an.lfs.enu.CmpType;
+import com.an.lfs.enu.Country;
 import com.an.lfs.enu.ForecastRetType;
 import com.an.lfs.enu.RateType;
 import com.an.lfs.enu.ScoreType;
@@ -33,12 +31,13 @@ import com.an.lfs.vo.Match;
 import com.an.lfs.vo.MatchRate;
 import com.an.lfs.vo.TeamMgr;
 
-public class ReportMaker extends RateAnalyzer {
-    private static final Log logger = LogFactory.getLog(ReportMaker.class);
+public class MatchReportMaker extends RateAnalyzer {
+    private static final Log logger = LogFactory.getLog(MatchReportMaker.class);
     // '- + -' -> [3,3]
     private Map<CmpType, BetResultNum> cmpBetRetNumMap = new HashMap<>();
+    private WritableWorkbook wb = null;
 
-    public ReportMaker(String country, int year) {
+    public MatchReportMaker(Country country, int year) {
         super(country, year);
         for (CmpType ct : CmpType.cmpTypeMap.values()) {
             cmpBetRetNumMap.put(ct, new BetResultNum());
@@ -46,15 +45,13 @@ public class ReportMaker extends RateAnalyzer {
     }
 
     public void exportExcel() throws Exception {
-        String filepath = LfsUtil.getOutputFilePath(LfsUtil.getExcelFile(country, year));
+        String filepath = LfsUtil.getOutputFilePath(LfsUtil.getSumExcelFile(country, year));
         logger.info("Generate file " + filepath);
-        // 1、Create WritableWorkbook, create new file if not exists
-        WritableWorkbook wb = Workbook.createWorkbook(new File(filepath));
-        // 2、Create sheet
+        wb = Workbook.createWorkbook(new File(filepath));
 
         logger.info("Rate sheet.");
         List<List<Cell>> rateRows = getRateSumRows();
-        addRows(wb.createSheet("Rate", 0), rateRows);
+        addSheet("Rate", 1, rateRows);
 
         logger.info("Rate compare sheet.");
         List<List<Cell>> tmpRows = new ArrayList<>();
@@ -62,17 +59,31 @@ public class ReportMaker extends RateAnalyzer {
             tmpRows.add(rateRows.get(i));
         }
         Collections.sort(tmpRows, cmpComparator);
-
         List<List<Cell>> rateCmpRows = new ArrayList<>();
         rateCmpRows.add(rateRows.get(0));
         rateCmpRows.addAll(tmpRows);
-        addRows(wb.createSheet("Rate CMP", 1), rateCmpRows);
+        addSheet("Rate CMP", 2, rateCmpRows);
 
         logger.info("Match sheet.");
-        addRows(wb.createSheet("Match", 2), getMatSumRows());
-
+        addSheet("Match", 0, getMatSumRows());
         wb.write();
         wb.close();
+    }
+
+    private void addSheet(String sheetName, int index, List<List<Cell>> rateRows) throws RowsExceededException,
+            WriteException {
+        WritableSheet sheet = wb.createSheet(sheetName, index);
+        for (int row = 0; row < rateRows.size(); row++) {
+            List<Cell> rowList = rateRows.get(row);
+            for (int col = 0; col < rowList.size(); col++) {
+                Cell cell = rowList.get(col);
+                if (cell.getFmt() != null) {
+                    sheet.addCell(new Label(col, row, cell.getVal(), cell.getFmt()));
+                } else {
+                    sheet.addCell(new Label(col, row, cell.getVal()));
+                }
+            }
+        }
     }
 
     String[] headers = new String[] { "KEY", "Host", "Guest", "S", "H", "M", "G",//
@@ -105,17 +116,17 @@ public class ReportMaker extends RateAnalyzer {
             row.add(new Cell(matRate.getRateType(TeamType.MID).getVal()));
             row.add(new Cell(matRate.getRateType(TeamType.GUEST).getVal()));
             if (scoreType.isWin()) {// Win rate
-                row.add(new Cell(matRate.getWin(), getRedFont()));
+                row.add(new Cell(matRate.getWin(), LfsUtil.getRedFont()));
             } else {
                 row.add(new Cell(matRate.getWin()));
             }
             if (scoreType.isDraw()) {// Draw rate
-                row.add(new Cell(matRate.getDraw(), getRedFont()));
+                row.add(new Cell(matRate.getDraw(), LfsUtil.getRedFont()));
             } else {
                 row.add(new Cell(matRate.getDraw()));
             }
             if (scoreType.isLose()) {// Lose rate
-                row.add(new Cell(matRate.getLose(), getRedFont()));
+                row.add(new Cell(matRate.getLose(), LfsUtil.getRedFont()));
             } else {
                 row.add(new Cell(matRate.getLose()));
             }
@@ -126,17 +137,17 @@ public class ReportMaker extends RateAnalyzer {
             int i = 0;
             for (String com : LfsConfMgr.getCompany(country)) {
                 if (scoreType.isWin()) {
-                    row.add(new Cell(matRate.getWin(com), getRedFont()));
+                    row.add(new Cell(matRate.getWin(com), LfsUtil.getRedFont()));
                 } else {
                     row.add(new Cell(matRate.getWin(com)));
                 }
                 if (scoreType.isDraw()) {
-                    row.add(new Cell(matRate.getDraw(com), getRedFont()));
+                    row.add(new Cell(matRate.getDraw(com), LfsUtil.getRedFont()));
                 } else {
                     row.add(new Cell(matRate.getDraw(com)));
                 }
                 if (scoreType.isLose()) {
-                    row.add(new Cell(matRate.getLose(com), getRedFont()));
+                    row.add(new Cell(matRate.getLose(com), LfsUtil.getRedFont()));
                 } else {
                     row.add(new Cell(matRate.getLose(com)));
                 }
@@ -178,9 +189,9 @@ public class ReportMaker extends RateAnalyzer {
         List<Cell> totalRow = new ArrayList<>();
         BetResultNum betRet = matSum.getBetRetNum();
         totalRow.add(new Cell("TOTAL"));
-        totalRow.add(new Cell(betRet.getPassNum() + ""));
+        totalRow.add(new Cell(betRet.getPassNum()));
         totalRow.add(new Cell(betRet.getPassPer()));
-        totalRow.add(new Cell(betRet.getFailNum() + ""));
+        totalRow.add(new Cell(betRet.getFailNum()));
         totalRow.add(new Cell(betRet.getFailPer()));
         rows.add(totalRow);
 
@@ -192,9 +203,9 @@ public class ReportMaker extends RateAnalyzer {
                 if (br.getPassNum() != 0 && br.getFailNum() != 0) {
                     List<Cell> row = new ArrayList<>();
                     row.add(new Cell(st.getVal()));
-                    row.add(new Cell(br.getPassNum() + ""));
+                    row.add(new Cell(br.getPassNum()));
                     row.add(new Cell(br.getPassPer()));
-                    row.add(new Cell(br.getFailNum() + ""));
+                    row.add(new Cell(br.getFailNum()));
                     row.add(new Cell(br.getFailPer()));
                     rows.add(row);
                 }
@@ -208,9 +219,9 @@ public class ReportMaker extends RateAnalyzer {
             if (br.getPassNum() != 0 || br.getFailNum() != 0) {
                 List<Cell> row = new ArrayList<>();
                 row.add(new Cell(ct.getVal()));
-                row.add(new Cell(br.getPassNum() + ""));
+                row.add(new Cell(br.getPassNum()));
                 row.add(new Cell(br.getPassPer()));
-                row.add(new Cell(br.getFailNum() + ""));
+                row.add(new Cell(br.getFailNum()));
                 row.add(new Cell(br.getFailPer()));
                 rows.add(row);
             }
@@ -220,7 +231,7 @@ public class ReportMaker extends RateAnalyzer {
         for (ForecastRetType ft : ForecastRetType.allFcRetTypes) {
             List<Cell> row = new ArrayList<>();
             row.add(new Cell(ft.getVal()));
-            row.add(new Cell(matSum.getFcRetNum(ft) + ""));
+            row.add(new Cell(matSum.getFcRetNum(ft)));
             row.add(new Cell(matSum.getFcRetPer(ft)));
             rows.add(row);
         }
@@ -229,7 +240,7 @@ public class ReportMaker extends RateAnalyzer {
         for (ScoreType st : ScoreType.allScoreTypes) {
             List<Cell> row = new ArrayList<>();
             row.add(new Cell(st.getVal()));
-            row.add(new Cell(matSum.getScoreTypeNum(st) + ""));
+            row.add(new Cell(matSum.getScoreTypeNum(st)));
             row.add(new Cell(matSum.getScoreTypePer(st)));
             rows.add(row);
         }
@@ -263,37 +274,6 @@ public class ReportMaker extends RateAnalyzer {
         headRow.add(new Cell("Count"));
         headRow.add(new Cell("Percent"));
         rows.add(headRow);
-    }
-
-    private void addRows(WritableSheet sSheet, List<List<Cell>> rows) throws Exception {
-        Label label = null;
-        for (int rowNum = 0; rowNum < rows.size(); rowNum++) {
-            List<Cell> row = rows.get(rowNum);
-            for (int colNum = 0; colNum < row.size(); colNum++) {
-                Cell cell = row.get(colNum);
-                if (cell.getFmt() != null) {
-                    label = new Label(colNum, rowNum, cell.getVal(), cell.getFmt());
-                } else {
-                    label = new Label(colNum, rowNum, cell.getVal());
-                }
-                sSheet.addCell(label);
-            }
-        }
-    }
-
-    private WritableCellFormat getRedFont() throws WriteException {
-        WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
-                UnderlineStyle.NO_UNDERLINE, Colour.RED);
-        WritableCellFormat wcf = new WritableCellFormat(wf);
-        return wcf;
-    }
-
-    private WritableCellFormat getRedFmt() throws WriteException {
-        WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
-                UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
-        WritableCellFormat wcf = new WritableCellFormat(wf);
-        wcf.setBackground(Colour.RED);
-        return wcf;
     }
 
     Comparator<List<Cell>> cmpComparator = new Comparator<List<Cell>>() {

@@ -8,13 +8,14 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.an.lfs.enu.Country;
 import com.an.lfs.tool.FileLineIterator;
 import com.an.lfs.vo.Match;
 import com.an.lfs.vo.TeamMgr;
 
 public abstract class MatchAnalyzer implements Analyze {
     private static final Log logger = LogFactory.getLog(MatchAnalyzer.class);
-    protected String country;
+    protected Country country;
     protected int year;
     // Match Key ( year_index_host_guest) -> Match, get from match.txt
     protected Map<String, Match> matchMap = new HashMap<>();
@@ -23,7 +24,7 @@ public abstract class MatchAnalyzer implements Analyze {
      * @param country
      * @param year
      */
-    public MatchAnalyzer(String country, int year) {
+    public MatchAnalyzer(Country country, int year) {
         this.country = country;
         this.year = year;
     }

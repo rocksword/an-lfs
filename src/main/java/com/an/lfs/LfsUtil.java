@@ -6,12 +6,19 @@ import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jxl.format.Colour;
+import jxl.format.UnderlineStyle;
+import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
+import jxl.write.WriteException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.an.lfs.enu.BetRet;
 import com.an.lfs.enu.CmpType;
+import com.an.lfs.enu.Country;
 import com.an.lfs.enu.ForecastRet;
 
 public class LfsUtil {
@@ -23,19 +30,6 @@ public class LfsUtil {
     public static final String DATE_FORMAT_FULL = "yyyy-MM-dd hh:mm:ss";
     public static final String HADOOP_INSTALL = "HADOOP_INSTALL";
     public static final String HBASE_INSTALL = "HBASE_INSTALL";
-
-    public static final String BRA = "bra";
-    public static final String ENG = "eng";
-    public static final String ESP = "esp";
-    public static final String FRA = "fra";
-    public static final String GER = "ger";
-    public static final String ITA = "ita";
-    public static final String JPN = "jpn";
-    public static final String NOR = "nor";
-    public static final String KOR = "kor";
-    public static final String SWE = "swe";
-    public static final String USA = "usa";
-    public static String[] COUNTRIES = new String[] { BRA, ENG, ESP, FRA, GER, ITA, JPN, NOR, KOR, SWE, USA };
 
     public static final String William = "William";
     public static final String LiBo = "LiBo";
@@ -106,6 +100,18 @@ public class LfsUtil {
     public static final String L_W = "L_W";
     public static final String L_D = "L_D";
     public static final String L_L = "L_L";
+
+    public static final String BRA = "bra";
+    public static final String ENG = "eng";
+    public static final String ESP = "esp";
+    public static final String FRA = "fra";
+    public static final String GER = "ger";
+    public static final String ITA = "ita";
+    public static final String JPN = "jpn";
+    public static final String NOR = "nor";
+    public static final String KOR = "kor";
+    public static final String SWE = "swe";
+    public static final String USA = "usa";
 
     public static String getBetRetStr(BetRet betRet) {
         if (betRet.isPass()) {
@@ -199,12 +205,24 @@ public class LfsUtil {
      * @param filename
      * @return
      */
-    public static String getInputFilePath(String country, int year, String filename) {
+    public static String getInputFilePath(Country country, int year, String filename) {
         String home = getLfsHome();
         String homeDir = new File(home).getAbsolutePath();
-        String subDir = String.format("%s_%s", country, year);
+        String subDir = String.format("%s_%s", country.getVal(), year);
         return new StringBuilder().append(homeDir).append(File.separator).append(DIR_INPUT).append(File.separator)
                 .append(subDir).append(File.separator).append(filename).toString();
+    }
+
+    /**
+     * @param country
+     * @return
+     */
+    public static String getInputFilePath(Country country) {
+        String home = getLfsHome();
+        String homeDir = new File(home).getAbsolutePath();
+        String filename = String.format("%s.txt", country.getVal());
+        return new StringBuilder().append(homeDir).append(File.separator).append(DIR_INPUT).append(File.separator)
+                .append(filename).toString();
     }
 
     /**
@@ -216,17 +234,16 @@ public class LfsUtil {
         return String.format("%s_%s_statis.csv", country, year);
     }
 
-    /**
-     * @param country
-     * @param year
-     * @return
-     */
-    public static String getSumFile(String country, int year) {
-        return String.format("%s_%s_sum.csv", country, year);
+    public static String getSumFile(Country country, int year) {
+        return String.format("%s_%s_sum.csv", country.getVal(), year);
     }
 
-    public static String getExcelFile(String country, int year) {
-        return String.format("%s_%s_sum.xls", country, year);
+    public static String getSumExcelFile(Country country, int year) {
+        return String.format("%s_%s_sum.xls", country.getVal(), year);
+    }
+
+    public static String getBoardExcelFile(Country country) {
+        return String.format("%s_board.xls", country.getVal());
     }
 
     public static String getLfsHome() {
@@ -249,6 +266,51 @@ public class LfsUtil {
         File file = new File(home);
         return new StringBuilder().append(file.getAbsolutePath()).append(File.separator).append(DIR_OUTPUT)
                 .append(File.separator).append(filename).toString();
+    }
+
+    public static WritableCellFormat getRedFont() throws WriteException {
+        WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
+                UnderlineStyle.NO_UNDERLINE, Colour.RED);
+        WritableCellFormat wcf = new WritableCellFormat(wf);
+        return wcf;
+    }
+
+    public static WritableCellFormat getRoseFont() throws WriteException {
+        WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
+                UnderlineStyle.NO_UNDERLINE, Colour.ROSE);
+        WritableCellFormat wcf = new WritableCellFormat(wf);
+        return wcf;
+    }
+
+    public static WritableCellFormat getYellowFont() throws WriteException {
+        WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
+                UnderlineStyle.NO_UNDERLINE, Colour.YELLOW);
+        WritableCellFormat wcf = new WritableCellFormat(wf);
+        return wcf;
+    }
+
+    public static WritableCellFormat getRedFmt() throws WriteException {
+        WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
+                UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
+        WritableCellFormat wcf = new WritableCellFormat(wf);
+        wcf.setBackground(Colour.RED);
+        return wcf;
+    }
+
+    public static WritableCellFormat getRoseFmt() throws WriteException {
+        WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
+                UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
+        WritableCellFormat wcf = new WritableCellFormat(wf);
+        wcf.setBackground(Colour.ROSE);
+        return wcf;
+    }
+
+    public static WritableCellFormat getYellowFmt() throws WriteException {
+        WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
+                UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
+        WritableCellFormat wcf = new WritableCellFormat(wf);
+        wcf.setBackground(Colour.YELLOW);
+        return wcf;
     }
 
     // invalid chars in domain names

@@ -1,5 +1,12 @@
 package com.an.lfs.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jxl.write.WriteException;
+
+import com.an.lfs.LfsUtil;
+
 //排名,球队,赛,胜,平,负,进球,失球,净胜,均得,均失,胜%,平%,负%,积分
 public class BoardTeam {
     private int rank;
@@ -13,10 +20,50 @@ public class BoardTeam {
     private int goalNet;
     private float avgFor;
     private float avgAgainst;
-    private int winPer;
-    private int drawPer;
-    private int losePer;
+    private float winPer;
+    private float drawPer;
+    private float losePer;
     private int score;
+
+    public List<Cell> getRow(int year, int teamSize) throws WriteException {
+        List<Cell> row = new ArrayList<>();
+
+        row.add(new Cell(year));
+        row.add(new Cell(rank));
+        if (rank < 3) {
+            row.add(new Cell(team, LfsUtil.getRoseFmt()));
+        } else if (rank > teamSize - 2) {
+            row.add(new Cell(team, LfsUtil.getYellowFmt()));
+        } else {
+            row.add(new Cell(team));
+        }
+        row.add(new Cell(total));
+        row.add(new Cell(win));
+        row.add(new Cell(draw));
+        row.add(new Cell(lose));
+        row.add(new Cell(goalFor));
+        row.add(new Cell(goalAgainst));
+        row.add(new Cell(goalNet));
+        row.add(new Cell(avgFor));
+        row.add(new Cell(avgAgainst));
+
+        if (rank < 3) {
+            row.add(new Cell(winPer, LfsUtil.getRoseFmt()));
+        } else {
+            row.add(new Cell(winPer));
+        }
+
+        row.add(new Cell(drawPer));
+
+        if (rank > teamSize - 2) {
+            row.add(new Cell(losePer, LfsUtil.getYellowFmt()));
+        } else {
+            row.add(new Cell(losePer));
+        }
+
+        row.add(new Cell(score));
+        return row;
+    }
 
     public BoardTeam() {
     }
@@ -109,27 +156,27 @@ public class BoardTeam {
         this.avgAgainst = avgAgainst;
     }
 
-    public int getWinPer() {
+    public float getWinPer() {
         return winPer;
     }
 
-    public void setWinPer(int winPer) {
+    public void setWinPer(float winPer) {
         this.winPer = winPer;
     }
 
-    public int getDrawPer() {
+    public float getDrawPer() {
         return drawPer;
     }
 
-    public void setDrawPer(int drawPer) {
+    public void setDrawPer(float drawPer) {
         this.drawPer = drawPer;
     }
 
-    public int getLosePer() {
+    public float getLosePer() {
         return losePer;
     }
 
-    public void setLosePer(int losePer) {
+    public void setLosePer(float losePer) {
         this.losePer = losePer;
     }
 

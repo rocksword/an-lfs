@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.an.lfs.LfsUtil;
+import com.an.lfs.enu.Country;
 
 public class CompanyParser {
     private static final Log logger = LogFactory.getLog(CompanyParser.class);
@@ -15,7 +16,7 @@ public class CompanyParser {
     public CompanyParser() {
     }
 
-    public Map<String, String> parse(String country, int year) {
+    public Map<String, String> parse(Country country, int year) {
         Map<String, String> companys = new HashMap<String, String>();
         String filepath = LfsUtil.getInputFilePath(country, year, "2013_01_Bai_Men.txt");
         try (FileLineIterator iter = new FileLineIterator(filepath);) {

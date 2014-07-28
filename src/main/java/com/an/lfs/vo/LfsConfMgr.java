@@ -14,17 +14,18 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.an.lfs.LfsUtil;
+import com.an.lfs.enu.Country;
 
 public class LfsConfMgr {
     private static final Log logger = LogFactory.getLog(LfsConfMgr.class);
 
-    private static Map<String, Set<String>> ctyCompanys = new HashMap<>();
+    private static Map<Country, Set<String>> ctyCompanys = new HashMap<>();
 
     /**
      * @param country
      * @return
      */
-    public static List<String> getCompany(String country) {
+    public static List<String> getCompany(Country country) {
         if (ctyCompanys.isEmpty()) {
             initMap();
         }
@@ -37,7 +38,7 @@ public class LfsConfMgr {
         return list;
     }
 
-    public static boolean contains(String country, String company) {
+    public static boolean contains(Country country, String company) {
         if (ctyCompanys.isEmpty()) {
             initMap();
         }
@@ -57,7 +58,8 @@ public class LfsConfMgr {
             logger.error(companys);
         }
         for (int i = 0; i < countries.size(); i++) {
-            ctyCompanys.put(countries.get(i), new HashSet<>(companys.get(i)));
+            Country cty = Country.getCountry(countries.get(i));
+            ctyCompanys.put(cty, new HashSet<>(companys.get(i)));
         }
     }
 
