@@ -41,6 +41,25 @@ public class TeamMgr {
                 logger.error("Error :" + e);
             }
         }
+
+        String filepath = LfsUtil.getConfFilePath(String.format("team.txt"));
+        try (FileLineIterator iter = new FileLineIterator(filepath);) {
+            String line = null;
+            while ((line = iter.nextLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+
+                String[] strs = line.trim().split(",");
+                if (strs.length != 2) {
+                    logger.info("Invalid line: " + line);
+                    continue;
+                }
+                teamMap.put(strs[0].trim(), strs[1].trim());
+            }
+        } catch (Exception e) {
+            logger.error("Error :" + e);
+        }
     }
 
     public static String getName(String cty, String team) {

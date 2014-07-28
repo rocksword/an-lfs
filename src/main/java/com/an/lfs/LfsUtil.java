@@ -24,15 +24,18 @@ public class LfsUtil {
     public static final String HADOOP_INSTALL = "HADOOP_INSTALL";
     public static final String HBASE_INSTALL = "HBASE_INSTALL";
 
+    public static final String BRA = "bra";
     public static final String ENG = "eng";
+    public static final String ESP = "esp";
     public static final String FRA = "fra";
     public static final String GER = "ger";
     public static final String ITA = "ita";
     public static final String JPN = "jpn";
+    public static final String NOR = "nor";
     public static final String KOR = "kor";
-    public static final String ESP = "esp";
+    public static final String SWE = "swe";
     public static final String USA = "usa";
-    public static String[] COUNTRIES = new String[] { ENG, FRA, GER, ITA, JPN, KOR, ESP, USA };
+    public static String[] COUNTRIES = new String[] { BRA, ENG, ESP, FRA, GER, ITA, JPN, NOR, KOR, SWE, USA };
 
     public static final String William = "William";
     public static final String LiBo = "LiBo";

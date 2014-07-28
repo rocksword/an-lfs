@@ -1,23 +1,29 @@
 {
     "countries": [
+        "bra",
         "eng",
+        "esp",
         "fra",
         "ger",
         "ita",
         "jpn",
+        "nor",
         "kor",
-        "esp",
+        "swe",
         "usa"
     ],
     "companys": 
     [
+        ["William"],
         ["William", "LiBo", "Bet365"],
+        ["WeiDe", "Bwin", "William"],
         ["William"],
         ["Oddset", "William"],
         ["SNAI", "William"],
-        ["AoMen", "William","LiBo", "Bet365"],
         ["AoMen", "William"],
-        ["WeiDe", "Bwin", "William"],
+        ["William"],
+        ["AoMen", "William"],
+        ["William"],
         ["William"]
     ]
 }
