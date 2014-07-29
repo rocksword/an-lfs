@@ -230,6 +230,19 @@ public class LfsUtil {
      * @param year
      * @return
      */
+    public static String getInputFilePath(Country country, int year) {
+        String home = getLfsHome();
+        String homeDir = new File(home).getAbsolutePath();
+        String filename = String.format("%s_%s.txt", country.getVal(), year);
+        return new StringBuilder().append(homeDir).append(File.separator).append(DIR_INPUT).append(File.separator)
+                .append(filename).toString();
+    }
+
+    /**
+     * @param country
+     * @param year
+     * @return
+     */
     public static String getStatisFile(String country, int year) {
         return String.format("%s_%s_statis.csv", country, year);
     }
@@ -244,6 +257,10 @@ public class LfsUtil {
 
     public static String getBoardExcelFile(Country country) {
         return String.format("%s_board.xls", country.getVal());
+    }
+
+    public static String getMatchExcelFile(Country country) {
+        return String.format("%s_match.xls", country.getVal());
     }
 
     public static String getLfsHome() {

@@ -16,17 +16,7 @@ import com.an.lfs.vo.BoardTeam;
 public class BoardLoader {
     private static final Log logger = LogFactory.getLog(BoardLoader.class);
     private Country country;
-
-    public BoardLoader(Country country) {
-        this.country = country;
-        load();
-    }
-
     private Map<Integer, List<BoardTeam>> boardTeamMap = new HashMap<>();
-
-    public Map<Integer, List<BoardTeam>> getBoardTeamMap() {
-        return boardTeamMap;
-    }
 
     private void load() {
         String filepath = LfsUtil.getInputFilePath(country);
@@ -92,5 +82,14 @@ public class BoardLoader {
             logger.error("Error :" + e);
             logger.info("Invalid line: " + line);
         }
+    }
+
+    public BoardLoader(Country country) {
+        this.country = country;
+        load();
+    }
+
+    public Map<Integer, List<BoardTeam>> getBoardTeamMap() {
+        return boardTeamMap;
     }
 }
