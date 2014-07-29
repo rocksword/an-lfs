@@ -14,12 +14,13 @@ public enum Country {
     GER(LfsUtil.GER), //
     ITA(LfsUtil.ITA), //
     JPN(LfsUtil.JPN), //
+    JPN_B(LfsUtil.JPN_B), //
     NOR(LfsUtil.NOR), //
     KOR(LfsUtil.KOR), //
     SWE(LfsUtil.SWE), //
     USA(LfsUtil.USA);
 
-    public static Country[] allCountries = new Country[] { BRA, ENG, ESP, FRA, GER, ITA, JPN, NOR, KOR, SWE, USA };
+    public static Country[] allCountries = new Country[] { BRA, ENG, ESP, FRA, GER, ITA, JPN, JPN_B, NOR, KOR, SWE, USA };
 
     public static Map<String, Country> countryMap = new HashMap<>();
     static {
@@ -30,6 +31,7 @@ public enum Country {
         countryMap.put(LfsUtil.GER, GER);
         countryMap.put(LfsUtil.ITA, ITA);
         countryMap.put(LfsUtil.JPN, JPN);
+        countryMap.put(LfsUtil.JPN_B, JPN_B);
         countryMap.put(LfsUtil.NOR, NOR);
         countryMap.put(LfsUtil.KOR, KOR);
         countryMap.put(LfsUtil.SWE, SWE);

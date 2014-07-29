@@ -1,9 +1,7 @@
 package com.an.lfs.vo;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import jxl.write.WriteException;
+import com.an.lfs.LfsUtil;
+import com.an.lfs.enu.ScoreType;
 
 public class MatchInfo {
     private int turn;
@@ -15,20 +13,12 @@ public class MatchInfo {
     private float draw;
     private float lose;
 
-    public List<Cell> getRow(int year) throws WriteException {
-        List<Cell> row = new ArrayList<>();
-        row.add(new Cell(year));
-        row.add(new Cell(turn));
-        row.add(new Cell(host));
-        row.add(new Cell(score));
-        row.add(new Cell(guest));
-        row.add(new Cell(win));
-        row.add(new Cell(draw));
-        row.add(new Cell(lose));
-        return row;
+    public MatchInfo() {
     }
 
-    public MatchInfo() {
+    public ScoreType getScoreType() {
+        ScoreType ret = LfsUtil.getScoreType(score);
+        return ret;
     }
 
     @Override

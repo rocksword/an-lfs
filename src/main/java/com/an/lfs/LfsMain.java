@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,30 +27,33 @@ public class LfsMain {
     }
 
     private static int BEGIN_YEAR = 2014;
-    private static int matchReport = 0;
+    private static int TYPE = 0;
 
     public static void main(String[] args) throws Exception {
         init();
 
-        if (matchReport == 0) {
-            int startYear = 2014;
-            int endYear = 2014;
-            MatchLoader loader = new MatchLoader(Country.JPN, startYear, endYear);
-            Map<Integer, List<MatchInfo>> yearMatchMap = loader.getYearMatchMap();
-            ReportMaker.exportBoardReport(cty, teamMap);
-        } else if (matchReport == 1) {
+        if (TYPE == 0) {
+            for (Country cty : Country.allCountries) {
+                if (!cty.getVal().equals("jpn_b")) {
+                    continue;
+                }
+                // Generate board report
+                BoardLoader board = new BoardLoader(cty);
+                Map<Integer, List<BoardTeam>> teamMap = board.getBoardTeamMap();
+                ReportMaker.makeBoardReport(cty, teamMap);
+
+                // Generate match report
+                MatchLoader match = new MatchLoader(cty, LfsUtil.CURRENT_YEAR, LfsUtil.CURRENT_YEAR);
+                Map<Integer, List<MatchInfo>> yearMatchMap = match.getYearMatchMap();
+                ReportMaker.makeMatchReport(cty, yearMatchMap);
+            }
+        } else if (TYPE == 2) {
             for (int year = BEGIN_YEAR; year < 2015; year++) {
-                MatchReportMaker maker = new MatchReportMaker(Country.JPN, year);
+                MatchReportMaker maker = new MatchReportMaker(Country.JPN_B, year);
                 maker.analyzeMatch();
                 maker.analyzeRate();
                 maker.exportExcel();
                 // maker.generateRateFiles();
-            }
-        } else {
-            for (Country cty : Country.allCountries) {
-                BoardLoader loader = new BoardLoader(cty);
-                Map<Integer, List<BoardTeam>> teamMap = loader.getBoardTeamMap();
-                ReportMaker.exportBoardReport(cty, teamMap);
             }
         }
     }

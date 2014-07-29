@@ -3,8 +3,10 @@ package com.an.lfs;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import com.an.lfs.enu.Country;
 import com.an.lfs.tool.FileLineIterator;
 import com.an.lfs.vo.BoardTeam;
+import com.an.lfs.vo.TeamMgr;
 
 public class BoardLoader {
     private static final Log logger = LogFactory.getLog(BoardLoader.class);
@@ -60,7 +63,7 @@ public class BoardLoader {
                         int score = Integer.parseInt(strs[14].trim());
                         BoardTeam bt = new BoardTeam();
                         bt.setRank(rank);
-                        bt.setTeam(team);
+                        bt.setTeam(TeamMgr.getName(country, team));
                         bt.setTotal(total);
                         bt.setWin(win);
                         bt.setDraw(draw);
@@ -91,5 +94,33 @@ public class BoardLoader {
 
     public Map<Integer, List<BoardTeam>> getBoardTeamMap() {
         return boardTeamMap;
+    }
+
+    public Map<String, Integer> getTeamRank(int year) {
+        Map<String, Integer> ret = new HashMap<>();
+        List<BoardTeam> list = boardTeamMap.get(year);
+        for (BoardTeam bt : list) {
+            ret.put(bt.getTeam(), bt.getRank());
+        }
+        return ret;
+    }
+
+    public Set<String> getTop3Team(int year) {
+        Set<String> ret = new HashSet<>();
+        List<BoardTeam> list = boardTeamMap.get(year);
+        ret.add(list.get(0).getTeam());
+        ret.add(list.get(1).getTeam());
+        ret.add(list.get(2).getTeam());
+        return ret;
+    }
+
+    public Set<String> getLast3Team(int year) {
+        Set<String> ret = new HashSet<>();
+        List<BoardTeam> list = boardTeamMap.get(year);
+        int cnt = list.size();
+        ret.add(list.get(cnt - 1).getTeam());
+        ret.add(list.get(cnt - 2).getTeam());
+        ret.add(list.get(cnt - 3).getTeam());
+        return ret;
     }
 }

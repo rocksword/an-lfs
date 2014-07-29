@@ -6,6 +6,7 @@ import java.util.List;
 import jxl.write.WriteException;
 
 import com.an.lfs.LfsUtil;
+import com.an.lfs.enu.Country;
 
 //排名,球队,赛,胜,平,负,进球,失球,净胜,均得,均失,胜%,平%,负%,积分
 public class BoardTeam {
@@ -25,17 +26,19 @@ public class BoardTeam {
     private float losePer;
     private int score;
 
-    public List<Cell> getRow(int year, int teamSize) throws WriteException {
+    public List<Cell> getRow(Country cty, int year, int teamCnt) throws WriteException {
         List<Cell> row = new ArrayList<>();
+
+        String teamName = TeamMgr.getName(cty, team);
 
         row.add(new Cell(year));
         row.add(new Cell(rank));
-        if (rank < 3) {
-            row.add(new Cell(team, LfsUtil.getRoseFmt()));
-        } else if (rank > teamSize - 2) {
-            row.add(new Cell(team, LfsUtil.getYellowFmt()));
+        if (rank < 4) {
+            row.add(new Cell(teamName, LfsUtil.getRoseFmt()));
+        } else if (rank > teamCnt - 3) {
+            row.add(new Cell(teamName, LfsUtil.getYellowFmt()));
         } else {
-            row.add(new Cell(team));
+            row.add(new Cell(teamName));
         }
         row.add(new Cell(total));
         row.add(new Cell(win));
@@ -47,7 +50,7 @@ public class BoardTeam {
         row.add(new Cell(avgFor));
         row.add(new Cell(avgAgainst));
 
-        if (rank < 3) {
+        if (rank < 4) {
             row.add(new Cell(winPer, LfsUtil.getRoseFmt()));
         } else {
             row.add(new Cell(winPer));
@@ -55,7 +58,7 @@ public class BoardTeam {
 
         row.add(new Cell(drawPer));
 
-        if (rank > teamSize - 2) {
+        if (rank > teamCnt - 3) {
             row.add(new Cell(losePer, LfsUtil.getYellowFmt()));
         } else {
             row.add(new Cell(losePer));

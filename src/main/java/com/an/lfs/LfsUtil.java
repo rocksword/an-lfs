@@ -20,12 +20,13 @@ import com.an.lfs.enu.BetRet;
 import com.an.lfs.enu.CmpType;
 import com.an.lfs.enu.Country;
 import com.an.lfs.enu.ForecastRet;
+import com.an.lfs.enu.ScoreType;
 
 public class LfsUtil {
     private static final Log logger = LogFactory.getLog(LfsUtil.class);
 
     public static final String LFS_HOME = "LFS_HOME";
-
+    public static int CURRENT_YEAR = 2014;
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String DATE_FORMAT_FULL = "yyyy-MM-dd hh:mm:ss";
     public static final String HADOOP_INSTALL = "HADOOP_INSTALL";
@@ -50,6 +51,8 @@ public class LfsUtil {
     public static String PASS = "P";
     public static String FAIL = "F";
     public static String NULL = "N";
+    public static String TOP3 = "T3";
+    public static String LAST3 = "L3";
     public static String SEPARATOR = "~";
     public static String COMMA = ",";
     public static String NEXT_LINE = "\n";
@@ -108,6 +111,7 @@ public class LfsUtil {
     public static final String GER = "ger";
     public static final String ITA = "ita";
     public static final String JPN = "jpn";
+    public static final String JPN_B = "jpn_b";
     public static final String NOR = "nor";
     public static final String KOR = "kor";
     public static final String SWE = "swe";
@@ -285,6 +289,13 @@ public class LfsUtil {
                 .append(File.separator).append(filename).toString();
     }
 
+    public static WritableCellFormat getGreenFont() throws WriteException {
+        WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
+                UnderlineStyle.NO_UNDERLINE, Colour.GREEN);
+        WritableCellFormat wcf = new WritableCellFormat(wf);
+        return wcf;
+    }
+
     public static WritableCellFormat getRedFont() throws WriteException {
         WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
                 UnderlineStyle.NO_UNDERLINE, Colour.RED);
@@ -302,6 +313,13 @@ public class LfsUtil {
     public static WritableCellFormat getYellowFont() throws WriteException {
         WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
                 UnderlineStyle.NO_UNDERLINE, Colour.YELLOW);
+        WritableCellFormat wcf = new WritableCellFormat(wf);
+        return wcf;
+    }
+
+    public static WritableCellFormat getBlueFont() throws WriteException {
+        WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
+                UnderlineStyle.NO_UNDERLINE, Colour.BLUE2);
         WritableCellFormat wcf = new WritableCellFormat(wf);
         return wcf;
     }
@@ -328,6 +346,30 @@ public class LfsUtil {
         WritableCellFormat wcf = new WritableCellFormat(wf);
         wcf.setBackground(Colour.YELLOW);
         return wcf;
+    }
+
+    public static ScoreType getScoreType(String score) {
+        ScoreType ret = ScoreType.INVALID;
+        if (score != null && !score.trim().isEmpty()) {
+            String[] strs = score.trim().split("-");
+            if (strs.length != 2) {
+                logger.error("Invalid score: " + score);
+                ret = ScoreType.INVALID;
+            } else {
+                ret = ScoreType.WIN;
+                if (strs[0].trim().compareTo(strs[1].trim()) == 0) {
+                    ret = ScoreType.DRAW;
+                } else if (strs[0].trim().compareTo(strs[1].trim()) < 0) {
+                    ret = ScoreType.LOSE;
+                }
+            }
+        }
+        return ret;
+    }
+
+    public static String getRankPKString(int hostRank, int guestRank) {
+        String ret = String.format(" %02d - %02d", hostRank, guestRank);
+        return ret;
     }
 
     // invalid chars in domain names

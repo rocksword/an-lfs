@@ -20,29 +20,6 @@ public class TeamMgr {
     }
 
     static {
-        // for (String country : LfsUtil.COUNTRIES) {
-        // ctyTeamMap.put(country, new HashMap<String, String>());
-        // Map<String, String> teamMap = ctyTeamMap.get(country);
-        // String filepath = LfsUtil.getConfFilePath(String.format("team_%s.txt", country));
-        // try (FileLineIterator iter = new FileLineIterator(filepath);) {
-        // String line = null;
-        // while ((line = iter.nextLine()) != null) {
-        // if (line.trim().isEmpty()) {
-        // continue;
-        // }
-        //
-        // String[] strs = line.trim().split(",");
-        // if (strs.length != 2) {
-        // logger.info("Invalid line: " + line);
-        // continue;
-        // }
-        // teamMap.put(strs[0].trim(), strs[1].trim());
-        // }
-        // } catch (Exception e) {
-        // logger.error("Error :" + e);
-        // }
-        // }
-
         String filepath = LfsUtil.getConfFilePath(String.format("team.txt"));
 
         String line = null;
@@ -81,7 +58,7 @@ public class TeamMgr {
     public static String getName(Country country, String team) {
         Map<String, String> teamMap = ctyTeamMap.get(country);
         if (!teamMap.containsKey(team)) {
-            logger.warn("Not found team: " + team);
+            logger.warn(String.format("Not found team %s, country %s", team, country.getVal()));
             return null;
         }
         return teamMap.get(team);

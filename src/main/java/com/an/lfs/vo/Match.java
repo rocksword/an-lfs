@@ -51,22 +51,7 @@ public class Match {
     }
 
     public void addScore(String score) {
-        if (score == null || score.trim().isEmpty()) {
-            scoreType = ScoreType.INVALID;
-        } else {
-            String[] strs = score.trim().split("-");
-            if (strs.length != 2) {
-                logger.error("Invalid score: " + score);
-                scoreType = ScoreType.INVALID;
-            } else {
-                scoreType = ScoreType.WIN;
-                if (strs[0].trim().compareTo(strs[1].trim()) == 0) {
-                    scoreType = ScoreType.DRAW;
-                } else if (strs[0].trim().compareTo(strs[1].trim()) < 0) {
-                    scoreType = ScoreType.LOSE;
-                }
-            }
-        }
+        scoreType = LfsUtil.getScoreType(score);
 
         this.score = " " + score;
     }
