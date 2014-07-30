@@ -116,6 +116,8 @@ public class LfsUtil {
     public static final String KOR = "kor";
     public static final String SWE = "swe";
     public static final String USA = "usa";
+    public static final String CL = "cl";
+    public static final String EL = "el";
 
     public static String getBetRetStr(BetRet betRet) {
         if (betRet.isPass()) {

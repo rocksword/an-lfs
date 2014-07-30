@@ -1,13 +1,9 @@
 package com.an.lfs.vo;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.an.lfs.LfsUtil;
 import com.an.lfs.enu.ScoreType;
 
 public class Match {
-    private static final Log logger = LogFactory.getLog(Match.class);
     private String score;
     protected ScoreType scoreType;
     // Common

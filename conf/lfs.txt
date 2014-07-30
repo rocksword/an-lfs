@@ -7,10 +7,13 @@
         "ger",
         "ita",
         "jpn",
+        "jpn_b",
         "nor",
         "kor",
         "swe",
-        "usa"
+        "usa",
+        "cl",
+        "el"
     ],
     "companys": 
     [
@@ -21,8 +24,11 @@
         ["Oddset", "William"],
         ["SNAI", "William"],
         ["AoMen", "William"],
+        ["AoMen", "William"],
         ["William"],
         ["AoMen", "William"],
+        ["William"],
+        ["William"],
         ["William"],
         ["William"]
     ]

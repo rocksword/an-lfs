@@ -59,7 +59,7 @@ public class TeamMgr {
         Map<String, String> teamMap = ctyTeamMap.get(country);
         if (!teamMap.containsKey(team)) {
             logger.warn(String.format("Not found team %s, country %s", team, country.getVal()));
-            return null;
+            return team;
         }
         return teamMap.get(team);
     }

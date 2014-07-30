@@ -766,3 +766,59 @@ Sheng   ,聖荷西地震
 Meng    ,蒙特利尔冲击
 Meng    ,蒙特利爾衝擊
 end:usa
+
+country:cl
+FC圣科洛马      ,FCSheng
+巴南茨          ,BaNan
+拉费奥里        ,La
+塔林利瓦迪亚    ,Ta
+FC林肯          ,FCLin
+托尔斯港        ,Tuo
+瓦莱塔          ,Wa
+卡拉巴赫        ,Ka
+布拉迪斯拉发    ,Bu
+新圣徒          ,Xin
+巴特            ,BaTe
+科尔察          ,KeEr
+谢里夫          ,Xie
+尼卡斯克        ,Ni
+兹林尼斯基      ,Zi
+马里博尔        ,MaLi
+列伯尼基        ,Lie
+赫尔辛基        ,He
+特拉维夫马卡比  ,Te
+布拉格斯巴达    ,BuLa
+贝尔格莱德游击  ,Bei
+克利夫顿维尔    ,Keli
+德布勒森尼      ,De
+萨格勒布迪纳摩  ,SaGe
+萨尔基利斯      ,SaEr
+KR雷克雅未克    ,KRLei
+凯尔特人        ,Kai
+第比利斯迪纳摩  ,DiBi
+阿克托比        ,AKe
+马尔默          ,MaEr
+文茨皮尔斯      ,Wen
+卢多戈雷茨      ,Lu
+迪德朗日        ,DiDe
+斯特罗姆加斯特  ,Si
+布加勒斯特星    ,BuJia
+华沙军团        ,Hua
+圣帕特里克      ,ShengPa
+萨尔茨堡        ,Sa
+希腊人竞技      ,Xi
+第聂伯罗        ,DiNie
+哥本哈根        ,Ge
+AEL利马索尔     ,AELLi
+圣彼得堡泽尼特  ,ShengBi
+草蜢            ,Cao
+里尔            ,Li
+标准列日        ,Biao
+帕纳辛纳科斯    ,Pa
+费耶诺德        ,Fei
+贝西克塔斯      ,BeiXi
+end
+
+country:el
+
+end
