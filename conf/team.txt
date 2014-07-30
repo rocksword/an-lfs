@@ -561,13 +561,15 @@ end:kor
 
 country:nor
 莫尔德         ,Mo
-斯特罗姆加斯   ,SiTe
+斯托姆加斯特   ,SiTuo
+斯特罗姆加斯特 ,SiTuo
 罗森博格       ,Luo
 奥德           ,AoDe
 瓦勒伦加       ,Wa
 利勒斯特罗姆   ,LiLe
 维京           ,Wei
 斯达           ,SiDa
+萨普斯堡       ,Sa
 萨尔普斯堡     ,Sa
 松达尔         ,Song
 斯塔贝克       ,SiTa
@@ -575,27 +577,34 @@ country:nor
 奥勒松         ,AoLe
 海于格松       ,Hai
 布兰           ,BuLan
-桑内斯         ,Sang
+桑内斯         ,SangNei
+桑德尼斯       ,SangNei
 特罗姆瑟       ,Te
 赫纳福斯       ,He
+侯尼霍斯       ,He
 广士云格       ,Guang
-桑德菲奥德     ,Sang
+桑德菲奥德     ,SangDe
 博多格林特     ,BoDuo
+博德闪耀       ,BoDuo
 利恩           ,LiEn
 咸卡姆         ,Xian
 布莱尼         ,BuLai
 莫斯           ,MoSi
-斯托姆加斯特   ,SiTuo
 豪桑           ,Hao
+奥德格伦兰     ,Ao
+奥德格陵兰     ,Ao
+奥德           ,Ao
+费德列斯达     ,Fei
+腓特烈斯塔     ,Fei
 Mo      ,莫尔德
-SiTe    ,斯特罗姆加斯
+SiTuo   ,斯托姆加斯特
 Luo     ,罗森博格
 AoDe    ,奥德
 Wa      ,瓦勒伦加
 LiLe    ,利勒斯特罗姆
 Wei     ,维京
 SiDa    ,斯达
-Sa      ,萨尔普斯堡
+Sa      ,萨普斯堡
 Song    ,松达尔
 SiTa    ,斯塔贝克
 BoDe    ,博德闪耀
@@ -612,63 +621,67 @@ LiEn    ,利恩
 Xian    ,咸卡姆
 BuLai   ,布莱尼
 MoSi    ,莫斯
-SiTuo   ,斯托姆加斯特
 Hao     ,豪桑
+Ao      ,奥德格伦兰
+Fei     ,费德列斯达
 end:nor
 
 country:swe
 马尔默         ,Ma
-AIK索尔纳      ,Aik
 赫根           ,He
 卡尔马         ,Ka
-IFK哥德堡      ,Ifk
+哥德堡         ,Ge
+IFK哥德堡      ,Ge
 埃尔夫斯堡     ,Ai
 佐加顿斯       ,Zuo
-北雪平         ,Bei
-奥特维达堡     ,Ao
 法尔肯堡       ,Fa
 耶夫勒         ,Ye
-厄勒布鲁       ,ELei
 赫尔辛堡       ,HeEr
-哈尔姆斯塔德   ,HaTa
+哈尔姆斯达斯   ,HaEr
+哈尔姆斯塔德   ,HaEr
 米亚尔比       ,Mi
-布鲁马波卡纳   ,BuLu
 厄斯特什       ,ESi
 叙利亚人       ,Xu
-哥德堡盖斯     ,Ge
+哥德堡盖斯     ,GeGai
 特雷勒堡       ,Te
-哈尔姆斯达斯   ,HaDa
 阿特维达堡     ,ATe
+奥特维达堡     ,ATe
 布洛马波卡纳   ,BuLuo
+布鲁马波卡纳   ,BuLuo
 桑斯瓦尔       ,Sang
 奥斯特         ,AoSi
 奥尔格里特     ,AoEr
 阿西里斯卡     ,AXi
 索尔纳         ,Suo
+AIK索尔纳      ,Suo
 恩科平         ,EnKe
-加尔斯         ,Jia
+加尔斯         ,JiaEr
 V.弗罗伦达     ,VFu
+松兹瓦尔       ,Song
+加费莱         ,JiaFu
+奥雷布洛       ,AoLei
+厄勒布鲁       ,AoLei
+哈马比         ,Ha
+永斯基         ,Yong
+兰斯科罗纳     ,Lan
+诺科平         ,Nuo
+北雪平         ,Nuo
+西里安斯卡FC   ,Xi
 Ma       ,马尔默
-Aik      ,AIK索尔纳
 He       ,赫根
 Ka       ,卡尔马
-Ifk      ,IFK哥德堡
+Ge       ,哥德堡
 Ai       ,埃尔夫斯堡
 Zuo      ,佐加顿斯
-Bei      ,北雪平
-Ao       ,奥特维达堡
 Fa       ,法尔肯堡
 Ye       ,耶夫勒
-ELei     ,厄勒布鲁
 HeEr     ,赫尔辛堡
-HaTa     ,哈尔姆斯塔德
+HaEr     ,哈尔姆斯达斯
 Mi       ,米亚尔比
-BuLu     ,布鲁马波卡纳
 ESi      ,厄斯特什
 Xu       ,叙利亚人
-Ge       ,哥德堡盖斯
+GeGai    ,哥德堡盖斯
 Te       ,特雷勒堡
-HaDa     ,哈尔姆斯达斯
 ATe      ,阿特维达堡
 BuLuo    ,布洛马波卡纳
 Sang     ,桑斯瓦尔
@@ -677,8 +690,16 @@ AoEr     ,奥尔格里特
 AXi      ,阿西里斯卡
 Suo      ,索尔纳
 EnKe     ,恩科平
-Jia      ,加尔斯
+JiaEr    ,加尔斯
 VFu      ,V.弗罗伦达
+Song     ,松兹瓦尔
+JiaFu    ,加费莱
+AoLei    ,奥雷布洛
+Ha       ,哈马比
+Yong     ,永斯基
+Lan      ,兰斯科罗纳
+Nuo      ,诺科平
+Xi       ,西里安斯卡FC
 end:swe
 
 country:usa
@@ -817,8 +838,8 @@ AEL利马索尔     ,AELLi
 帕纳辛纳科斯    ,Pa
 费耶诺德        ,Fei
 贝西克塔斯      ,BeiXi
-end
+end:cl
 
 country:el
-
-end
+贝西克塔斯      ,BeiXi
+end:el

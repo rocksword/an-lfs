@@ -50,6 +50,8 @@ public class ReportMaker {
             }
 
             int year = years.get(totalYear - 1 - i);
+            logger.info("country: " + cty.getVal() + ", year: " + year);
+
             Set<String> top3 = board.getTop3Team(year);
             Set<String> last3 = board.getLast3Team(year);
             Map<String, Integer> teamRank = board.getTeamRank(year);

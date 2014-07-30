@@ -14,13 +14,13 @@ import com.an.lfs.vo.MatchInfo;
 
 public class LfsMain {
     private static int BEGIN_YEAR = 2014;
-    private static int TYPE = 1;
+    private static int TYPE = 0;
 
     public static void main(String[] args) throws Exception {
         init();
         if (TYPE == 0) {
             for (Country cty : Country.allCountries) {
-                if (!cty.getVal().equals("jpn_b")) {
+                if (!cty.getVal().equals("swe")) {
                     continue;
                 }
                 // Generate board report
