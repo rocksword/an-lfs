@@ -41,7 +41,14 @@ public class TeamMgr {
                             logger.info("Invalid line: " + line);
                             continue;
                         }
-                        teamMap.put(strs[0].trim(), strs[1].trim());
+                        String key = strs[0].trim();
+                        String val = strs[1].trim();
+                        if (teamMap.containsKey(key)) {
+                            logger.warn(String.format("%s, found existing %s -> %s, %s", val, key, teamMap.get(key),
+                                    country));
+                        } else {
+                            teamMap.put(key, val);
+                        }
                     }
                 }
             }
@@ -57,10 +64,10 @@ public class TeamMgr {
      * @param team
      * @return
      */
-    public static String getName(Country country, String team) {
+    public static String getName(Country country, String team, int year) {
         Map<String, String> teamMap = ctyTeamMap.get(country);
         if (!teamMap.containsKey(team)) {
-            logger.warn(String.format("Not found team %s, country %s", team, country.getVal()));
+            logger.warn(String.format("Not found team %s,\t\t", team));
             return team;
         }
         return teamMap.get(team);

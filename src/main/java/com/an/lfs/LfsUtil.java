@@ -121,16 +121,6 @@ public class LfsUtil {
     public static final String CL = "cl";
     public static final String EL = "el";
 
-    public static String getBetRetStr(BetRet betRet) {
-        if (betRet.isPass()) {
-            return PASS;
-        } else if (betRet.isFail()) {
-            return FAIL;
-        } else {
-            return NULL;
-        }
-    }
-
     public static Comparator<String> floatCompare = new Comparator<String>() {
         @Override
         public int compare(String o1, String o2) {
@@ -187,7 +177,7 @@ public class LfsUtil {
      * @param lose
      * @return
      */
-    public static ForecastRet getRateForecast(float win, float draw, float lose) {
+    public static ForecastRet getForecastRet(float win, float draw, float lose) {
         if ((win == 0.0f) || (draw == 0.0f) || (lose == 0.0f)) {
             return ForecastRet.NULL;
         }
@@ -205,6 +195,24 @@ public class LfsUtil {
             result = ForecastRet.LOSE;
         }
         return result;
+    }
+
+    public static BetRet getBetRet(ForecastRet fcRet, ScoreType scoreType) {
+        if (fcRet == null || scoreType == null) {
+            return BetRet.INVALID;
+        }
+        if (fcRet.isInvalid() || scoreType.isInvalid()) {
+            return BetRet.INVALID;
+        }
+
+        if (fcRet.isWin() && scoreType.isWin()) {
+            return BetRet.PASS;
+        } else if (fcRet.isDraw() && scoreType.isDraw()) {
+            return BetRet.PASS;
+        } else if (fcRet.isLose() && scoreType.isLose()) {
+            return BetRet.PASS;
+        }
+        return BetRet.FAIL;
     }
 
     /**
@@ -354,8 +362,13 @@ public class LfsUtil {
 
     public static ScoreType getScoreType(String score) {
         ScoreType ret = ScoreType.INVALID;
-        if (score != null && !score.trim().isEmpty()) {
-            String[] strs = score.trim().split("-");
+        if (score != null && !score.trim().isEmpty() && !score.trim().equals("-")) {
+            String[] strs = null;
+            if (score.indexOf("-") != -1) {
+                strs = score.trim().split("-");
+            } else if (score.indexOf(":") != -1) {
+                strs = score.trim().split(":");
+            }
             if (strs.length != 2) {
                 logger.error("Invalid score: " + score);
                 ret = ScoreType.INVALID;
@@ -369,6 +382,28 @@ public class LfsUtil {
             }
         }
         return ret;
+    }
+
+    public static String getScoreTypeStr(ScoreType scoreType) {
+        if (scoreType.isWin()) {
+            return WIN;
+        } else if (scoreType.isDraw()) {
+            return DRAW;
+        } else if (scoreType.isLose()) {
+            return LOSE;
+        } else {
+            return NULL;
+        }
+    }
+
+    public static String getBetRetStr(BetRet betRet) {
+        if (betRet.isPass()) {
+            return PASS;
+        } else if (betRet.isFail()) {
+            return FAIL;
+        } else {
+            return NULL;
+        }
     }
 
     public static String getRankPKString(int hostRank, int guestRank) {

@@ -57,12 +57,12 @@ public abstract class MatchAnalyzer implements Analyze {
                 Match mat = new Match();
                 int index = Integer.parseInt(splits[0].trim());
                 String time = splits[1].trim();
-                String host = TeamMgr.getName(country, splits[2].trim());
+                String host = TeamMgr.getName(country, splits[2].trim(), year);
 
                 String score = splits[3].trim();
                 mat.addScore(score);
 
-                String guest = TeamMgr.getName(country, splits[4].trim());
+                String guest = TeamMgr.getName(country, splits[4].trim(), year);
                 mat.setIndex(index);
                 mat.setYear(year);
                 mat.setTime(time);

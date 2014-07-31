@@ -63,7 +63,7 @@ public class BoardLoader {
                         int score = Integer.parseInt(strs[14].trim());
                         BoardTeam bt = new BoardTeam();
                         bt.setRank(rank);
-                        bt.setTeam(TeamMgr.getName(country, team));
+                        bt.setTeam(TeamMgr.getName(country, team, year));
                         bt.setTotal(total);
                         bt.setWin(win);
                         bt.setDraw(draw);

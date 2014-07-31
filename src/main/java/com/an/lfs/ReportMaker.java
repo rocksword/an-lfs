@@ -1,7 +1,6 @@
 package com.an.lfs;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,9 +27,10 @@ import com.an.lfs.vo.TeamMgr;
 
 public class ReportMaker {
     private static final Log logger = LogFactory.getLog(ReportMaker.class);
+    private static String[] matchReportHeadNames = new String[] { "Year", "T", "Date", "Host", "R", "Score", "PK",
+            "Bet", "Guest", "R", "W", "D", "L", "T3-L3" };
 
-    public static void makeMatchReport(Country cty, Map<Integer, List<MatchInfo>> yearMatchMap) throws IOException,
-            WriteException, RowsExceededException {
+    public static void makeMatchReport(Country country, Map<Integer, List<MatchInfo>> yearMatchMap) throws Exception {
         if (yearMatchMap.isEmpty()) {
             return;
         }
@@ -38,7 +38,7 @@ public class ReportMaker {
         years.addAll(yearMatchMap.keySet());
         Collections.sort(years);
 
-        BoardLoader board = new BoardLoader(cty);
+        BoardLoader board = new BoardLoader(country);
 
         List<List<Cell>> rows = new ArrayList<>();
         rows.add(getMatchReportHead());
@@ -50,7 +50,7 @@ public class ReportMaker {
             }
 
             int year = years.get(totalYear - 1 - i);
-            logger.info("country: " + cty.getVal() + ", year: " + year);
+            logger.info("country: " + country.getVal() + ", year: " + year);
 
             Set<String> topN = board.getTopNTeam(year);
             Set<String> lastN = board.getLastNTeam(year);
@@ -64,8 +64,8 @@ public class ReportMaker {
 
                 String host = mi.getHost();
                 String guest = mi.getGuest();
-                String hostName = TeamMgr.getName(cty, host);
-                String guestName = TeamMgr.getName(cty, guest);
+                String hostName = TeamMgr.getName(country, host, year);
+                String guestName = TeamMgr.getName(country, guest, year);
 
                 List<Cell> row = new ArrayList<>();
                 row.add(new Cell(year));
@@ -108,10 +108,10 @@ public class ReportMaker {
             }
         }
 
-        String filepath = LfsUtil.getOutputFilePath(LfsUtil.getMatchExcelFile(cty));
+        String filepath = LfsUtil.getOutputFilePath(LfsUtil.getMatchExcelFile(country));
         logger.info("Generate file " + filepath);
         WritableWorkbook wb = Workbook.createWorkbook(new File(filepath));
-        WritableSheet sheet = wb.createSheet(cty.getVal(), 0);
+        WritableSheet sheet = wb.createSheet(country.getVal(), 0);
         addRows(sheet, rows);
         wb.write();
         wb.close();
@@ -157,9 +157,6 @@ public class ReportMaker {
         return teamRank.get(team);
     }
 
-    private static String[] matchReportHeadNames = new String[] { "Year", "Turn", "Date", "Host", "Rank", "Score",
-            "PK", "Bet", "Guest", "Rank", "W", "D", "L", "T3-L3" };
-
     private static List<Cell> getMatchReportHead() {
         List<Cell> head = new ArrayList<>();
         for (String name : matchReportHeadNames) {
@@ -168,8 +165,10 @@ public class ReportMaker {
         return head;
     }
 
-    public static void makeBoardReport(Country cty, Map<Integer, List<BoardTeam>> teamMap) throws IOException,
-            WriteException, RowsExceededException {
+    private static String[] boardReportHeadNames = new String[] { "Year", "R", "Team", "T", "W", "D", "L", "For",
+            "Against", "Net", "For", "Against", "W%", "D%", "L%", "Score" };
+
+    public static void makeBoardReport(Country cty, Map<Integer, List<BoardTeam>> teamMap) throws Exception {
         if (teamMap.isEmpty()) {
             logger.warn("Empty team map, country " + cty.getVal());
             return;
@@ -201,6 +200,65 @@ public class ReportMaker {
         wb.close();
     }
 
+    private static String[] leagueMatchReportHeadNames = new String[] { "Date", "Host", "Score", "SR", "Bet", "Guest",
+            "W", "D", "L" };
+
+    public static void makeLeagueMatchReport(Country country, Map<Integer, List<MatchInfo>> yearMatchMap)
+            throws Exception {
+        if (yearMatchMap.isEmpty()) {
+            return;
+        }
+        List<Integer> years = new ArrayList<>();
+        years.addAll(yearMatchMap.keySet());
+        Collections.sort(years);
+
+        List<List<Cell>> rows = new ArrayList<>();
+        rows.add(getLeagueMatchReportHead());
+
+        int totalYear = years.size();
+        for (int i = 0; i < totalYear; i++) {
+            int year = years.get(totalYear - 1 - i);
+            logger.info("country: " + country.getVal() + ", year: " + year);
+
+            List<MatchInfo> matchList = yearMatchMap.get(year);
+            for (MatchInfo mi : matchList) {
+
+                String host = mi.getHost();
+                String guest = mi.getGuest();
+                String hostName = TeamMgr.getName(country, host, year);
+                String guestName = TeamMgr.getName(country, guest, year);
+
+                List<Cell> row = new ArrayList<>();
+                row.add(new Cell(mi.getDate()));
+                row.add(new Cell(hostName));
+                row.add(new Cell(mi.getScore()));
+                row.add(new Cell(LfsUtil.getScoreTypeStr(mi.getScoreType())));
+                row.add(new Cell(LfsUtil.getBetRetStr(mi.getBetRet())));
+                row.add(new Cell(guestName));
+                row.add(new Cell(mi.getWin()));
+                row.add(new Cell(mi.getDraw()));
+                row.add(new Cell(mi.getLose()));
+                rows.add(row);
+            }
+        }
+
+        String filepath = LfsUtil.getOutputFilePath(LfsUtil.getMatchExcelFile(country));
+        logger.info("Generate file " + filepath);
+        WritableWorkbook wb = Workbook.createWorkbook(new File(filepath));
+        WritableSheet sheet = wb.createSheet(country.getVal(), 0);
+        addRows(sheet, rows);
+        wb.write();
+        wb.close();
+    }
+
+    private static List<Cell> getLeagueMatchReportHead() {
+        List<Cell> head = new ArrayList<>();
+        for (String name : leagueMatchReportHeadNames) {
+            head.add(new Cell(name));
+        }
+        return head;
+    }
+
     private static void addRows(WritableSheet sheet, List<List<Cell>> rows) throws WriteException,
             RowsExceededException {
         for (int row = 0; row < rows.size(); row++) {
@@ -215,9 +273,6 @@ public class ReportMaker {
             }
         }
     }
-
-    private static String[] boardReportHeadNames = new String[] { "Year", "R", "Team", "T", "W", "D", "L", "For",
-            "Against", "Net", "For", "Against", "W%", "D%", "L%", "Score" };
 
     private static List<Cell> getBoardReportHead() {
         List<Cell> head = new ArrayList<>();

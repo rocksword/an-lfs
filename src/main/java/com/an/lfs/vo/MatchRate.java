@@ -53,12 +53,7 @@ public class MatchRate {
 
     // Average rate bet result
     public BetRet getBetRet() {
-        return getBetRet(fcRet, scoreType);
-    }
-
-    public String getBetRetStr() {
-        BetRet betRet = getBetRet(fcRet, scoreType);
-        return LfsUtil.getBetRetStr(betRet);
+        return LfsUtil.getBetRet(fcRet, scoreType);
     }
 
     // Company rate bet result
@@ -74,25 +69,7 @@ public class MatchRate {
             return BetRet.INVALID;
         }
         ForecastRet fr = rate.getRateResult();
-        return getBetRet(fr, scoreType);
-    }
-
-    private BetRet getBetRet(ForecastRet fr, ScoreType st) {
-        if (fr == null || st == null) {
-            return BetRet.INVALID;
-        }
-        if (fr.isInvalid() || st.isInvalid()) {
-            return BetRet.INVALID;
-        }
-
-        if (fr.isWin() && st.isWin()) {
-            return BetRet.PASS;
-        } else if (fr.isDraw() && st.isDraw()) {
-            return BetRet.PASS;
-        } else if (fr.isLose() && st.isLose()) {
-            return BetRet.PASS;
-        }
-        return BetRet.FAIL;
+        return LfsUtil.getBetRet(fr, scoreType);
     }
 
     public String getWin() {
@@ -127,7 +104,7 @@ public class MatchRate {
         this.win = win;
         this.draw = draw;
         this.lose = lose;
-        this.fcRet = LfsUtil.getRateForecast(win, draw, lose);
+        this.fcRet = LfsUtil.getForecastRet(win, draw, lose);
     }
 
     public RateType getRateType(TeamType teamType) {

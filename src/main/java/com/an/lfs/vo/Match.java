@@ -30,18 +30,6 @@ public class Match {
         return result;
     }
 
-    public String getScoreTypeStr() {
-        if (scoreType.isWin()) {
-            return LfsUtil.WIN;
-        } else if (scoreType.isDraw()) {
-            return LfsUtil.DRAW;
-        } else if (scoreType.isLose()) {
-            return LfsUtil.LOSE;
-        } else {
-            return LfsUtil.NULL;
-        }
-    }
-
     public ScoreType getScoreType() {
         return scoreType;
     }

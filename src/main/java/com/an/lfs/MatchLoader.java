@@ -63,12 +63,10 @@ public class MatchLoader {
                             MatchInfo mi = new MatchInfo();
                             mi.setTurn(turn);
                             mi.setDate(date);
-                            mi.setHost(TeamMgr.getName(country, host));
+                            mi.setHost(TeamMgr.getName(country, host, year));
                             mi.setScore(score);
-                            mi.setGuest(TeamMgr.getName(country, guest));
-                            mi.setWin(win);
-                            mi.setDraw(draw);
-                            mi.setLose(lose);
+                            mi.setGuest(TeamMgr.getName(country, guest, year));
+                            mi.setValues(win, draw, lose);
                             matchList.add(mi);
                             logger.debug(mi);
                         } else {

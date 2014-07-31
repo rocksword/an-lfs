@@ -26,10 +26,9 @@ public class BoardTeam {
     private float losePer;
     private int score;
 
-    public List<Cell> getRow(Country cty, int year, int teamCnt) throws WriteException {
+    public List<Cell> getRow(Country country, int year, int teamCnt) throws WriteException {
         List<Cell> row = new ArrayList<>();
-
-        String teamName = TeamMgr.getName(cty, team);
+        String teamName = TeamMgr.getName(country, team, year);
 
         row.add(new Cell(year));
         row.add(new Cell(rank));

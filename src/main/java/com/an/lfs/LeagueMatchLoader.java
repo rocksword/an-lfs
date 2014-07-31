@@ -47,11 +47,11 @@ public class LeagueMatchLoader {
                         }
                         String[] strs = line.split("\t");
                         if (strs.length == 11) {
-                            logger.info(String.format("0 %s,1 %s,2 %s,3 %s,4 %s,5 %s,6 %s", strs[0], strs[1], strs[2],
+                            logger.debug(String.format("0 %s,1 %s,2 %s,3 %s,4 %s,5 %s,6 %s", strs[0], strs[1], strs[2],
                                     strs[3], strs[4], strs[5], strs[6]));
                             String host = strs[1].trim();
                             String score = strs[2].trim();
-                            if (!score.isEmpty()) {
+                            if (!score.isEmpty() && !score.equals("-")) {
                                 score = score.substring(0, score.indexOf("("));
                             }
                             String guest = strs[3].trim();
@@ -70,14 +70,12 @@ public class LeagueMatchLoader {
                             }
                             MatchInfo mi = new MatchInfo();
                             mi.setDate(date);
-                            mi.setHost(TeamMgr.getName(country, host));
+                            mi.setHost(TeamMgr.getName(country, host, year));
                             mi.setScore(score);
-                            mi.setGuest(TeamMgr.getName(country, guest));
-                            mi.setWin(win);
-                            mi.setDraw(draw);
-                            mi.setLose(lose);
+                            mi.setGuest(TeamMgr.getName(country, guest, year));
+                            mi.setValues(win, draw, lose);
                             matchList.add(mi);
-                            logger.info(mi);
+                            logger.debug(mi);
                         } else if (strs.length == 1) {
                             continue;
                         } else {

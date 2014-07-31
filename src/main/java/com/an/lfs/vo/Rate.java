@@ -39,14 +39,14 @@ public class Rate {
         this.win = win;
         this.draw = draw;
         this.lose = lose;
-        this.rateResult = LfsUtil.getRateForecast(win, draw, lose);
+        this.rateResult = LfsUtil.getForecastRet(win, draw, lose);
     }
 
     public void addEndRate(float winEnd, float drawEnd, float loseEnd) {
         this.winEnd = winEnd;
         this.drawEnd = drawEnd;
         this.loseEnd = loseEnd;
-        this.endRateResult = LfsUtil.getRateForecast(winEnd, drawEnd, loseEnd);
+        this.endRateResult = LfsUtil.getForecastRet(winEnd, drawEnd, loseEnd);
     }
 
     public int getId() {

@@ -1,6 +1,8 @@
 package com.an.lfs.vo;
 
 import com.an.lfs.LfsUtil;
+import com.an.lfs.enu.BetRet;
+import com.an.lfs.enu.ForecastRet;
 import com.an.lfs.enu.ScoreType;
 
 public class MatchInfo {
@@ -13,12 +15,34 @@ public class MatchInfo {
     private float draw;
     private float lose;
 
+    private ScoreType scoreType;
+    private ForecastRet fcRet;
+
     public MatchInfo() {
     }
 
+    public void setScore(String score) {
+        this.scoreType = LfsUtil.getScoreType(score);
+        this.score = score;
+    }
+
+    public void setValues(float win, float draw, float lose) {
+        this.win = win;
+        this.draw = draw;
+        this.lose = lose;
+        this.fcRet = LfsUtil.getForecastRet(win, draw, lose);
+    }
+
     public ScoreType getScoreType() {
-        ScoreType ret = LfsUtil.getScoreType(score);
-        return ret;
+        return scoreType;
+    }
+
+    public ForecastRet getForecastRet() {
+        return fcRet;
+    }
+
+    public BetRet getBetRet() {
+        return LfsUtil.getBetRet(fcRet, scoreType);
     }
 
     @Override
@@ -57,10 +81,6 @@ public class MatchInfo {
         return score;
     }
 
-    public void setScore(String score) {
-        this.score = score;
-    }
-
     public String getGuest() {
         return guest;
     }
@@ -73,23 +93,11 @@ public class MatchInfo {
         return win;
     }
 
-    public void setWin(float win) {
-        this.win = win;
-    }
-
     public float getDraw() {
         return draw;
     }
 
-    public void setDraw(float draw) {
-        this.draw = draw;
-    }
-
     public float getLose() {
         return lose;
-    }
-
-    public void setLose(float lose) {
-        this.lose = lose;
     }
 }

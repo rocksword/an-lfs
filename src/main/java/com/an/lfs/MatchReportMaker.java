@@ -109,8 +109,8 @@ public class MatchReportMaker extends RateAnalyzer {
             ScoreType scoreType = matRate.getScoreType();
             List<Cell> row = new ArrayList<>();
             row.add(new Cell(mat.getSimpleKey()));// key
-            row.add(new Cell(TeamMgr.getName(country, mat.getHost())));
-            row.add(new Cell(TeamMgr.getName(country, mat.getGuest())));
+            row.add(new Cell(TeamMgr.getName(country, mat.getHost(), year)));
+            row.add(new Cell(TeamMgr.getName(country, mat.getGuest(), year)));
             row.add(new Cell(mat.getScore()));
             row.add(new Cell(matRate.getRateType(TeamType.HOST).getVal()));
             row.add(new Cell(matRate.getRateType(TeamType.MID).getVal()));
@@ -131,8 +131,8 @@ public class MatchReportMaker extends RateAnalyzer {
                 row.add(new Cell(matRate.getLose()));
             }
             row.add(new Cell(matRate.getFcStr()));
-            row.add(new Cell(mat.getScoreTypeStr()));
-            row.add(new Cell(matRate.getBetRetStr()));
+            row.add(new Cell(LfsUtil.getScoreTypeStr(matRate.getScoreType())));
+            row.add(new Cell(LfsUtil.getBetRetStr(matRate.getBetRet())));
 
             int i = 0;
             for (String com : LfsConfMgr.getCompany(country)) {
