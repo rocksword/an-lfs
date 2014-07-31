@@ -45,6 +45,8 @@ public class TeamMgr {
                     }
                 }
             }
+
+            ctyTeamMap.put(Country.JPN_B, ctyTeamMap.get(Country.JPN));
         } catch (Exception e) {
             logger.error("Error :" + e);
         }

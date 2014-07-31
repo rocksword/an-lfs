@@ -52,28 +52,15 @@ public class ReportMaker {
             int year = years.get(totalYear - 1 - i);
             logger.info("country: " + cty.getVal() + ", year: " + year);
 
-            Set<String> top3 = board.getTop3Team(year);
-            Set<String> last3 = board.getLast3Team(year);
+            Set<String> topN = board.getTopNTeam(year);
+            Set<String> lastN = board.getLastNTeam(year);
             Map<String, Integer> teamRank = board.getTeamRank(year);
             List<MatchInfo> matchList = yearMatchMap.get(year);
             for (MatchInfo mi : matchList) {
-                WritableCellFormat hostFmt = null;
-                WritableCellFormat guestFmt = null;
-                boolean isHostTop3 = top3.contains(mi.getHost());
-                boolean isHostLast3 = last3.contains(mi.getHost());
-                if (isHostTop3) {
-                    hostFmt = LfsUtil.getRoseFmt();
-                } else if (isHostLast3) {
-                    hostFmt = LfsUtil.getYellowFmt();
-                }
-
-                boolean isGuestTop3 = top3.contains(mi.getGuest());
-                boolean isGuestLast3 = last3.contains(mi.getGuest());
-                if (isGuestTop3) {
-                    guestFmt = LfsUtil.getRoseFmt();
-                } else if (isGuestLast3) {
-                    guestFmt = LfsUtil.getYellowFmt();
-                }
+                boolean isHostTopN = topN.contains(mi.getHost());
+                boolean isHostLastN = lastN.contains(mi.getHost());
+                boolean isGuestTopN = topN.contains(mi.getGuest());
+                boolean isGuestLastN = lastN.contains(mi.getGuest());
 
                 String host = mi.getHost();
                 String guest = mi.getGuest();
@@ -83,12 +70,15 @@ public class ReportMaker {
                 List<Cell> row = new ArrayList<>();
                 row.add(new Cell(year));
                 row.add(new Cell(mi.getTurn()));
-                row.add(new Cell(mi.getDate()));
-                if (hostFmt != null) {
-                    row.add(new Cell(hostName, hostFmt));
-                } else {
-                    row.add(new Cell(hostName));
+                row.add(new Cell(mi.getDate().substring(0, 5)));
+
+                WritableCellFormat hostFmt = null;
+                if (isHostTopN) {
+                    hostFmt = LfsUtil.getRoseFmt();
+                } else if (isHostLastN) {
+                    hostFmt = LfsUtil.getYellowFmt();
                 }
+                row.add(new Cell(hostName, hostFmt));
 
                 Integer hostRank = getTeamRank(teamRank, host);
                 Integer guestRank = getTeamRank(teamRank, guest);
@@ -97,41 +87,23 @@ public class ReportMaker {
                 row.add(new Cell(mi.getScore()));
 
                 row.add(new Cell(LfsUtil.getRankPKString(hostRank, guestRank)));
+                row.add(getRankBet(hostRank, guestRank, mi.getScoreType()));// Rank bet
 
-                String top3Str = "  ";
-                if (isHostTop3 || isGuestTop3) {
-                    if ((isHostTop3 && teamRank.get(mi.getGuest()) > 10)
-                            || (isGuestTop3 && teamRank.get(mi.getHost()) > 10)) {
-                        top3Str = "T3-TGT";
-                    } else {
-                        top3Str = "T3";
-                    }
+                WritableCellFormat guestFmt = null;
+                if (isGuestTopN) {
+                    guestFmt = LfsUtil.getRoseFmt();
+                } else if (isGuestLastN) {
+                    guestFmt = LfsUtil.getYellowFmt();
                 }
-                String last3Str = "  ";
-                if (isHostLast3 || isGuestLast3) {
-                    if ((isHostLast3 && teamRank.get(mi.getGuest()) > 10)
-                            || (isGuestLast3 && teamRank.get(mi.getHost()) > 10)) {
-                        last3Str = "L3-TGT";
-                    } else {
-                        last3Str = "L3";
-                    }
-                }
+                row.add(new Cell(guestName, guestFmt));
 
-                row.add(new Cell(top3Str));
-                row.add(new Cell(last3Str));
-
-                if (guestFmt != null) {
-                    row.add(new Cell(guestName, guestFmt));
-                } else {
-                    row.add(new Cell(guestName));
-                }
                 row.add(new Cell(guestRank));
                 row.add(new Cell(mi.getWin()));
                 row.add(new Cell(mi.getDraw()));
                 row.add(new Cell(mi.getLose()));
 
-                row.add(getRankBet(hostRank, guestRank, mi.getScoreType()));// Rank bet
-
+                row.add(new Cell(getTopLastStr(isHostTopN, isGuestTopN, isHostLastN, isGuestLastN, host, guest,
+                        teamRank)));
                 rows.add(row);
             }
         }
@@ -143,6 +115,26 @@ public class ReportMaker {
         addRows(sheet, rows);
         wb.write();
         wb.close();
+    }
+
+    private static String getTopLastStr(boolean isHostTopN, boolean isGuestTopN, boolean isHostLastN,
+            boolean isGuestLastN, String host, String guest, Map<String, Integer> teamRank) {
+        String ret = "";
+        if (isHostTopN) {
+            ret = "TN";
+        } else if (isHostLastN) {
+            ret = "LN";
+        } else {
+            ret = "  ";
+        }
+        if (isGuestTopN) {
+            ret = ret + " - " + "TN";
+        } else if (isGuestLastN) {
+            ret = ret + " - " + "LN";
+        } else {
+            ret = ret + " - " + "  ";
+        }
+        return ret;
     }
 
     private static Cell getRankBet(int hostRank, int guestRank, ScoreType scoreType) throws WriteException {
@@ -166,7 +158,7 @@ public class ReportMaker {
     }
 
     private static String[] matchReportHeadNames = new String[] { "Year", "Turn", "Date", "Host", "Rank", "Score",
-            "PK", "T3", "L3", "Guest", "Rank", "W", "D", "L", "RKBet" };
+            "PK", "Bet", "Guest", "Rank", "W", "D", "L", "T3-L3" };
 
     private static List<Cell> getMatchReportHead() {
         List<Cell> head = new ArrayList<>();

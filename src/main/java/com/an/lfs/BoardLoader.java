@@ -105,22 +105,22 @@ public class BoardLoader {
         return ret;
     }
 
-    public Set<String> getTop3Team(int year) {
+    public Set<String> getTopNTeam(int year) {
         Set<String> ret = new HashSet<>();
         List<BoardTeam> list = boardTeamMap.get(year);
-        ret.add(list.get(0).getTeam());
-        ret.add(list.get(1).getTeam());
-        ret.add(list.get(2).getTeam());
+        for (int i = 0; i < LfsUtil.TOP_N; i++) {
+            ret.add(list.get(i).getTeam());
+        }
         return ret;
     }
 
-    public Set<String> getLast3Team(int year) {
+    public Set<String> getLastNTeam(int year) {
         Set<String> ret = new HashSet<>();
         List<BoardTeam> list = boardTeamMap.get(year);
         int cnt = list.size();
-        ret.add(list.get(cnt - 1).getTeam());
-        ret.add(list.get(cnt - 2).getTeam());
-        ret.add(list.get(cnt - 3).getTeam());
+        for (int i = 0; i < LfsUtil.TOP_N; i++) {
+            ret.add(list.get(cnt - 1 - i).getTeam());
+        }
         return ret;
     }
 }

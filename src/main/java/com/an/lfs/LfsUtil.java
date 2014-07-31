@@ -27,6 +27,7 @@ public class LfsUtil {
 
     public static final String LFS_HOME = "LFS_HOME";
     public static int CURRENT_YEAR = 2014;
+    public static int TOP_N = 5;
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String DATE_FORMAT_FULL = "yyyy-MM-dd hh:mm:ss";
     public static final String HADOOP_INSTALL = "HADOOP_INSTALL";
@@ -108,6 +109,7 @@ public class LfsUtil {
     public static final String ENG = "eng";
     public static final String ESP = "esp";
     public static final String FRA = "fra";
+    public static final String FRA_B = "fra_b";
     public static final String GER = "ger";
     public static final String ITA = "ita";
     public static final String JPN = "jpn";

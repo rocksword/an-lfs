@@ -11,6 +11,7 @@ public enum Country {
     ENG(LfsUtil.ENG), //
     ESP(LfsUtil.ESP), //
     FRA(LfsUtil.FRA), //
+    FRA_B(LfsUtil.FRA_B), //
     GER(LfsUtil.GER), //
     ITA(LfsUtil.ITA), //
     JPN(LfsUtil.JPN), //
@@ -22,8 +23,9 @@ public enum Country {
     CL(LfsUtil.CL), //
     EL(LfsUtil.EL);
 
-    public static Country[] allCountries = new Country[] { BRA, ENG, ESP, FRA, GER, ITA, JPN, JPN_B, NOR, KOR, SWE, USA };
-
+    // public static Country[] allCountries = new Country[] { BRA, ENG, ESP, FRA, GER, ITA, JPN, JPN_B, NOR, KOR, SWE,
+    // USA };
+    public static Country[] allCountries = new Country[] { FRA_B, BRA, JPN, JPN_B, NOR, SWE, USA };
     public static Country[] leagueCountries = new Country[] { CL, EL };
 
     public static Map<String, Country> countryMap = new HashMap<>();
@@ -32,6 +34,7 @@ public enum Country {
         countryMap.put(LfsUtil.ENG, ENG);
         countryMap.put(LfsUtil.ESP, ESP);
         countryMap.put(LfsUtil.FRA, FRA);
+        countryMap.put(LfsUtil.FRA_B, FRA_B);
         countryMap.put(LfsUtil.GER, GER);
         countryMap.put(LfsUtil.ITA, ITA);
         countryMap.put(LfsUtil.JPN, JPN);

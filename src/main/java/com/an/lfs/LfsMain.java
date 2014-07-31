@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.an.lfs.enu.Country;
@@ -13,23 +15,23 @@ import com.an.lfs.vo.BoardTeam;
 import com.an.lfs.vo.MatchInfo;
 
 public class LfsMain {
-    private static int BEGIN_YEAR = 2014;
+    private static final Log logger = LogFactory.getLog(LfsMain.class);
+    private static int BEGIN_YEAR = 2013;
+    private static int END_YEAR = 2014;
     private static int TYPE = 0;
 
     public static void main(String[] args) throws Exception {
         init();
         if (TYPE == 0) {
             for (Country cty : Country.allCountries) {
-                if (!cty.getVal().equals("swe")) {
-                    continue;
-                }
+                logger.info("country: " + cty.getVal());
                 // Generate board report
                 BoardLoader board = new BoardLoader(cty);
                 Map<Integer, List<BoardTeam>> teamMap = board.getBoardTeamMap();
                 ReportMaker.makeBoardReport(cty, teamMap);
 
                 // Generate match report
-                MatchLoader match = new MatchLoader(cty, LfsUtil.CURRENT_YEAR, LfsUtil.CURRENT_YEAR);
+                MatchLoader match = new MatchLoader(cty, BEGIN_YEAR, END_YEAR);
                 Map<Integer, List<MatchInfo>> yearMatchMap = match.getYearMatchMap();
                 ReportMaker.makeMatchReport(cty, yearMatchMap);
             }
