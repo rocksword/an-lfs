@@ -16,9 +16,9 @@ import com.an.lfs.vo.MatchInfo;
 
 public class LfsMain {
     private static final Log logger = LogFactory.getLog(LfsMain.class);
-    private static int BEGIN_YEAR = 2013;
+    private static int BEGIN_YEAR = 2014;
     private static int END_YEAR = 2014;
-    private static int TYPE = 1;
+    private static int TYPE = 0;
 
     public static void main(String[] args) throws Exception {
         init();
@@ -26,14 +26,16 @@ public class LfsMain {
             for (Country country : Country.allCountries) {
                 logger.info("country: " + country.getVal());
                 // Generate board report
-                BoardLoader board = new BoardLoader(country);
-                Map<Integer, List<BoardTeam>> teamMap = board.getBoardTeamMap();
+                Map<Integer, List<BoardTeam>> teamMap = new BoardLoader(country).getBoardTeamMap();
                 ReportMaker.makeBoardReport(country, teamMap);
 
+                RateLoader rateMgr = new RateLoader(country, BEGIN_YEAR, END_YEAR);
+                System.out.println(rateMgr);
                 // Generate match report
-                MatchLoader match = new MatchLoader(country, BEGIN_YEAR, END_YEAR);
-                Map<Integer, List<MatchInfo>> yearMatchMap = match.getYearMatchMap();
+                Map<Integer, List<MatchInfo>> yearMatchMap = new MatchLoader(country, BEGIN_YEAR, END_YEAR)
+                        .getYearMatchMap();
                 ReportMaker.makeMatchReport(country, yearMatchMap);
+
             }
         } else if (TYPE == 1) {
             for (Country country : Country.leagueCountries) {

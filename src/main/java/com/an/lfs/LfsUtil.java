@@ -254,6 +254,13 @@ public class LfsUtil {
                 .append(filename).toString();
     }
 
+    public static String getInputCountryYearDirPath(Country country, int year) {
+        String home = getLfsHome();
+        String homeDir = new File(home).getAbsolutePath();
+        return new StringBuilder().append(homeDir).append(File.separator).append(DIR_INPUT).append(File.separator)
+                .append(country.getVal()).append(File.separator).append(year).toString();
+    }
+
     /**
      * @param country
      * @param year

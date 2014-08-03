@@ -73,7 +73,6 @@ public class LeagueMatchLoader {
                             mi.setHost(TeamMgr.getName(country, host, year));
                             mi.setScore(score);
                             mi.setGuest(TeamMgr.getName(country, guest, year));
-                            mi.setValues(win, draw, lose);
                             matchList.add(mi);
                             logger.debug(mi);
                         } else if (strs.length == 1) {

@@ -17,19 +17,19 @@
     ],
     "companys": 
     [
-        ["William"],
-        ["William", "LiBo", "Bet365"],
-        ["WeiDe", "Bwin", "William"],
-        ["William"],
-        ["Oddset", "William"],
-        ["SNAI", "William"],
-        ["AoMen", "William"],
-        ["AoMen", "William"],
-        ["William"],
-        ["AoMen", "William"],
-        ["William"],
-        ["William"],
-        ["William"],
-        ["William"]
+        ["平均欧赔", "竞彩官方(胜平负)", "William"],
+        ["平均欧赔", "竞彩官方(胜平负)", "William", "LiBo", "Bet365"],
+        ["平均欧赔", "竞彩官方(胜平负)", "WeiDe", "Bwin", "William"],
+        ["平均欧赔", "竞彩官方(胜平负)", "William"],
+        ["平均欧赔", "竞彩官方(胜平负)", "Oddset", "William"],
+        ["平均欧赔", "竞彩官方(胜平负)", "SNAI", "William"],
+        ["平均欧赔", "竞彩官方(胜平负)", "澳门"],
+        ["平均欧赔", "竞彩官方(胜平负)", "澳门"],
+        ["平均欧赔", "竞彩官方(胜平负)", "William"],
+        ["平均欧赔", "竞彩官方(胜平负)", "澳门"],
+        ["平均欧赔", "竞彩官方(胜平负)", "William"],
+        ["平均欧赔", "竞彩官方(胜平负)", "William"],
+        ["平均欧赔", "竞彩官方(胜平负)", "William"],
+        ["平均欧赔", "竞彩官方(胜平负)", "William"]
     ]
 }

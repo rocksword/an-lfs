@@ -52,8 +52,6 @@ public class TeamMgr {
                     }
                 }
             }
-
-            ctyTeamMap.put(Country.JPN_B, ctyTeamMap.get(Country.JPN));
         } catch (Exception e) {
             logger.error("Error :" + e);
         }
@@ -65,12 +63,13 @@ public class TeamMgr {
      * @return
      */
     public static String getName(Country country, String team, int year) {
-        Map<String, String> teamMap = ctyTeamMap.get(country);
-        if (!teamMap.containsKey(team)) {
-            logger.warn(String.format("Not found team %s,\t\t", team));
-            return team;
-        }
-        return teamMap.get(team);
+        return team;
+        // Map<String, String> teamMap = ctyTeamMap.get(country);
+        // if (!teamMap.containsKey(team)) {
+        // logger.warn(String.format("Not found team %s,\t\t", team));
+        // return team;
+        // }
+        // return teamMap.get(team);
     }
 
     public static Map<Country, Map<String, String>> getCtyTeamMap() {

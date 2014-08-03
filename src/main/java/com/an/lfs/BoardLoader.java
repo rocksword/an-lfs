@@ -16,6 +16,7 @@ import com.an.lfs.tool.FileLineIterator;
 import com.an.lfs.vo.BoardTeam;
 import com.an.lfs.vo.TeamMgr;
 
+//jpn_b.txt
 public class BoardLoader {
     private static final Log logger = LogFactory.getLog(BoardLoader.class);
     private Country country;
@@ -41,42 +42,27 @@ public class BoardLoader {
                     } else if (line.startsWith("end")) {
                         boardTeamMap.put(year, teamList);
                     } else {
-                        String[] strs = line.split("\t");
+                        String[] strs = line.split(",");
                         if (strs.length != 15) {
                             logger.info("Invalid line: " + line);
                             continue;
                         }
-                        int rank = Integer.parseInt(strs[0].trim());
-                        String team = strs[1].trim();
-                        int total = Integer.parseInt(strs[2].trim());
-                        int win = Integer.parseInt(strs[3].trim());
-                        int draw = Integer.parseInt(strs[4].trim());
-                        int lose = Integer.parseInt(strs[5].trim());
-                        int goalFor = Integer.parseInt(strs[6].trim());
-                        int goalAgainst = Integer.parseInt(strs[7].trim());
-                        int goalNet = Integer.parseInt(strs[8].trim());
-                        float avgFor = Float.parseFloat(strs[9].trim());
-                        float avgAgainst = Float.parseFloat(strs[10].trim());
-                        float winPer = Float.parseFloat(strs[11].trim());
-                        float drawPer = Float.parseFloat(strs[12].trim());
-                        float losePer = Float.parseFloat(strs[13].trim());
-                        int score = Integer.parseInt(strs[14].trim());
                         BoardTeam bt = new BoardTeam();
-                        bt.setRank(rank);
-                        bt.setTeam(TeamMgr.getName(country, team, year));
-                        bt.setTotal(total);
-                        bt.setWin(win);
-                        bt.setDraw(draw);
-                        bt.setLose(lose);
-                        bt.setGoalFor(goalFor);
-                        bt.setGoalAgainst(goalAgainst);
-                        bt.setGoalNet(goalNet);
-                        bt.setAvgFor(avgFor);
-                        bt.setAvgAgainst(avgAgainst);
-                        bt.setWinPer(winPer);
-                        bt.setDrawPer(drawPer);
-                        bt.setLosePer(losePer);
-                        bt.setScore(score);
+                        bt.setRank(Integer.parseInt(strs[0].trim()));
+                        bt.setTeam(TeamMgr.getName(country, strs[1].trim(), year));
+                        bt.setTotal(Integer.parseInt(strs[2].trim()));
+                        bt.setWin(Integer.parseInt(strs[3].trim()));
+                        bt.setDraw(Integer.parseInt(strs[4].trim()));
+                        bt.setLose(Integer.parseInt(strs[5].trim()));
+                        bt.setGoalFor(Integer.parseInt(strs[6].trim()));
+                        bt.setGoalAgainst(Integer.parseInt(strs[7].trim()));
+                        bt.setGoalNet(Integer.parseInt(strs[8].trim()));
+                        bt.setAvgFor(Float.parseFloat(strs[9].trim()));
+                        bt.setAvgAgainst(Float.parseFloat(strs[10].trim()));
+                        bt.setWinPer(Float.parseFloat(strs[11].trim().substring(0, strs[11].length() - 1)));
+                        bt.setDrawPer(Float.parseFloat(strs[12].trim().substring(0, strs[12].length() - 1)));
+                        bt.setLosePer(Float.parseFloat(strs[13].trim().substring(0, strs[13].length() - 1)));
+                        bt.setScore(Integer.parseInt(strs[14].trim()));
                         teamList.add(bt);
                     }
                 }

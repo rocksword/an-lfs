@@ -269,7 +269,7 @@ public class MatchRate {
     }
 
     public void addComRate(Rate rate) {
-        comRateMap.put(rate.getComp(), rate);
+        comRateMap.put(rate.getCom(), rate);
     }
 
     public void addComEndRate(String com, float winEnd, float drawEnd, float loseEnd) {

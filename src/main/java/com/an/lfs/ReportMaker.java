@@ -98,9 +98,9 @@ public class ReportMaker {
                 row.add(new Cell(guestName, guestFmt));
 
                 row.add(new Cell(guestRank));
-                row.add(new Cell(mi.getWin()));
-                row.add(new Cell(mi.getDraw()));
-                row.add(new Cell(mi.getLose()));
+//                row.add(new Cell(mi.getWin()));
+//                row.add(new Cell(mi.getDraw()));
+//                row.add(new Cell(mi.getLose()));
 
                 row.add(new Cell(getTopLastStr(isHostTopN, isGuestTopN, isHostLastN, isGuestLastN, host, guest,
                         teamRank)));
@@ -233,11 +233,11 @@ public class ReportMaker {
                 row.add(new Cell(hostName));
                 row.add(new Cell(mi.getScore()));
                 row.add(new Cell(LfsUtil.getScoreTypeStr(mi.getScoreType())));
-                row.add(new Cell(LfsUtil.getBetRetStr(mi.getBetRet())));
+//                row.add(new Cell(LfsUtil.getBetRetStr(mi.getBetRet())));
                 row.add(new Cell(guestName));
-                row.add(new Cell(mi.getWin()));
-                row.add(new Cell(mi.getDraw()));
-                row.add(new Cell(mi.getLose()));
+//                row.add(new Cell(mi.getWin()));
+//                row.add(new Cell(mi.getDraw()));
+//                row.add(new Cell(mi.getLose()));
                 rows.add(row);
             }
         }

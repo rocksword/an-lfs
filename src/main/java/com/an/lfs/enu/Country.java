@@ -25,7 +25,7 @@ public enum Country {
 
     // public static Country[] allCountries = new Country[] { BRA, ENG, ESP, FRA, GER, ITA, JPN, JPN_B, NOR, KOR, SWE,
     // USA };
-    public static Country[] allCountries = new Country[] { FRA_B, BRA, JPN, JPN_B, NOR, SWE, USA };
+    public static Country[] allCountries = new Country[] { JPN, JPN_B };
     public static Country[] leagueCountries = new Country[] { CL, EL };
 
     public static Map<String, Country> countryMap = new HashMap<>();

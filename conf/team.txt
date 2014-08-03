@@ -490,6 +490,9 @@ Cao           ,草津温泉
 Shui          ,水户蜀葵
 end:jpn
 
+country:jpn_b
+end:jpn_b
+
 country:kor
 浦项制铁       ,Pu
 浦項制鐵       ,Pu

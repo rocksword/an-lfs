@@ -6,15 +6,17 @@ import com.an.lfs.enu.ForecastRet;
 
 public class Rate {
     private int id;
-    private String comp;
+    private String com;
 
     private float win;
     private float draw;
     private float lose;
-
     private float winEnd;
     private float drawEnd;
     private float loseEnd;
+    private float winRatio;
+    private float drawRatio;
+    private float loseRatio;
     //
     private ForecastRet rateResult;
     private ForecastRet endRateResult;
@@ -30,9 +32,9 @@ public class Rate {
     public Rate() {
     }
 
-    public Rate(int id, String comp) {
+    public Rate(int id, String com) {
         this.id = id;
-        this.comp = comp;
+        this.com = com;
     }
 
     public void addRate(float win, float draw, float lose) {
@@ -57,12 +59,12 @@ public class Rate {
         this.id = id;
     }
 
-    public String getComp() {
-        return comp;
+    public String getCom() {
+        return com;
     }
 
-    public void setComp(String comp) {
-        this.comp = comp;
+    public void setCom(String com) {
+        this.com = com;
     }
 
     public float getWin() {
@@ -111,6 +113,30 @@ public class Rate {
 
     public void setLoseEnd(float loseEnd) {
         this.loseEnd = loseEnd;
+    }
+
+    public float getWinRatio() {
+        return winRatio;
+    }
+
+    public void setWinRatio(float winRatio) {
+        this.winRatio = winRatio;
+    }
+
+    public float getDrawRatio() {
+        return drawRatio;
+    }
+
+    public void setDrawRatio(float drawRatio) {
+        this.drawRatio = drawRatio;
+    }
+
+    public float getLoseRatio() {
+        return loseRatio;
+    }
+
+    public void setLoseRatio(float loseRatio) {
+        this.loseRatio = loseRatio;
     }
 
     public ForecastRet getRateResult() {
