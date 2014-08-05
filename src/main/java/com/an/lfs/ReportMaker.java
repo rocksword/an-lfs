@@ -3,6 +3,7 @@ package com.an.lfs;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -207,6 +208,7 @@ public class ReportMaker {
         LfsUtil.addComRateHead(rateLoader, head);
         rows.add(head);
 
+        List<List<Cell>> tmpRows = new ArrayList<>();
         int totalYear = years.size();
         for (int i = 0; i < totalYear; i++) {
             int year = years.get(totalYear - 1 - i);
@@ -214,22 +216,20 @@ public class ReportMaker {
 
             List<MatchInfo> matchList = yearMatchMap.get(year);
             for (MatchInfo mi : matchList) {
-
                 String host = mi.getHost();
                 String guest = mi.getGuest();
-
                 List<Cell> row = new ArrayList<>();
-                row.add(new Cell(mi.getDate()));
-                row.add(new Cell(host));
+                row.add(new Cell(mi.getDate()));// 0
+                row.add(new Cell(host));// 1
                 row.add(new Cell(mi.getScore()));
-                row.add(new Cell(guest));
+                row.add(new Cell(guest));// 3
                 row.add(LfsUtil.getResultCell(LfsUtil.getScoreRet(mi.getScore())));
-
                 addComRate(rateLoader, host, guest, row);
-
-                rows.add(row);
+                tmpRows.add(row);
             }
         }
+        Collections.sort(tmpRows, rowComparator);
+        rows.addAll(tmpRows);
 
         String filepath = LfsUtil.getOutputFilePath(LfsUtil.getMatchExcelFile(country));
         logger.info("Generate file " + filepath);
@@ -239,6 +239,24 @@ public class ReportMaker {
         wb.write();
         wb.close();
     }
+
+    private static Comparator<List<Cell>> rowComparator = new Comparator<List<Cell>>() {
+        @Override
+        public int compare(List<Cell> o1, List<Cell> o2) {
+            String key1 = getRowKey(o1);
+            String key2 = getRowKey(o2);
+            return key1.compareTo(key2);
+        }
+
+        private String getRowKey(List<Cell> o1) {
+            List<String> teams = new ArrayList<>();
+            teams.add(o1.get(1).getVal());
+            teams.add(o1.get(3).getVal());
+            Collections.sort(teams);
+            String key = teams.get(0) + teams.get(1);
+            return key;
+        }
+    };
 
     private static void addComRate(RateLoader rateLoader, String host, String guest, List<Cell> row)
             throws WriteException {
