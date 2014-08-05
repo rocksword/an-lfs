@@ -13,8 +13,8 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.an.lfs.enu.Country;
 import com.an.lfs.vo.LfsConfMgr;
@@ -22,17 +22,21 @@ import com.an.lfs.vo.MatchRate;
 import com.an.lfs.vo.Rate;
 
 public class RateLoader {
-    private static final Log logger = LogFactory.getLog(RateLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(RateLoader.class);
     private Country country;
     // match ID -> MatchRate
-    private Map<String, MatchRate> matRateMap = new HashMap<>();
+    private Map<String, MatchRate> matchRateMap = new HashMap<>();
 
     public List<String> getCompany() {
-        if (matRateMap.isEmpty()) {
-            return new ArrayList<>();
+        List<String> nameList = new ArrayList<>();
+        int maxSize = 0;
+        for (MatchRate mr : matchRateMap.values()) {
+            if (mr.getCompany().size() > maxSize) {
+                maxSize = mr.getCompany().size();
+                nameList = mr.getCompany();
+            }
         }
-        MatchRate next = matRateMap.values().iterator().next();
-        return next.getCompany();
+        return nameList;
     }
 
     private static String getMatchId(String host, String guest) {
@@ -40,7 +44,7 @@ public class RateLoader {
     }
 
     public MatchRate getMatchRate(String host, String guest) {
-        return matRateMap.get(getMatchId(host, guest));
+        return matchRateMap.get(getMatchId(host, guest));
     }
 
     public RateLoader(Country country, int startYear, int endYear) {
@@ -55,34 +59,45 @@ public class RateLoader {
         String dir = LfsUtil.getInputCountryYearDirPath(country, year);
         File dirFile = new File(dir);
         List<String> comList = LfsConfMgr.getCompany(country);
+        logger.info("Load rate {} {} {}", country.getVal(), year, comList);
         File[] files = dirFile.listFiles();
-        if (files != null) {
-            for (File f : files) {
-                try {
-                    MatchRate matchRate = readExcel(f.toString(), comList);
-                    matRateMap.put(matchRate.getMatchId(), matchRate);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        if (files == null) {
+            logger.warn("Not found rate files.");
+            return;
+        }
+
+        for (File f : files) {
+            try {
+                MatchRate matchRate = readExcel(f.toString(), comList);
+                matchRateMap.put(matchRate.getMatchId(), matchRate);
+            } catch (Exception e) {
+                logger.error("file: " + f.toString());
+                e.printStackTrace();
             }
         }
     }
 
     private static MatchRate readExcel(String filepath, List<String> comList) throws BiffException, IOException {
+        logger.debug("readExcel " + filepath);
         Workbook wb = Workbook.getWorkbook(new FileInputStream(filepath));
         Sheet sheet = wb.getSheet(0);
         MatchRate matRate = new MatchRate();
+        List<String> allCom = new ArrayList<>();
+        allCom.addAll(comList);
         for (int i = 0; i < sheet.getRows(); i++) {
+            if (allCom.isEmpty()) {
+                break;
+            }
             if (i == 0) {
                 Cell cell = sheet.getCell(0, i);
                 String content = cell.getContents().trim();
-                String[] strs = content.split(" ");
-                if (strs.length != 4) {
-                    logger.warn("Invalid title " + content);
+                String[] strs = content.substring(0, content.indexOf("百家")).split("VS");
+                if (strs.length != 2) {
+                    logger.warn("Invalid title {}, length {}", content, strs.length);
                     continue;
                 }
                 String host = strs[0].trim();
-                String guest = strs[2].trim();
+                String guest = strs[1].trim();
                 matRate.setMatchId(getMatchId(host, guest));
                 continue;
             }
@@ -114,6 +129,7 @@ public class RateLoader {
                     rate.setDrawRatio(Float.parseFloat(rowList.get(9)));
                     rate.setLoseRatio(Float.parseFloat(rowList.get(10)));
                     matRate.addComRate(rate.getCom(), rate);
+                    allCom.remove(rowList.get(1));
                 }
             }
         }

@@ -23,18 +23,18 @@ public class LfsMain {
     public static void main(String[] args) throws Exception {
         init();
         if (TYPE == 0) {
-            for (Country cty : Country.allCountries) {
-                logger.info("country: " + cty.getVal());
-                // Generate board report
-                Map<Integer, List<BoardTeam>> teamMap = new BoardLoader(cty).getBoardTeamMap();
-                ReportMaker.makeBoardReport(cty, teamMap);
-
-                RateLoader rateLoader = new RateLoader(cty, BEGIN_YEAR, END_YEAR);
-                // Generate match report
-                Map<Integer, List<MatchInfo>> yearMatchMap = new MatchLoader(cty, BEGIN_YEAR, END_YEAR)
-                        .getYearMatchMap();
-                ReportMaker.makeMatchReport(cty, yearMatchMap, rateLoader);
-            }
+//            for (Country cty : Country.allCountries) {
+//                logger.info("country: " + cty.getVal());
+//                // Generate board report
+//                Map<Integer, List<BoardTeam>> teamMap = new BoardLoader(cty).getBoardTeamMap();
+//                ReportMaker.makeBoardReport(cty, teamMap);
+//
+//                RateLoader rateLoader = new RateLoader(cty, BEGIN_YEAR, END_YEAR);
+//                // Generate match report
+//                Map<Integer, List<MatchInfo>> yearMatchMap = new MatchLoader(cty, BEGIN_YEAR, END_YEAR)
+//                        .getYearMatchMap();
+//                ReportMaker.makeMatchReport(cty, yearMatchMap, rateLoader);
+//            }
 
             for (Country cty : Country.leagueCountries) {
                 RateLoader rateLoader = new RateLoader(cty, BEGIN_YEAR, END_YEAR);

@@ -219,7 +219,7 @@ public class ReportMaker {
                 String host = mi.getHost();
                 String guest = mi.getGuest();
                 List<Cell> row = new ArrayList<>();
-                row.add(new Cell(mi.getDate()));// 0
+                row.add(new Cell(mi.getDate().substring(0, 5)));// 0
                 row.add(new Cell(host));// 1
                 row.add(new Cell(mi.getScore()));
                 row.add(new Cell(guest));// 3
