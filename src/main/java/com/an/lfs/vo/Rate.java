@@ -2,12 +2,10 @@ package com.an.lfs.vo;
 
 import com.an.lfs.LfsUtil;
 import com.an.lfs.enu.CmpType;
-import com.an.lfs.enu.ForecastRet;
 
 public class Rate {
     private int id;
     private String com;
-
     private float win;
     private float draw;
     private float lose;
@@ -17,9 +15,6 @@ public class Rate {
     private float winRatio;
     private float drawRatio;
     private float loseRatio;
-    //
-    private ForecastRet rateResult;
-    private ForecastRet endRateResult;
 
     public boolean isValidEndRate() {
         return LfsUtil.isValidRate(winEnd, drawEnd, loseEnd);
@@ -27,6 +22,18 @@ public class Rate {
 
     public CmpType getTrend() {
         return LfsUtil.getTrend(win, draw, lose, winEnd, drawEnd, loseEnd);
+    }
+
+    public void addRate(float win, float draw, float lose) {
+        this.win = win;
+        this.draw = draw;
+        this.lose = lose;
+    }
+
+    public void addEndRate(float winEnd, float drawEnd, float loseEnd) {
+        this.winEnd = winEnd;
+        this.drawEnd = drawEnd;
+        this.loseEnd = loseEnd;
     }
 
     public Rate() {
@@ -37,18 +44,11 @@ public class Rate {
         this.com = com;
     }
 
-    public void addRate(float win, float draw, float lose) {
-        this.win = win;
-        this.draw = draw;
-        this.lose = lose;
-        this.rateResult = LfsUtil.getForecastRet(win, draw, lose);
-    }
-
-    public void addEndRate(float winEnd, float drawEnd, float loseEnd) {
-        this.winEnd = winEnd;
-        this.drawEnd = drawEnd;
-        this.loseEnd = loseEnd;
-        this.endRateResult = LfsUtil.getForecastRet(winEnd, drawEnd, loseEnd);
+    @Override
+    public String toString() {
+        return "Rate [id=" + id + ", " + (com != null ? "com=" + com + ", " : "") + "win=" + win + ", draw=" + draw
+                + ", lose=" + lose + ", winEnd=" + winEnd + ", drawEnd=" + drawEnd + ", loseEnd=" + loseEnd
+                + ", winRatio=" + winRatio + ", drawRatio=" + drawRatio + ", loseRatio=" + loseRatio + "]";
     }
 
     public int getId() {
@@ -137,21 +137,5 @@ public class Rate {
 
     public void setLoseRatio(float loseRatio) {
         this.loseRatio = loseRatio;
-    }
-
-    public ForecastRet getRateResult() {
-        return rateResult;
-    }
-
-    public void setRateResult(ForecastRet rateResult) {
-        this.rateResult = rateResult;
-    }
-
-    public ForecastRet getEndRateResult() {
-        return endRateResult;
-    }
-
-    public void setEndRateResult(ForecastRet endRateResult) {
-        this.endRateResult = endRateResult;
     }
 }

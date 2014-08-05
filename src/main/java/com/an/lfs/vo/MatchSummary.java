@@ -4,19 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.an.lfs.LfsUtil;
-import com.an.lfs.enu.BetRet;
-import com.an.lfs.enu.ForecastRet;
 import com.an.lfs.enu.ForecastRetType;
+import com.an.lfs.enu.RateBet;
 import com.an.lfs.enu.RateType;
-import com.an.lfs.enu.ScoreType;
+import com.an.lfs.enu.Result;
 import com.an.lfs.enu.TeamType;
 
 public class MatchSummary {
     private BetResultNum betRetNum = new BetResultNum();
     // HOST -> {1.2 ->[3,3]}
     private Map<TeamType, Map<RateType, BetResultNum>> teamBetRetNumMap = new HashMap<>();
-    private Map<ForecastRetType, Integer> fcRetNumMap = new HashMap<>();
-    private Map<ScoreType, Integer> scoreTypeNumMap = new HashMap<>();
+    private Map<ForecastRetType, Integer> forecastNumMap = new HashMap<>();
+    private Map<Result, Integer> scoreNumMap = new HashMap<>();
 
     public MatchSummary() {
         for (TeamType tt : TeamType.allTeamTypes) {
@@ -27,10 +26,10 @@ public class MatchSummary {
             teamBetRetNumMap.put(tt, betRetNumMap);
         }
         for (ForecastRetType ft : ForecastRetType.allFcRetTypes) {
-            fcRetNumMap.put(ft, 0);
+            forecastNumMap.put(ft, 0);
         }
-        for (ScoreType st : ScoreType.allScoreTypes) {
-            scoreTypeNumMap.put(st, 0);
+        for (Result ret : Result.allResults) {
+            scoreNumMap.put(ret, 0);
         }
     }
 
@@ -50,76 +49,76 @@ public class MatchSummary {
         return teamBetRetNumMap.get(tt).get(st);
     }
 
-    public void addForecastScoreRet(ForecastRet fcRet, ScoreType scoreType) {
-        Integer num = scoreTypeNumMap.get(scoreType);
-        scoreTypeNumMap.put(scoreType, num + 1);
+    public void addRateFc(Result rateFc, Result scoreRet) {
+        int num = scoreNumMap.get(scoreRet);
+        scoreNumMap.put(scoreRet, num + 1);
 
         String val = "";
-        if (fcRet.isWin()) {
+        if (rateFc.isWin()) {
             val = val + "W";
-        } else if (fcRet.isDraw()) {
+        } else if (rateFc.isDraw()) {
             val = val + "D";
-        } else if (fcRet.isLose()) {
+        } else if (rateFc.isLose()) {
             val = val + "L";
         }
         val = val + "_";
-        if (scoreType.isWin()) {
+        if (scoreRet.isWin()) {
             val = val + "W";
-        } else if (scoreType.isDraw()) {
+        } else if (scoreRet.isDraw()) {
             val = val + "D";
-        } else if (scoreType.isLose()) {
+        } else if (scoreRet.isLose()) {
             val = val + "L";
         }
         ForecastRetType ft = ForecastRetType.getForecastResultType(val);
-        fcRetNumMap.put(ft, fcRetNumMap.get(ft) + 1);
+        forecastNumMap.put(ft, forecastNumMap.get(ft) + 1);
     }
 
     public int getFcRetNum(ForecastRetType ft) {
-        if (fcRetNumMap.containsKey(ft)) {
-            return fcRetNumMap.get(ft);
+        if (forecastNumMap.containsKey(ft)) {
+            return forecastNumMap.get(ft);
         }
         return 0;
     }
 
     public String getFcRetPer(ForecastRetType ft) {
-        if (fcRetNumMap.containsKey(ft)) {
+        if (forecastNumMap.containsKey(ft)) {
             int total = 0;
             if (ForecastRetType.allWinFcRetSet.contains(ft)) {
                 for (ForecastRetType t : ForecastRetType.allWinFcRetSet) {
-                    total += fcRetNumMap.get(t);
+                    total += forecastNumMap.get(t);
                 }
             } else if (ForecastRetType.allLoseFcRetSet.contains(ft)) {
                 for (ForecastRetType t : ForecastRetType.allLoseFcRetSet) {
-                    total += fcRetNumMap.get(t);
+                    total += forecastNumMap.get(t);
                 }
             }
 
-            int num = fcRetNumMap.get(ft);
+            int num = forecastNumMap.get(ft);
             String ret = (int) (100 * (float) num / (float) (total)) + "%";
             return ret;
         }
         return LfsUtil.NULL;
     }
 
-    public int getScoreTypeNum(ScoreType st) {
-        if (scoreTypeNumMap.containsKey(st)) {
-            return scoreTypeNumMap.get(st);
+    public int getScoreTypeNum(Result st) {
+        if (scoreNumMap.containsKey(st)) {
+            return scoreNumMap.get(st);
         }
         return 0;
     }
 
-    public String getScoreTypePer(ScoreType st) {
+    public String getScoreTypePer(Result st) {
         int total = 0;
-        for (int val : scoreTypeNumMap.values()) {
+        for (int val : scoreNumMap.values()) {
             total += val;
         }
 
-        int num = scoreTypeNumMap.get(st);
+        int num = scoreNumMap.get(st);
         String ret = (int) (100 * (float) num / (float) (total)) + "%";
         return ret;
     }
 
-    public void addBetRet(BetRet betRet) {
+    public void addBetRet(RateBet betRet) {
         betRetNum.addBetResult(betRet);
     }
 
@@ -128,7 +127,7 @@ public class MatchSummary {
      * @param scoreType
      * @param betRet
      */
-    public void addTeamBetResult(TeamType teamType, RateType scoreType, BetRet betRet) {
+    public void addTeamBetResult(TeamType teamType, RateType scoreType, RateBet betRet) {
         teamBetRetNumMap.get(teamType).get(scoreType).addBetResult(betRet);
     }
 

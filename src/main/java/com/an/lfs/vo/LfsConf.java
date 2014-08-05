@@ -1,32 +1,25 @@
 package com.an.lfs.vo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LfsConf {
-    private List<String> countries;
-    private List<List<String>> companys;
+    private Map<String, List<String>> countryCompanies = new HashMap<>();
 
     public LfsConf() {
     }
 
     @Override
     public String toString() {
-        return "LfsConf [countries=" + countries + ", companys=" + companys + "]";
+        return "LfsConf [" + (countryCompanies != null ? "countryCompanies=" + countryCompanies : "") + "]";
     }
 
-    public List<String> getCountries() {
-        return countries;
+    public Map<String, List<String>> getCountryCompanies() {
+        return countryCompanies;
     }
 
-    public void setCountries(List<String> countries) {
-        this.countries = countries;
-    }
-
-    public List<List<String>> getCompanys() {
-        return companys;
-    }
-
-    public void setCompanys(List<List<String>> companys) {
-        this.companys = companys;
+    public void setCountryCompanies(Map<String, List<String>> countryCompanies) {
+        this.countryCompanies = countryCompanies;
     }
 }

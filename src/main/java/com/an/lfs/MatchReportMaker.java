@@ -22,13 +22,13 @@ import com.an.lfs.enu.CmpType;
 import com.an.lfs.enu.Country;
 import com.an.lfs.enu.ForecastRetType;
 import com.an.lfs.enu.RateType;
-import com.an.lfs.enu.ScoreType;
+import com.an.lfs.enu.Result;
 import com.an.lfs.enu.TeamType;
 import com.an.lfs.vo.BetResultNum;
 import com.an.lfs.vo.Cell;
 import com.an.lfs.vo.LfsConfMgr;
 import com.an.lfs.vo.Match;
-import com.an.lfs.vo.MatchRate;
+import com.an.lfs.vo.MatchRateWy;
 import com.an.lfs.vo.TeamMgr;
 
 public class MatchReportMaker extends RateAnalyzer {
@@ -101,12 +101,12 @@ public class MatchReportMaker extends RateAnalyzer {
 
         for (String key : rateKeyList) {
             Match mat = matchMap.get(key);
-            MatchRate matRate = matRateMap.get(key);
+            MatchRateWy matRate = matRateMap.get(key);
             if (matRate == null) {
                 logger.warn("Match rate is null, " + key);
                 continue;
             }
-            ScoreType scoreType = matRate.getScoreType();
+            Result sr = matRate.getScoreRet();
             List<Cell> row = new ArrayList<>();
             row.add(new Cell(mat.getSimpleKey()));// key
             row.add(new Cell(TeamMgr.getName(country, mat.getHost(), year)));
@@ -115,43 +115,20 @@ public class MatchReportMaker extends RateAnalyzer {
             row.add(new Cell(matRate.getRateType(TeamType.HOST).getVal()));
             row.add(new Cell(matRate.getRateType(TeamType.MID).getVal()));
             row.add(new Cell(matRate.getRateType(TeamType.GUEST).getVal()));
-            if (scoreType.isWin()) {// Win rate
-                row.add(new Cell(matRate.getWin(), LfsUtil.getRedFont()));
-            } else {
-                row.add(new Cell(matRate.getWin()));
-            }
-            if (scoreType.isDraw()) {// Draw rate
-                row.add(new Cell(matRate.getDraw(), LfsUtil.getRedFont()));
-            } else {
-                row.add(new Cell(matRate.getDraw()));
-            }
-            if (scoreType.isLose()) {// Lose rate
-                row.add(new Cell(matRate.getLose(), LfsUtil.getRedFont()));
-            } else {
-                row.add(new Cell(matRate.getLose()));
-            }
-            row.add(new Cell(matRate.getFcStr()));
-            row.add(new Cell(LfsUtil.getScoreTypeStr(matRate.getScoreType())));
-            row.add(new Cell(LfsUtil.getBetRetStr(matRate.getBetRet())));
+            row.add(new Cell(matRate.getWin(), sr.isWin() ? LfsUtil.getRedFont() : null));
+            row.add(new Cell(matRate.getDraw(), sr.isDraw() ? LfsUtil.getRedFont() : null));
+            row.add(new Cell(matRate.getLose(), sr.isLose() ? LfsUtil.getRedFont() : null));
+            Result rateFc = LfsUtil.getRateFc(matRate.getWinEnd(), matRate.getDrawEnd(), matRate.getLoseEnd());
+            row.add(new Cell(LfsUtil.getResultStr(rateFc)));
+            row.add(new Cell(LfsUtil.getResultStr(sr)));
+            row.add(new Cell(LfsUtil.getRateBetStr(LfsUtil.getRateBet(rateFc, sr))));
 
             int i = 0;
             for (String com : LfsConfMgr.getCompany(country)) {
-                if (scoreType.isWin()) {
-                    row.add(new Cell(matRate.getWin(com), LfsUtil.getRedFont()));
-                } else {
-                    row.add(new Cell(matRate.getWin(com)));
-                }
-                if (scoreType.isDraw()) {
-                    row.add(new Cell(matRate.getDraw(com), LfsUtil.getRedFont()));
-                } else {
-                    row.add(new Cell(matRate.getDraw(com)));
-                }
-                if (scoreType.isLose()) {
-                    row.add(new Cell(matRate.getLose(com), LfsUtil.getRedFont()));
-                } else {
-                    row.add(new Cell(matRate.getLose(com)));
-                }
-                row.add(new Cell(matRate.getBetRetStr(com)));
+                row.add(new Cell(matRate.getWin(com), sr.isWin() ? LfsUtil.getRedFont() : null));
+                row.add(new Cell(matRate.getDraw(com), sr.isDraw() ? LfsUtil.getRedFont() : null));
+                row.add(new Cell(matRate.getLose(com), sr.isLose() ? LfsUtil.getRedFont() : null));
+                row.add(new Cell(LfsUtil.getRateBetStr(matRate.getBetRet(com))));
                 CmpType cmp = matRate.getComparator(com);
                 if (i == 0) {
                     BetResultNum betResultNum = cmpBetRetNumMap.get(cmp);
@@ -237,11 +214,11 @@ public class MatchReportMaker extends RateAnalyzer {
         }
 
         addMatRetHead(rows);
-        for (ScoreType st : ScoreType.allScoreTypes) {
+        for (Result ret : Result.allResults) {
             List<Cell> row = new ArrayList<>();
-            row.add(new Cell(st.getVal()));
-            row.add(new Cell(matSum.getScoreTypeNum(st)));
-            row.add(new Cell(matSum.getScoreTypePer(st)));
+            row.add(new Cell(ret.getVal()));
+            row.add(new Cell(matSum.getScoreTypeNum(ret)));
+            row.add(new Cell(matSum.getScoreTypePer(ret)));
             rows.add(row);
         }
 

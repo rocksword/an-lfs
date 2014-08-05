@@ -32,13 +32,10 @@ public class BoardTeam {
 
         row.add(new Cell(year));
         row.add(new Cell(rank));
-        if (rank < 4) {
-            row.add(new Cell(teamName, LfsUtil.getRoseFmt()));
-        } else if (rank > teamCnt - 3) {
-            row.add(new Cell(teamName, LfsUtil.getYellowFmt()));
-        } else {
-            row.add(new Cell(teamName));
-        }
+
+        boolean isTopN = rank < (LfsUtil.TOP_N + 1);
+        boolean isLastN = rank > teamCnt - LfsUtil.TOP_N;
+        row.add(new Cell(teamName, isTopN ? LfsUtil.getRoseFmt() : (isLastN ? LfsUtil.getYellowFmt() : null)));
         row.add(new Cell(total));
         row.add(new Cell(win));
         row.add(new Cell(draw));
@@ -48,21 +45,9 @@ public class BoardTeam {
         row.add(new Cell(goalNet));
         row.add(new Cell(avgFor));
         row.add(new Cell(avgAgainst));
-
-        if (rank < 4) {
-            row.add(new Cell(winPer, LfsUtil.getRoseFmt()));
-        } else {
-            row.add(new Cell(winPer));
-        }
-
+        row.add(new Cell(winPer, isTopN ? LfsUtil.getRoseFmt() : null));
         row.add(new Cell(drawPer));
-
-        if (rank > teamCnt - 3) {
-            row.add(new Cell(losePer, LfsUtil.getYellowFmt()));
-        } else {
-            row.add(new Cell(losePer));
-        }
-
+        row.add(new Cell(losePer, isLastN ? LfsUtil.getYellowFmt() : null));
         row.add(new Cell(score));
         return row;
     }

@@ -1,11 +1,7 @@
 package com.an.lfs.vo;
 
-import com.an.lfs.LfsUtil;
-import com.an.lfs.enu.ScoreType;
-
 public class Match {
     private String score;
-    protected ScoreType scoreType;
     // Common
     private int id;
     private int index;
@@ -30,13 +26,7 @@ public class Match {
         return result;
     }
 
-    public ScoreType getScoreType() {
-        return scoreType;
-    }
-
     public void addScore(String score) {
-        scoreType = LfsUtil.getScoreType(score);
-
         this.score = " " + score;
     }
 

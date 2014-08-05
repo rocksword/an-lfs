@@ -15,7 +15,7 @@ import com.an.lfs.vo.MatchInfo;
 import com.an.lfs.vo.TeamMgr;
 
 public class LeagueMatchLoader {
-    private static final Log logger = LogFactory.getLog(MatchLoader.class);
+    private static final Log logger = LogFactory.getLog(LeagueMatchLoader.class);
     private Country country;
     private int startYear;
     private int endYear;

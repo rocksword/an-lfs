@@ -23,30 +23,28 @@ public class LfsMain {
     public static void main(String[] args) throws Exception {
         init();
         if (TYPE == 0) {
-            for (Country country : Country.allCountries) {
-                logger.info("country: " + country.getVal());
+            for (Country cty : Country.allCountries) {
+                logger.info("country: " + cty.getVal());
                 // Generate board report
-                Map<Integer, List<BoardTeam>> teamMap = new BoardLoader(country).getBoardTeamMap();
-                ReportMaker.makeBoardReport(country, teamMap);
+                Map<Integer, List<BoardTeam>> teamMap = new BoardLoader(cty).getBoardTeamMap();
+                ReportMaker.makeBoardReport(cty, teamMap);
 
-                RateLoader rateMgr = new RateLoader(country, BEGIN_YEAR, END_YEAR);
-                System.out.println(rateMgr);
+                RateLoader rateLoader = new RateLoader(cty, BEGIN_YEAR, END_YEAR);
                 // Generate match report
-                Map<Integer, List<MatchInfo>> yearMatchMap = new MatchLoader(country, BEGIN_YEAR, END_YEAR)
+                Map<Integer, List<MatchInfo>> yearMatchMap = new MatchLoader(cty, BEGIN_YEAR, END_YEAR)
                         .getYearMatchMap();
-                ReportMaker.makeMatchReport(country, yearMatchMap);
+                ReportMaker.makeMatchReport(cty, yearMatchMap, rateLoader);
+            }
 
+            for (Country cty : Country.leagueCountries) {
+                RateLoader rateLoader = new RateLoader(cty, BEGIN_YEAR, END_YEAR);
+                // Generate board report
+                LeagueMatchLoader league = new LeagueMatchLoader(cty, 2014, 2014);
+                Map<Integer, List<MatchInfo>> yearMatchMap = league.getYearMatchMap();
+                ReportMaker.makeLeagueMatchReport(cty, yearMatchMap, rateLoader);
             }
         } else if (TYPE == 1) {
-            for (Country country : Country.leagueCountries) {
-                // Generate board report
-                LeagueMatchLoader league = new LeagueMatchLoader(country, 2014, 2014);
-                Map<Integer, List<MatchInfo>> yearMatchMap = league.getYearMatchMap();
-                ReportMaker.makeLeagueMatchReport(country, yearMatchMap);
-
-            }
-        } else if (TYPE == 2) {
-            for (int year = BEGIN_YEAR; year < 2015; year++) {
+            for (int year = BEGIN_YEAR; year <= END_YEAR; year++) {
                 MatchReportMaker maker = new MatchReportMaker(Country.JPN_B, year);
                 maker.analyzeMatch();
                 maker.analyzeRate();

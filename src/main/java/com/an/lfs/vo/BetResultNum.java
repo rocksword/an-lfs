@@ -1,12 +1,12 @@
 package com.an.lfs.vo;
 
-import com.an.lfs.enu.BetRet;
+import com.an.lfs.enu.RateBet;
 
 public class BetResultNum {
     private int passNum;
     private int failNum;
 
-    public void addBetResult(BetRet betRet) {
+    public void addBetResult(RateBet betRet) {
         if (betRet.isPass()) {
             passNum++;
         } else if (betRet.isFail()) {

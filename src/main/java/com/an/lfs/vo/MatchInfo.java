@@ -1,23 +1,14 @@
 package com.an.lfs.vo;
 
-import com.an.lfs.LfsUtil;
-import com.an.lfs.enu.ScoreType;
-
 public class MatchInfo {
     private int turn;
     private String date;
     private String host;
     private String score;
     private String guest;
-    private ScoreType scoreType;
 
     public void setScore(String score) {
-        this.scoreType = LfsUtil.getScoreType(score);
         this.score = score;
-    }
-
-    public ScoreType getScoreType() {
-        return scoreType;
     }
 
     public MatchInfo() {

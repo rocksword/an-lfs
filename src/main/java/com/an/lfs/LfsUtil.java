@@ -3,6 +3,7 @@ package com.an.lfs;
 import java.io.File;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,11 +17,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.an.lfs.enu.BetRet;
 import com.an.lfs.enu.CmpType;
 import com.an.lfs.enu.Country;
-import com.an.lfs.enu.ForecastRet;
-import com.an.lfs.enu.ScoreType;
+import com.an.lfs.enu.RateBet;
+import com.an.lfs.enu.Result;
+import com.an.lfs.vo.Cell;
 
 public class LfsUtil {
     private static final Log logger = LogFactory.getLog(LfsUtil.class);
@@ -121,6 +122,23 @@ public class LfsUtil {
     public static final String CL = "cl";
     public static final String EL = "el";
 
+    public static void addComRateHead(RateLoader rateLoader, List<Cell> head) {
+        for (String com : rateLoader.getCompany()) {
+            head.add(new Cell("RateFc"));
+            head.add(new Cell("TrendFc"));
+            head.add(new Cell("RatioFc"));
+            head.add(new Cell(com.substring(0, 1)));
+            head.add(new Cell("D"));
+            head.add(new Cell("L"));
+            head.add(new Cell("W_E"));
+            head.add(new Cell("D_E"));
+            head.add(new Cell("L_E"));
+            head.add(new Cell("W_R"));
+            head.add(new Cell("D_R"));
+            head.add(new Cell("L_R"));
+        }
+    }
+
     public static Comparator<String> floatCompare = new Comparator<String>() {
         @Override
         public int compare(String o1, String o2) {
@@ -171,48 +189,76 @@ public class LfsUtil {
         return false;
     }
 
-    /**
-     * @param win
-     * @param draw
-     * @param lose
-     * @return
-     */
-    public static ForecastRet getForecastRet(float win, float draw, float lose) {
+    public static Result getTrendFc(float win, float draw, float lose, float winEnd, float drawEnd, float loseEnd) {
+        Result ret = Result.NULL;
+        if (winEnd < win && loseEnd >= lose) {
+            ret = Result.WIN;
+        } else if (loseEnd < lose && winEnd >= win) {
+            ret = Result.LOSE;
+        } else if (drawEnd < draw && loseEnd >= lose && winEnd >= win) {
+            ret = Result.DRAW;
+        }
+        return ret;
+    }
+
+    public static Result getRateFc(float win, float draw, float lose) {
         if ((win == 0.0f) || (draw == 0.0f) || (lose == 0.0f)) {
-            return ForecastRet.NULL;
+            return Result.NULL;
         }
 
         float min = win;
-        ForecastRet result = ForecastRet.WIN;
+        Result result = Result.WIN;
 
         if (Float.compare(draw, min) < 0) {
             min = draw;
-            result = ForecastRet.DRAW;
+            result = Result.DRAW;
         }
 
         if (Float.compare(lose, min) < 0) {
             min = lose;
-            result = ForecastRet.LOSE;
+            result = Result.LOSE;
         }
         return result;
     }
 
-    public static BetRet getBetRet(ForecastRet fcRet, ScoreType scoreType) {
-        if (fcRet == null || scoreType == null) {
-            return BetRet.INVALID;
+    public static Result getRatioFc(float wr, float dr, float lr) {
+        Result ret = Result.NULL;
+        if ((wr - dr) > 0 && (wr - lr) > 0) {
+            ret = Result.WIN;
+        } else if ((dr - wr) > 0 && (dr - lr) > 0) {
+            ret = Result.DRAW;
+        } else if (((lr - wr) > 0 && (lr - dr) > 0)) {
+            ret = Result.LOSE;
         }
-        if (fcRet.isInvalid() || scoreType.isInvalid()) {
-            return BetRet.INVALID;
+        return ret;
+    }
+
+    public static Result getRankFc(int hostRank, int guestRank) throws WriteException {
+        Result ret = Result.NULL;
+        if (hostRank < guestRank) {
+            ret = Result.WIN;
+        } else if (hostRank > guestRank) {
+            ret = Result.LOSE;
+        }
+        return ret;
+    }
+
+    public static RateBet getRateBet(Result rateFc, Result scoreRet) {
+        if (rateFc == null || scoreRet == null) {
+            return RateBet.INVALID;
+        }
+        if (rateFc.isNull() || scoreRet.isNull()) {
+            return RateBet.INVALID;
         }
 
-        if (fcRet.isWin() && scoreType.isWin()) {
-            return BetRet.PASS;
-        } else if (fcRet.isDraw() && scoreType.isDraw()) {
-            return BetRet.PASS;
-        } else if (fcRet.isLose() && scoreType.isLose()) {
-            return BetRet.PASS;
+        if (rateFc.isWin() && scoreRet.isWin()) {
+            return RateBet.PASS;
+        } else if (rateFc.isDraw() && scoreRet.isDraw()) {
+            return RateBet.PASS;
+        } else if (rateFc.isLose() && scoreRet.isLose()) {
+            return RateBet.PASS;
         }
-        return BetRet.FAIL;
+        return RateBet.FAIL;
     }
 
     /**
@@ -308,6 +354,13 @@ public class LfsUtil {
                 .append(File.separator).append(filename).toString();
     }
 
+    public static Cell getResultCell(Result result) throws WriteException {
+        boolean isWin = result.isWin();
+        boolean isLose = result.isLose();
+        Cell cell = new Cell(getResultStr(result), isWin ? getRedFont() : (isLose ? getGreenFont() : null));
+        return cell;
+    }
+
     public static WritableCellFormat getGreenFont() throws WriteException {
         WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
                 UnderlineStyle.NO_UNDERLINE, Colour.GREEN);
@@ -367,9 +420,9 @@ public class LfsUtil {
         return wcf;
     }
 
-    public static ScoreType getScoreType(String score) {
-        ScoreType ret = ScoreType.INVALID;
-        if (score != null && !score.trim().isEmpty() && !score.trim().equals("-")) {
+    public static Result getScoreRet(String score) {
+        Result ret = Result.NULL;
+        if (score != null && !score.trim().isEmpty() && !score.trim().equals("-:-")) {
             String[] strs = null;
             if (score.indexOf("-") != -1) {
                 strs = score.trim().split("-");
@@ -378,35 +431,35 @@ public class LfsUtil {
             }
             if (strs.length != 2) {
                 logger.error("Invalid score: " + score);
-                ret = ScoreType.INVALID;
+                ret = Result.NULL;
             } else {
-                ret = ScoreType.WIN;
+                ret = Result.WIN;
                 if (strs[0].trim().compareTo(strs[1].trim()) == 0) {
-                    ret = ScoreType.DRAW;
+                    ret = Result.DRAW;
                 } else if (strs[0].trim().compareTo(strs[1].trim()) < 0) {
-                    ret = ScoreType.LOSE;
+                    ret = Result.LOSE;
                 }
             }
         }
         return ret;
     }
 
-    public static String getScoreTypeStr(ScoreType scoreType) {
-        if (scoreType.isWin()) {
+    public static String getResultStr(Result result) {
+        if (result.isWin()) {
             return WIN;
-        } else if (scoreType.isDraw()) {
+        } else if (result.isDraw()) {
             return DRAW;
-        } else if (scoreType.isLose()) {
+        } else if (result.isLose()) {
             return LOSE;
         } else {
             return NULL;
         }
     }
 
-    public static String getBetRetStr(BetRet betRet) {
-        if (betRet.isPass()) {
+    public static String getRateBetStr(RateBet rateBet) {
+        if (rateBet.isPass()) {
             return PASS;
-        } else if (betRet.isFail()) {
+        } else if (rateBet.isFail()) {
             return FAIL;
         } else {
             return NULL;

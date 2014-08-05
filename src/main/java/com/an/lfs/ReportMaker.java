@@ -19,18 +19,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.an.lfs.enu.Country;
-import com.an.lfs.enu.ScoreType;
+import com.an.lfs.enu.Result;
 import com.an.lfs.vo.BoardTeam;
 import com.an.lfs.vo.Cell;
 import com.an.lfs.vo.MatchInfo;
-import com.an.lfs.vo.TeamMgr;
+import com.an.lfs.vo.MatchRate;
+import com.an.lfs.vo.Rate;
 
 public class ReportMaker {
     private static final Log logger = LogFactory.getLog(ReportMaker.class);
     private static String[] matchReportHeadNames = new String[] { "Year", "T", "Date", "Host", "R", "Score", "PK",
-            "Bet", "Guest", "R", "W", "D", "L", "T3-L3" };
+            "Guest", "R", "TN-LN", "ScoreRet", "RankFc", };
 
-    public static void makeMatchReport(Country country, Map<Integer, List<MatchInfo>> yearMatchMap) throws Exception {
+    public static void makeMatchReport(Country country, Map<Integer, List<MatchInfo>> yearMatchMap,
+            RateLoader rateLoader) throws Exception {
         if (yearMatchMap.isEmpty()) {
             return;
         }
@@ -41,7 +43,9 @@ public class ReportMaker {
         BoardLoader board = new BoardLoader(country);
 
         List<List<Cell>> rows = new ArrayList<>();
-        rows.add(getMatchReportHead());
+        List<Cell> head = getMatchReportHead();
+        LfsUtil.addComRateHead(rateLoader, head);
+        rows.add(head);
 
         int totalYear = years.size();
         for (int i = 0; i < totalYear; i++) {
@@ -64,21 +68,14 @@ public class ReportMaker {
 
                 String host = mi.getHost();
                 String guest = mi.getGuest();
-                String hostName = TeamMgr.getName(country, host, year);
-                String guestName = TeamMgr.getName(country, guest, year);
 
                 List<Cell> row = new ArrayList<>();
                 row.add(new Cell(year));
                 row.add(new Cell(mi.getTurn()));
                 row.add(new Cell(mi.getDate().substring(0, 5)));
 
-                WritableCellFormat hostFmt = null;
-                if (isHostTopN) {
-                    hostFmt = LfsUtil.getRoseFmt();
-                } else if (isHostLastN) {
-                    hostFmt = LfsUtil.getYellowFmt();
-                }
-                row.add(new Cell(hostName, hostFmt));
+                row.add(new Cell(host, isHostTopN ? LfsUtil.getRoseFmt()
+                        : (isHostLastN ? LfsUtil.getYellowFmt() : null)));
 
                 Integer hostRank = getTeamRank(teamRank, host);
                 Integer guestRank = getTeamRank(teamRank, guest);
@@ -87,23 +84,19 @@ public class ReportMaker {
                 row.add(new Cell(mi.getScore()));
 
                 row.add(new Cell(LfsUtil.getRankPKString(hostRank, guestRank)));
-                row.add(getRankBet(hostRank, guestRank, mi.getScoreType()));// Rank bet
-
-                WritableCellFormat guestFmt = null;
-                if (isGuestTopN) {
-                    guestFmt = LfsUtil.getRoseFmt();
-                } else if (isGuestLastN) {
-                    guestFmt = LfsUtil.getYellowFmt();
-                }
-                row.add(new Cell(guestName, guestFmt));
+                row.add(new Cell(guest, isGuestTopN ? LfsUtil.getRoseFmt() : (isGuestLastN ? LfsUtil.getYellowFmt()
+                        : null)));
 
                 row.add(new Cell(guestRank));
-//                row.add(new Cell(mi.getWin()));
-//                row.add(new Cell(mi.getDraw()));
-//                row.add(new Cell(mi.getLose()));
-
                 row.add(new Cell(getTopLastStr(isHostTopN, isGuestTopN, isHostLastN, isGuestLastN, host, guest,
                         teamRank)));
+
+                // Score result
+                row.add(LfsUtil.getResultCell(LfsUtil.getScoreRet(mi.getScore())));
+                // Rank forecast
+                row.add(LfsUtil.getResultCell(LfsUtil.getRankFc(hostRank, guestRank)));
+
+                addComRate(rateLoader, host, guest, row);
                 rows.add(row);
             }
         }
@@ -115,6 +108,16 @@ public class ReportMaker {
         addRows(sheet, rows);
         wb.write();
         wb.close();
+    }
+
+    private static WritableCellFormat getFont(float win, float winEnd) throws WriteException {
+        WritableCellFormat font = null;
+        if (winEnd > win) {
+            font = LfsUtil.getRoseFont();
+        } else if (winEnd < win) {
+            font = LfsUtil.getBlueFont();
+        }
+        return font;
     }
 
     private static String getTopLastStr(boolean isHostTopN, boolean isGuestTopN, boolean isHostLastN,
@@ -135,18 +138,6 @@ public class ReportMaker {
             ret = ret + " - " + "  ";
         }
         return ret;
-    }
-
-    private static Cell getRankBet(int hostRank, int guestRank, ScoreType scoreType) throws WriteException {
-        if (scoreType.isInvalid()) {
-            return new Cell(LfsUtil.NULL);
-        } else if (scoreType.isWin() && hostRank < guestRank) {
-            return new Cell(LfsUtil.PASS);
-        } else if (scoreType.isLose() && hostRank > guestRank) {
-            return new Cell(LfsUtil.PASS);
-        } else {
-            return new Cell(LfsUtil.FAIL, LfsUtil.getBlueFont());
-        }
     }
 
     private static Integer getTeamRank(Map<String, Integer> teamRank, String team) {
@@ -200,11 +191,10 @@ public class ReportMaker {
         wb.close();
     }
 
-    private static String[] leagueMatchReportHeadNames = new String[] { "Date", "Host", "Score", "SR", "Bet", "Guest",
-            "W", "D", "L" };
+    private static String[] leagueMatchReportHeadNames = new String[] { "Date", "Host", "Score", "Guest", "ScoreRet" };
 
-    public static void makeLeagueMatchReport(Country country, Map<Integer, List<MatchInfo>> yearMatchMap)
-            throws Exception {
+    public static void makeLeagueMatchReport(Country country, Map<Integer, List<MatchInfo>> yearMatchMap,
+            RateLoader rateLoader) throws Exception {
         if (yearMatchMap.isEmpty()) {
             return;
         }
@@ -213,7 +203,9 @@ public class ReportMaker {
         Collections.sort(years);
 
         List<List<Cell>> rows = new ArrayList<>();
-        rows.add(getLeagueMatchReportHead());
+        List<Cell> head = getLeagueMatchReportHead();
+        LfsUtil.addComRateHead(rateLoader, head);
+        rows.add(head);
 
         int totalYear = years.size();
         for (int i = 0; i < totalYear; i++) {
@@ -225,19 +217,16 @@ public class ReportMaker {
 
                 String host = mi.getHost();
                 String guest = mi.getGuest();
-                String hostName = TeamMgr.getName(country, host, year);
-                String guestName = TeamMgr.getName(country, guest, year);
 
                 List<Cell> row = new ArrayList<>();
                 row.add(new Cell(mi.getDate()));
-                row.add(new Cell(hostName));
+                row.add(new Cell(host));
                 row.add(new Cell(mi.getScore()));
-                row.add(new Cell(LfsUtil.getScoreTypeStr(mi.getScoreType())));
-//                row.add(new Cell(LfsUtil.getBetRetStr(mi.getBetRet())));
-                row.add(new Cell(guestName));
-//                row.add(new Cell(mi.getWin()));
-//                row.add(new Cell(mi.getDraw()));
-//                row.add(new Cell(mi.getLose()));
+                row.add(new Cell(guest));
+                row.add(LfsUtil.getResultCell(LfsUtil.getScoreRet(mi.getScore())));
+
+                addComRate(rateLoader, host, guest, row);
+
                 rows.add(row);
             }
         }
@@ -249,6 +238,45 @@ public class ReportMaker {
         addRows(sheet, rows);
         wb.write();
         wb.close();
+    }
+
+    private static void addComRate(RateLoader rateLoader, String host, String guest, List<Cell> row)
+            throws WriteException {
+        MatchRate mr = rateLoader.getMatchRate(host, guest);
+        if (mr == null) {
+            return;
+        }
+        for (String com : mr.getCompany()) {
+            Rate rate = mr.getRate(com);
+            float win = rate.getWin();
+            float draw = rate.getDraw();
+            float lose = rate.getLose();
+            float winEnd = rate.getWinEnd();
+            float drawEnd = rate.getDrawEnd();
+            float loseEnd = rate.getLoseEnd();
+            float winRatio = rate.getWinRatio();
+            float drawRatio = rate.getDrawRatio();
+            float loseRatio = rate.getLoseRatio();
+
+            // Rate forecast
+            row.add(LfsUtil.getResultCell(LfsUtil.getRateFc(winEnd, drawEnd, loseEnd)));
+            // Trend forecast
+            row.add(LfsUtil.getResultCell(LfsUtil.getTrendFc(win, draw, lose, winEnd, drawEnd, loseEnd)));
+            // Ratio forecast
+            row.add(LfsUtil.getResultCell(LfsUtil.getRatioFc(winRatio, drawRatio, loseRatio)));
+
+            row.add(new Cell(win));
+            row.add(new Cell(draw));
+            row.add(new Cell(lose));
+            row.add(new Cell(winEnd, getFont(win, winEnd)));
+            row.add(new Cell(drawEnd, getFont(draw, drawEnd)));
+            row.add(new Cell(loseEnd, getFont(lose, loseEnd)));
+
+            Result ret = LfsUtil.getRatioFc(winRatio, drawRatio, loseRatio);
+            row.add(new Cell(winRatio, ret.isWin() ? LfsUtil.getRedFont() : null));
+            row.add(new Cell(drawRatio, ret.isDraw() ? LfsUtil.getRedFont() : null));
+            row.add(new Cell(loseRatio, ret.isLose() ? LfsUtil.getRedFont() : null));
+        }
     }
 
     private static List<Cell> getLeagueMatchReportHead() {

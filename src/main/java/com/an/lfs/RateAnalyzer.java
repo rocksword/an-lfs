@@ -7,12 +7,13 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.an.lfs.enu.BetRet;
 import com.an.lfs.enu.Country;
+import com.an.lfs.enu.RateBet;
+import com.an.lfs.enu.Result;
 import com.an.lfs.enu.TeamType;
 import com.an.lfs.tool.FileLineIterator;
 import com.an.lfs.vo.CompanyMgr;
-import com.an.lfs.vo.MatchRate;
+import com.an.lfs.vo.MatchRateWy;
 import com.an.lfs.vo.MatchSummary;
 import com.an.lfs.vo.Rate;
 
@@ -20,7 +21,7 @@ public abstract class RateAnalyzer extends MatchAnalyzer {
     private static final Log logger = LogFactory.getLog(RateAnalyzer.class);
     protected MatchSummary matSum = new MatchSummary();
     // rateKey -> RateSummary
-    protected Map<String, MatchRate> matRateMap = new HashMap<String, MatchRate>();
+    protected Map<String, MatchRateWy> matRateMap = new HashMap<String, MatchRateWy>();
 
     /**
      * @param country
@@ -31,31 +32,31 @@ public abstract class RateAnalyzer extends MatchAnalyzer {
     }
 
     public void analyzeRate() {
-        for (String matchKey : super.matchMap.keySet()) {
-            String filepath = LfsUtil.getInputFilePath(country, year, matchKey + ".txt");
+        for (String matchId : super.matchMap.keySet()) {
+            String filepath = LfsUtil.getInputFilePath(country, year, matchId + ".txt");
             logger.debug("filepath: " + filepath);
-            MatchRate matRate = parse(filepath);
-            matRate.setScoreType(super.getMatch(matchKey).getScoreType());
+            MatchRateWy mr = parse(filepath);
+            mr.setScoreRet(LfsUtil.getScoreRet(super.getMatch(matchId).getScore()));
 
-            if (!matRate.getCompanyRateMap().isEmpty()) {
-                matRateMap.put(matchKey, matRate);
+            if (!mr.getCompanyRateMap().isEmpty()) {
+                matRateMap.put(matchId, mr);
 
-                matSum.addForecastScoreRet(matRate.getFcRet(), matchMap.get(matchKey).getScoreType());
-                matSum.addBetRet(matRate.getBetRet());
-
-                BetRet betRet = matRate.getBetRet();
-                matSum.addTeamBetResult(TeamType.HOST, matRate.getRateType(TeamType.HOST), betRet);
-                matSum.addTeamBetResult(TeamType.MID, matRate.getRateType(TeamType.MID), betRet);
-                matSum.addTeamBetResult(TeamType.GUEST, matRate.getRateType(TeamType.GUEST), betRet);
+                Result rateFc = LfsUtil.getRateFc(mr.getWinEnd(), mr.getDrawEnd(), mr.getLoseEnd());
+                matSum.addRateFc(rateFc, LfsUtil.getScoreRet(matchMap.get(matchId).getScore()));
+                RateBet rb = LfsUtil.getRateBet(rateFc, mr.getScoreRet());
+                matSum.addBetRet(rb);
+                matSum.addTeamBetResult(TeamType.HOST, mr.getRateType(TeamType.HOST), rb);
+                matSum.addTeamBetResult(TeamType.MID, mr.getRateType(TeamType.MID), rb);
+                matSum.addTeamBetResult(TeamType.GUEST, mr.getRateType(TeamType.GUEST), rb);
             } else {
-                logger.warn("Empty company rate map, " + matRate);
+                logger.warn("Empty company rate map, " + mr);
             }
         }
     }
 
-    private MatchRate parse(String filepath) {
+    private MatchRateWy parse(String filepath) {
         logger.debug("filepath: " + filepath);
-        MatchRate matRate = new MatchRate();
+        MatchRateWy matRate = new MatchRateWy();
         matRate.setFilepath(filepath);
 
         try (FileLineIterator iter = new FileLineIterator(filepath);) {

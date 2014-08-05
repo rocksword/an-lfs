@@ -1,18 +1,17 @@
 package com.an.lfs.enu;
 
 /**
- * Parse from average rate<br>
- * 2.1 3.1 4.1 -> Win<br>
- * 3.1 2.1 4.1 -> Draw<br>
- * 4.1 3.1 2.1 -> Lose<br>
+ * 
+ * Result value
  */
-public enum ForecastRet {
+public enum Result {
     NULL("NULL"), //
     WIN("Win"), //
     DRAW("Draw"), //
     LOSE("Lose");
+    public static Result[] allResults = new Result[] { WIN, DRAW, LOSE };
 
-    public boolean isInvalid() {
+    public boolean isNull() {
         return val.equals(NULL.getVal());
     }
 
@@ -30,7 +29,7 @@ public enum ForecastRet {
 
     private String val;
 
-    private ForecastRet(String val) {
+    private Result(String val) {
         this.val = val;
     }
 

@@ -1,6 +1,6 @@
 package com.an.lfs.enu;
 
-public enum BetRet {
+public enum RateBet {
     INVALID("INVALID"), //
     PASS("Pass"), //
     FAIL("Fail"); //
@@ -19,7 +19,7 @@ public enum BetRet {
 
     private String val;
 
-    private BetRet(String val) {
+    private RateBet(String val) {
         this.val = val;
     }
 
