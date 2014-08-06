@@ -3,7 +3,9 @@ package com.an.lfs;
 import java.io.File;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +24,7 @@ import com.an.lfs.enu.Country;
 import com.an.lfs.enu.RateBet;
 import com.an.lfs.enu.Result;
 import com.an.lfs.vo.Cell;
+import com.an.lfs.vo.MatchRule;
 
 public class LfsUtil {
     private static final Logger logger = LoggerFactory.getLogger(LfsUtil.class);
@@ -126,7 +129,7 @@ public class LfsUtil {
         for (String com : rateLoader.getCompany()) {
             head.add(new Cell("RateFc"));
             head.add(new Cell("TrendFc"));
-            head.add(new Cell("RatioFc"));
+            head.add(new Cell("Forecast"));
             head.add(new Cell(com.substring(0, 1)));
             head.add(new Cell("D"));
             head.add(new Cell("L"));
@@ -145,6 +148,26 @@ public class LfsUtil {
             return Float.compare(Float.parseFloat(o1), Float.parseFloat(o2));
         }
     };
+
+    public static Map<String, MatchRule> leagueForecastRuleMap = new HashMap<>();
+    static {
+        // 80%
+        MatchRule rule = new MatchRule(Result.LOSE, Result.DRAW, Result.LOSE);
+        leagueForecastRuleMap.put(rule.getForecastId(), rule);
+        // 50%
+        rule = new MatchRule(Result.LOSE, Result.WIN, Result.DRAW);
+        leagueForecastRuleMap.put(rule.getForecastId(), rule);
+    }
+
+    public static Map<String, MatchRule> jpnForecastRuleMap = new HashMap<>();
+    static {
+        // 80%
+        MatchRule rule = new MatchRule(Result.LOSE, Result.DRAW, Result.LOSE);
+        jpnForecastRuleMap.put(rule.getForecastId(), rule);
+        // 50%
+        rule = new MatchRule(Result.LOSE, Result.WIN, Result.DRAW);
+        jpnForecastRuleMap.put(rule.getForecastId(), rule);
+    }
 
     public static CmpType getTrend(float win, float draw, float lose, float winEnd, float drawEnd, float loseEnd) {
         if (winEnd == 0.0f || drawEnd == 0.0f || loseEnd == 0.0f) {
@@ -193,9 +216,15 @@ public class LfsUtil {
         Result ret = Result.NULL;
         if (winEnd < win && loseEnd >= lose) {
             ret = Result.WIN;
+        } else if (winEnd <= win && loseEnd > lose) {
+            ret = Result.WIN;
         } else if (loseEnd < lose && winEnd >= win) {
             ret = Result.LOSE;
+        } else if (loseEnd <= lose && winEnd > win) {
+            ret = Result.LOSE;
         } else if (drawEnd < draw && loseEnd >= lose && winEnd >= win) {
+            ret = Result.DRAW;
+        } else if (drawEnd <= draw && loseEnd > lose && winEnd > win) {
             ret = Result.DRAW;
         }
         return ret;
@@ -221,6 +250,7 @@ public class LfsUtil {
         return result;
     }
 
+    // Not used not, for ratio FC is always equal rate FC
     public static Result getRatioFc(float wr, float dr, float lr) {
         Result ret = Result.NULL;
         if ((wr - dr) > 0 && (wr - lr) > 0) {
@@ -469,6 +499,15 @@ public class LfsUtil {
     public static String getRankPKString(int hostRank, int guestRank) {
         String ret = String.format(" %02d - %02d", hostRank, guestRank);
         return ret;
+    }
+
+    public static String getMatchRuleId(Result rateFc, Result trendFc, Result scoreRet) {
+        return String.format("%s  %s  %s", LfsUtil.getResultStr(rateFc), LfsUtil.getResultStr(trendFc),
+                LfsUtil.getResultStr(scoreRet));
+    }
+
+    public static String getForecastId(Result rateFc, Result trendFc) {
+        return String.format("%s  %s", LfsUtil.getResultStr(rateFc), LfsUtil.getResultStr(trendFc));
     }
 
     // invalid chars in domain names
