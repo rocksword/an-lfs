@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.an.lfs.enu.Country;
 import com.an.lfs.enu.RateBet;
@@ -18,7 +18,7 @@ import com.an.lfs.vo.MatchSummary;
 import com.an.lfs.vo.Rate;
 
 public abstract class RateAnalyzer extends MatchAnalyzer {
-    private static final Log logger = LogFactory.getLog(RateAnalyzer.class);
+    private static final Logger logger = LoggerFactory.getLogger(RateAnalyzer.class);
     protected MatchSummary matSum = new MatchSummary();
     // rateKey -> RateSummary
     protected Map<String, MatchRateWy> matRateMap = new HashMap<String, MatchRateWy>();

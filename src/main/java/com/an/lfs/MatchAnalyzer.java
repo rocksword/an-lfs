@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.an.lfs.enu.Country;
 import com.an.lfs.tool.FileLineIterator;
@@ -14,7 +14,7 @@ import com.an.lfs.vo.Match;
 import com.an.lfs.vo.TeamMgr;
 
 public abstract class MatchAnalyzer implements Analyze {
-    private static final Log logger = LogFactory.getLog(MatchAnalyzer.class);
+    private static final Logger logger = LoggerFactory.getLogger(MatchAnalyzer.class);
     protected Country country;
     protected int year;
     // Match Key ( year_index_host_guest) -> Match, get from match.txt

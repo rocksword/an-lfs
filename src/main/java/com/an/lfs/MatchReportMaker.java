@@ -15,8 +15,8 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.an.lfs.enu.CmpType;
 import com.an.lfs.enu.Country;
@@ -32,7 +32,7 @@ import com.an.lfs.vo.MatchRateWy;
 import com.an.lfs.vo.TeamMgr;
 
 public class MatchReportMaker extends RateAnalyzer {
-    private static final Log logger = LogFactory.getLog(MatchReportMaker.class);
+    private static final Logger logger = LoggerFactory.getLogger(MatchReportMaker.class);
     // '- + -' -> [3,3]
     private Map<CmpType, BetResultNum> cmpBetRetNumMap = new HashMap<>();
     private WritableWorkbook wb = null;

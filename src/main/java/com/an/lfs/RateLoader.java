@@ -67,11 +67,16 @@ public class RateLoader {
         }
 
         for (File f : files) {
+            String file = f.toString();
+            if (!file.endsWith(".xls")) {
+                logger.info("Ignore file {}", file);
+                continue;
+            }
             try {
-                MatchRate matchRate = readExcel(f.toString(), comList);
+                MatchRate matchRate = readExcel(file, comList);
                 matchRateMap.put(matchRate.getMatchId(), matchRate);
             } catch (Exception e) {
-                logger.error("file: " + f.toString());
+                logger.error("file: " + file);
                 e.printStackTrace();
             }
         }

@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.an.lfs.enu.Country;
 import com.an.lfs.tool.FileLineIterator;
@@ -16,7 +16,7 @@ import com.an.lfs.vo.TeamMgr;
 
 //jpn_b_2014.txt
 public class MatchLoader {
-    private static final Log logger = LogFactory.getLog(MatchLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(MatchLoader.class);
     private Country country;
     private int startYear;
     private int endYear;

@@ -14,8 +14,8 @@ import jxl.write.WritableFont;
 import jxl.write.WriteException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.an.lfs.enu.CmpType;
 import com.an.lfs.enu.Country;
@@ -24,7 +24,7 @@ import com.an.lfs.enu.Result;
 import com.an.lfs.vo.Cell;
 
 public class LfsUtil {
-    private static final Log logger = LogFactory.getLog(LfsUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(LfsUtil.class);
 
     public static final String LFS_HOME = "LFS_HOME";
     public static int CURRENT_YEAR = 2014;
@@ -519,7 +519,7 @@ public class LfsUtil {
     public static void logCollection(Collection<?> collection) {
         logger.info("Total size: " + collection.size());
         for (Object obj : collection) {
-            logger.info(obj);
+            logger.info(obj.toString());
         }
     }
 }

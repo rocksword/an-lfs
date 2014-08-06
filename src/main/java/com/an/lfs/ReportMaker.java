@@ -16,8 +16,8 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.an.lfs.enu.Country;
 import com.an.lfs.enu.Result;
@@ -28,7 +28,7 @@ import com.an.lfs.vo.MatchRate;
 import com.an.lfs.vo.Rate;
 
 public class ReportMaker {
-    private static final Log logger = LogFactory.getLog(ReportMaker.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReportMaker.class);
     private static String[] matchReportHeadNames = new String[] { "Year", "T", "Date", "Host", "R", "Score", "PK",
             "Guest", "R", "TN-LN", "ScoreRet", "RankFc", };
 
