@@ -24,6 +24,7 @@ public class BoardLoader {
 
     private void load() {
         String filepath = LfsUtil.getInputFilePath(country);
+        logger.info("filepath: " + filepath);
         File f = new File(filepath);
         if (!f.exists()) {
             logger.debug("Not found " + filepath);
@@ -95,7 +96,13 @@ public class BoardLoader {
         Set<String> ret = new HashSet<>();
         List<BoardTeam> list = boardTeamMap.get(year);
         for (int i = 0; i < LfsUtil.TOP_N; i++) {
-            ret.add(list.get(i).getTeam());
+            try {
+                String team = list.get(i).getTeam();
+                ret.add(team);
+            } catch (Exception e) {
+                logger.error(year + ", " + list);
+                logger.error(e);
+            }
         }
         return ret;
     }

@@ -10,11 +10,11 @@ import org.apache.log4j.PropertyConfigurator;
 
 import com.an.lfs.enu.Country;
 import com.an.lfs.vo.BoardTeam;
-import com.an.lfs.vo.MatchRuleMgr;
 import com.an.lfs.vo.MatchInfo;
+import com.an.lfs.vo.MatchRuleMgr;
 
 public class LfsMain {
-    private static int BEGIN_YEAR = 2014;
+    private static int BEGIN_YEAR = 2013;
     private static int END_YEAR = 2014;
     private static int TYPE = 0;
 
@@ -35,7 +35,7 @@ public class LfsMain {
 
                 ReportMaker.makeGeneralMatchReport(cty, yearMatchMap, rateLoader, matchRuleMgr);
             }
-
+        } else if (TYPE == 1) {
             for (Country cty : Country.leagueCountries) {
                 RateLoader rateLoader = new RateLoader(cty, BEGIN_YEAR, END_YEAR);
 
@@ -46,7 +46,7 @@ public class LfsMain {
 
                 ReportMaker.makeLeagueMatchReport(cty, yearMatchMap, rateLoader, matchRuleMgr);
             }
-        } else if (TYPE == 1) {
+        } else if (TYPE == 2) {
             for (int year = BEGIN_YEAR; year <= END_YEAR; year++) {
                 MatchReportMaker maker = new MatchReportMaker(Country.JPN_B, year);
                 maker.analyzeMatch();

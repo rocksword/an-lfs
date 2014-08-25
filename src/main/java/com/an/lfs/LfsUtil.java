@@ -25,13 +25,14 @@ import com.an.lfs.enu.RateBet;
 import com.an.lfs.enu.Result;
 import com.an.lfs.vo.Cell;
 import com.an.lfs.vo.MatchRule;
+import com.an.lfs.vo.Rate;
 
 public class LfsUtil {
     private static final Logger logger = LoggerFactory.getLogger(LfsUtil.class);
 
     public static final String LFS_HOME = "LFS_HOME";
     public static int CURRENT_YEAR = 2014;
-    public static int TOP_N = 5;
+    public static int TOP_N = 3;
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String DATE_FORMAT_FULL = "yyyy-MM-dd hh:mm:ss";
     public static final String HADOOP_INSTALL = "HADOOP_INSTALL";
@@ -111,6 +112,8 @@ public class LfsUtil {
 
     public static final String BRA = "bra";
     public static final String ENG = "eng";
+    public static final String ENG_B = "eng_b";
+    public static final String ENG_C = "eng_c";
     public static final String ESP = "esp";
     public static final String FRA = "fra";
     public static final String FRA_B = "fra_b";
@@ -130,6 +133,7 @@ public class LfsUtil {
             head.add(new Cell("RateFc"));
             head.add(new Cell("TrendFc"));
             head.add(new Cell("Forecast"));
+            head.add(new Cell("D-Val"));
             head.add(new Cell(com.substring(0, 1)));
             head.add(new Cell("D"));
             head.add(new Cell("L"));
@@ -230,6 +234,40 @@ public class LfsUtil {
         return ret;
     }
 
+    public static String getDValueCategory(Rate rate) {
+        float d = rate.getWinEnd() - rate.getLoseEnd();
+        if ((d - (-6)) < 0) {
+            return "<-6";
+        } else if ((d - (-5)) < 0) {
+            return "<-5";
+        } else if ((d - (-4)) < 0) {
+            return "<-4";
+        } else if ((d - (-3)) < 0) {
+            return "<-3";
+        } else if ((d - (-2)) < 0) {
+            return "<-2";
+        } else if ((d - (-1)) < 0) {
+            return "<-1";
+        } else if ((d - 0) < 0) {
+            return "- 0";
+        } else if ((d - 1) < 0) {
+            return "+ 0";
+        } else if ((d - 2) < 0) {
+            return "> 1";
+        } else if ((d - 3) < 0) {
+            return "> 2";
+        } else if ((d - 4) < 0) {
+            return "> 3";
+        } else if ((d - 5) < 0) {
+            return "> 4";
+        } else if ((d - 6) < 0) {
+            return "> 5";
+        } else if ((d - 7) < 0) {
+            return "> 6";
+        }
+        return "<>";
+    }
+
     public static Result getRateFc(float win, float draw, float lose) {
         if ((win == 0.0f) || (draw == 0.0f) || (lose == 0.0f)) {
             return Result.NULL;
@@ -247,6 +285,7 @@ public class LfsUtil {
             min = lose;
             result = Result.LOSE;
         }
+
         return result;
     }
 

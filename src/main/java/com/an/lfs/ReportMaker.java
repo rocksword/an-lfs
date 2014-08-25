@@ -47,7 +47,7 @@ public class ReportMaker {
         List<Integer> years = new ArrayList<>();
         years.addAll(yearMatchMap.keySet());
         Collections.sort(years);
-
+        logger.info("years: " + years);
         BoardLoader board = new BoardLoader(country);
 
         List<List<Cell>> rows = new ArrayList<>();
@@ -102,6 +102,7 @@ public class ReportMaker {
                 // Score result
                 Result scoreRet = LfsUtil.getScoreRet(mi.getScore());
                 row.add(LfsUtil.getResultCell(scoreRet));
+
                 // Rank forecast
                 row.add(LfsUtil.getResultCell(LfsUtil.getRankFc(hostRank, guestRank)));
 
@@ -345,6 +346,8 @@ public class ReportMaker {
             } else {
                 row.add(new Cell(""));
             }
+            // D value
+            row.add(new Cell(LfsUtil.getDValueCategory(rate)));
 
             row.add(new Cell(win));
             row.add(new Cell(draw));

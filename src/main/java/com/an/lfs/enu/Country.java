@@ -9,6 +9,8 @@ public enum Country {
     INVALID("INVALID"), //
     BRA(LfsUtil.BRA), //
     ENG(LfsUtil.ENG), //
+    ENG_B(LfsUtil.ENG_B), //
+    ENG_C(LfsUtil.ENG_C), //
     ESP(LfsUtil.ESP), //
     FRA(LfsUtil.FRA), //
     FRA_B(LfsUtil.FRA_B), //
@@ -25,13 +27,15 @@ public enum Country {
 
     // public static Country[] allCountries = new Country[] { BRA, ENG, ESP, FRA, GER, ITA, JPN, JPN_B, NOR, KOR, SWE,
     // USA };
-    public static Country[] allCountries = new Country[] { JPN, JPN_B };
-    public static Country[] leagueCountries = new Country[] { CL, EL };
+    public static Country[] allCountries = new Country[] { JPN, JPN_B, FRA_B, ENG_B, ENG_C };
+    public static Country[] leagueCountries = new Country[] { EL };
 
     public static Map<String, Country> countryMap = new HashMap<>();
     static {
         countryMap.put(LfsUtil.BRA, BRA);
         countryMap.put(LfsUtil.ENG, ENG);
+        countryMap.put(LfsUtil.ENG_B, ENG_B);
+        countryMap.put(LfsUtil.ENG_C, ENG_C);
         countryMap.put(LfsUtil.ESP, ESP);
         countryMap.put(LfsUtil.FRA, FRA);
         countryMap.put(LfsUtil.FRA_B, FRA_B);

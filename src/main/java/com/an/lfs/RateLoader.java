@@ -60,6 +60,9 @@ public class RateLoader {
         File dirFile = new File(dir);
         List<String> comList = LfsConfMgr.getCompany(country);
         logger.info("Load rate {} {} {}", country.getVal(), year, comList);
+        if (comList == null || comList.isEmpty()) {
+            throw new RuntimeException("Empty comList.");
+        }
         File[] files = dirFile.listFiles();
         if (files == null) {
             logger.warn("Not found rate files.");

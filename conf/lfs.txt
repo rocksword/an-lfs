@@ -1,9 +1,12 @@
 {
     "countryCompanies": {
         "bra":   ["平均欧赔", "竞彩官方(胜平负)", "William"],
-        "eng":   ["平均欧赔", "竞彩官方(胜平负)", "William", "LiBo", "Bet365"],
+        "eng":   ["平均欧赔"],
+        "eng_b":   ["平均欧赔"],
+        "eng_c":   ["平均欧赔"],
         "esp":   ["平均欧赔", "竞彩官方(胜平负)", "WeiDe", "Bwin", "William"],
         "fra":   ["平均欧赔", "竞彩官方(胜平负)", "William"],
+        "fra_b":   ["平均欧赔"],
         "ger":   ["平均欧赔", "竞彩官方(胜平负)", "Oddset", "William"],
         "ita":   ["平均欧赔", "竞彩官方(胜平负)", "SNAI", "William"],
         "jpn":   ["平均欧赔"],
