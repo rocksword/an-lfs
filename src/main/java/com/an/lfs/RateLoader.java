@@ -47,12 +47,9 @@ public class RateLoader {
         return matchRateMap.get(getMatchId(host, guest));
     }
 
-    public RateLoader(Country country, int startYear, int endYear) {
+    public RateLoader(Country country, int year) {
         this.country = country;
-
-        for (int year = startYear; year <= endYear; year++) {
-            load(year);
-        }
+        load(year);
     }
 
     private void load(int year) {

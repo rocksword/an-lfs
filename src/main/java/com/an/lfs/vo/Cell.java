@@ -6,6 +6,11 @@ public class Cell {
     private String val;
     private WritableCellFormat fmt;
 
+    @Override
+    public String toString() {
+        return "Cell [val=" + val + ", fmt=" + fmt + "]";
+    }
+
     public Cell(String val) {
         this.val = val;
     }

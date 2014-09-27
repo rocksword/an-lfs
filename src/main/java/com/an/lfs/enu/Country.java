@@ -7,6 +7,7 @@ import com.an.lfs.LfsUtil;
 
 public enum Country {
     INVALID("INVALID"), //
+    ARG(LfsUtil.ARG), //
     BRA(LfsUtil.BRA), //
     ENG(LfsUtil.ENG), //
     ENG_B(LfsUtil.ENG_B), //
@@ -30,11 +31,11 @@ public enum Country {
 
     // public static Country[] allCountries = new Country[] { BRA, ENG, ESP, FRA, GER, ITA, JPN, JPN_B, NOR, KOR, SWE,
     // USA };
-    public final static Country[] ALL_COUNTRY = new Country[] { ENG_C };
     public final static Country[] LEAGUE_COUNTRY = new Country[] { EL };
 
     public static Map<String, Country> countryMap = new HashMap<>();
     static {
+        countryMap.put(LfsUtil.ARG, ARG);
         countryMap.put(LfsUtil.BRA, BRA);
         countryMap.put(LfsUtil.ENG, ENG);
         countryMap.put(LfsUtil.ENG_B, ENG_B);

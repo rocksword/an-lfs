@@ -18,8 +18,6 @@ import com.an.lfs.vo.TeamMgr;
 public class MatchLoader {
     private static final Logger logger = LoggerFactory.getLogger(MatchLoader.class);
     private Country country;
-    private int startYear;
-    private int endYear;
 
     // Year ->
     private Map<Integer, List<MatchInfo>> yearMatchMap = new HashMap<>();
@@ -28,50 +26,44 @@ public class MatchLoader {
         return yearMatchMap;
     }
 
-    public MatchLoader(Country country, int startYear, int endYear) {
+    public MatchLoader(Country country, int year) {
         this.country = country;
-        this.startYear = startYear;
-        this.endYear = endYear;
-        load();
+        load(year);
     }
 
-    private void load() {
-        for (int year = startYear; year <= endYear; year++) {
-            String filepath = LfsUtil.getInputFilePath(country, year);
-            File f = new File(filepath);
-            if (!f.exists()) {
-                logger.debug("Not found " + filepath);
-                continue;
-            }
-
-            List<MatchInfo> matchList = new ArrayList<>();
-
-            String line = null;
-            try (FileLineIterator iter = new FileLineIterator(filepath);) {
-                while ((line = iter.nextLine()) != null) {
-                    line = line.trim();
-                    if (!line.isEmpty()) {
-                        String[] strs = line.split(",");
-                        if (strs.length == 6 || strs.length == 7) {
-                            MatchInfo mi = new MatchInfo();
-                            mi.setTurn(Integer.parseInt(strs[0].trim()));
-                            mi.setDate(strs[1].trim().substring(0, strs[1].indexOf(" ")));
-                            mi.setHost(TeamMgr.getName(country, strs[2].trim(), year));
-                            mi.setScore(strs[3].trim());
-                            mi.setGuest(TeamMgr.getName(country, strs[4].trim(), year));
-                            matchList.add(mi);
-                        } else {
-                            logger.error("strs.length: " + strs.length);
-                            logger.error("Invalid line: " + line);
-                        }
+    private void load(int year) {
+        String filepath = LfsUtil.getInputFilePath(country, year);
+        File f = new File(filepath);
+        if (!f.exists()) {
+            logger.warn("Not found " + filepath);
+            return;
+        }
+        List<MatchInfo> matchList = new ArrayList<>();
+        String line = null;
+        try (FileLineIterator iter = new FileLineIterator(filepath);) {
+            while ((line = iter.nextLine()) != null) {
+                line = line.trim();
+                if (!line.isEmpty()) {
+                    String[] strs = line.split(",");
+                    if (strs.length == 6 || strs.length == 7) {
+                        MatchInfo mi = new MatchInfo();
+                        mi.setTurn(Integer.parseInt(strs[0].trim()));
+                        mi.setDate(strs[1].trim().substring(0, strs[1].indexOf(" ")));
+                        mi.setHost(TeamMgr.getName(country, strs[2].trim(), year));
+                        mi.setScore(strs[3].trim());
+                        mi.setGuest(TeamMgr.getName(country, strs[4].trim(), year));
+                        matchList.add(mi);
+                    } else {
+                        logger.error("strs.length: " + strs.length);
+                        logger.error("Invalid line: " + line);
                     }
                 }
-            } catch (Exception e) {
-                logger.error("Invalid line: " + line);
-                e.printStackTrace();
-                continue;
             }
-            yearMatchMap.put(year, matchList);
+        } catch (Exception e) {
+            logger.error("Invalid line: " + line);
+            e.printStackTrace();
+            return;
         }
+        yearMatchMap.put(year, matchList);
     }
 }

@@ -1,6 +1,7 @@
 package com.an.lfs;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -29,6 +30,8 @@ import com.an.lfs.vo.Rate;
 
 public class LfsUtil {
     private static final Logger logger = LoggerFactory.getLogger(LfsUtil.class);
+
+    public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("##0.00");
 
     public static final String LFS_HOME = "LFS_HOME";
     public static int CURRENT_YEAR = 2014;
@@ -110,6 +113,7 @@ public class LfsUtil {
     public static final String L_D = "L_D";
     public static final String L_L = "L_L";
 
+    public static final String ARG = "arg";
     public static final String BRA = "bra";
     public static final String ENG = "eng";
     public static final String ENG_B = "eng_b";
@@ -403,6 +407,10 @@ public class LfsUtil {
 
     public static String getMatchExcelFile(Country country) {
         return String.format("%s_match.xls", country.getVal());
+    }
+
+    public static String getMatchDiffExcelFile(int year, Country country) {
+        return String.format("%s_%s_diff.xls", year, country.getVal());
     }
 
     public static String getLfsHome() {
