@@ -14,14 +14,15 @@ import com.an.lfs.vo.MatchInfo;
 import com.an.lfs.vo.MatchRuleMgr;
 
 public class LfsMain {
-    private static int BEGIN_YEAR = 2013;
+    private static int BEGIN_YEAR = 2014;
     private static int END_YEAR = 2014;
+    // 0: all country, 1: league country
     private static int TYPE = 0;
 
     public static void main(String[] args) throws Exception {
         init();
         if (TYPE == 0) {
-            for (Country cty : Country.allCountries) {
+            for (Country cty : Country.ALL_COUNTRY) {
                 // Generate board report
                 Map<Integer, List<BoardTeam>> teamMap = new BoardLoader(cty).getBoardTeamMap();
                 ReportMaker.makeBoardReport(cty, teamMap);
@@ -33,10 +34,10 @@ public class LfsMain {
 
                 MatchRuleMgr matchRuleMgr = new MatchRuleMgr();
 
-                ReportMaker.makeGeneralMatchReport(cty, yearMatchMap, rateLoader, matchRuleMgr);
+                ReportMaker.makeMatchReport(cty, yearMatchMap, rateLoader, matchRuleMgr);
             }
         } else if (TYPE == 1) {
-            for (Country cty : Country.leagueCountries) {
+            for (Country cty : Country.LEAGUE_COUNTRY) {
                 RateLoader rateLoader = new RateLoader(cty, BEGIN_YEAR, END_YEAR);
 
                 LeagueMatchLoader league = new LeagueMatchLoader(cty, 2014, 2014);

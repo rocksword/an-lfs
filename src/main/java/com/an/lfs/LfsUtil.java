@@ -118,23 +118,27 @@ public class LfsUtil {
     public static final String FRA = "fra";
     public static final String FRA_B = "fra_b";
     public static final String GER = "ger";
+    public static final String GER_B = "ger_b";
     public static final String ITA = "ita";
     public static final String JPN = "jpn";
     public static final String JPN_B = "jpn_b";
     public static final String NOR = "nor";
+    public static final String NED = "ned";
+    public static final String NED_B = "ned_b";
     public static final String KOR = "kor";
     public static final String SWE = "swe";
     public static final String USA = "usa";
     public static final String CL = "cl";
     public static final String EL = "el";
 
-    public static void addComRateHead(RateLoader rateLoader, List<Cell> head) {
+    public static void addCompanyRateHead(RateLoader rateLoader, List<Cell> head) {
         for (String com : rateLoader.getCompany()) {
             head.add(new Cell("RateFc"));
             head.add(new Cell("TrendFc"));
             head.add(new Cell("Forecast"));
             head.add(new Cell("D-Val"));
-            head.add(new Cell(com.substring(0, 1)));
+            head.add(new Cell("Ret"));
+            head.add(new Cell(com.substring(0, 2)));
             head.add(new Cell("D"));
             head.add(new Cell("L"));
             head.add(new Cell("W_E"));
@@ -460,14 +464,22 @@ public class LfsUtil {
 
     public static WritableCellFormat getBlueFont() throws WriteException {
         WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
-                UnderlineStyle.NO_UNDERLINE, Colour.BLUE2);
+                UnderlineStyle.NO_UNDERLINE, Colour.BLUE);
         WritableCellFormat wcf = new WritableCellFormat(wf);
+        return wcf;
+    }
+
+    public static WritableCellFormat getBlueFmt() throws WriteException {
+        WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
+                UnderlineStyle.NO_UNDERLINE, Colour.WHITE);
+        WritableCellFormat wcf = new WritableCellFormat(wf);
+        wcf.setBackground(Colour.BLUE);
         return wcf;
     }
 
     public static WritableCellFormat getRedFmt() throws WriteException {
         WritableFont wf = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD, false,
-                UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
+                UnderlineStyle.NO_UNDERLINE, Colour.WHITE);
         WritableCellFormat wcf = new WritableCellFormat(wf);
         wcf.setBackground(Colour.RED);
         return wcf;
