@@ -16,7 +16,12 @@ import com.an.lfs.tool.FileLineIterator;
 import com.an.lfs.vo.BoardTeam;
 import com.an.lfs.vo.TeamMgr;
 
-//jpn_b.txt
+/**
+ * Load score board from bra.txt
+ * 
+ * @author Anthony
+ * 
+ */
 public class BoardLoader {
     private static final Log logger = LogFactory.getLog(BoardLoader.class);
     private Country country;

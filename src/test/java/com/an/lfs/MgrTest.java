@@ -32,7 +32,6 @@ public class MgrTest {
         }
     }
 
-    @Test
     public void testLfsConfMgr() {
         Assert.assertTrue(LfsConfMgr.contains(Country.ENG, "LiBo"));
         Assert.assertFalse(LfsConfMgr.contains(Country.ENG, "Oddset"));

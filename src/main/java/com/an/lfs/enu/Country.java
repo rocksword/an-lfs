@@ -29,10 +29,6 @@ public enum Country {
     CL(LfsUtil.CL), //
     EL(LfsUtil.EL);
 
-    // public static Country[] allCountries = new Country[] { BRA, ENG, ESP, FRA, GER, ITA, JPN, JPN_B, NOR, KOR, SWE,
-    // USA };
-    public final static Country[] LEAGUE_COUNTRY = new Country[] { EL };
-
     public static Map<String, Country> countryMap = new HashMap<>();
     static {
         countryMap.put(LfsUtil.ARG, ARG);

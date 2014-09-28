@@ -44,7 +44,7 @@ public class MatchReportMaker extends RateAnalyzer {
         }
     }
 
-    public void exportExcel() throws Exception {
+    public void make() throws Exception {
         String filepath = LfsUtil.getOutputFilePath(LfsUtil.getSumExcelFile(country, year));
         logger.info("Generate file " + filepath);
         wb = Workbook.createWorkbook(new File(filepath));

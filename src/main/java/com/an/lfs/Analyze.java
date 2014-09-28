@@ -7,5 +7,5 @@ public interface Analyze {
 
     public void generateRateFiles();
 
-    public void exportExcel() throws Exception;
+    public void make() throws Exception;
 }

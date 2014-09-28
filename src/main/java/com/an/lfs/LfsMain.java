@@ -14,59 +14,52 @@ import com.an.lfs.vo.MatchInfo;
 import com.an.lfs.vo.MatchRuleMgr;
 
 public class LfsMain {
+    public final static Country[] LEAGUE_COUNTRY = new Country[] { Country.EL, Country.CL };
     public final static Country[] ALL_COUNTRY = new Country[] { Country.BRA };
-    private static int BEGIN_YEAR = 2013;
-    private static int END_YEAR = 2014;
-    // 0: diff report 1: all country, 2: league country
-    private static int TYPE = 0;
+    private static int[] YEAR_RANGE = new int[] { 2013, 2014 };
+    // 5:draw match report 4: board report, 3: rate difference match report 2: match report,
+    // 1: league match report 0: old style match
+    // report
+    private static int REPORT_TYPE = 0;
 
     public static void main(String[] args) throws Exception {
         init();
-        if (TYPE == 0) {
-            for (Country cty : ALL_COUNTRY) {
-                // Generate board report
-                for (int year = BEGIN_YEAR; year <= END_YEAR; year++) {
-                    RateLoader rateLoader = new RateLoader(cty, year);
-                    // Generate match report
-                    Map<Integer, List<MatchInfo>> yearMatchMap = new MatchLoader(cty, year).getYearMatchMap();
-                    ReportMaker.makeMatchDiffReport(year, cty, yearMatchMap, rateLoader);
-                }
-            }
-        } else if (TYPE == 1) {
-            for (Country cty : ALL_COUNTRY) {
-                // Generate board report
+
+        for (Country cty : ALL_COUNTRY) {
+            switch (REPORT_TYPE) {
+            case 4:
                 Map<Integer, List<BoardTeam>> teamMap = new BoardLoader(cty).getBoardTeamMap();
-                ReportMaker.makeBoardReport(cty, teamMap);
-                for (int year = BEGIN_YEAR; year <= END_YEAR; year++) {
-                    RateLoader rateLoader = new RateLoader(cty, year);
-                    // Generate match report
-                    Map<Integer, List<MatchInfo>> yearMatchMap = new MatchLoader(cty, year).getYearMatchMap();
-
-                    MatchRuleMgr matchRuleMgr = new MatchRuleMgr();
-
-                    ReportMaker.makeMatchReport(cty, yearMatchMap, rateLoader, matchRuleMgr);
+                new BoardReportMaker().make(cty, teamMap);
+                break;
+            case 3:
+                for (int year = YEAR_RANGE[0]; year <= YEAR_RANGE[1]; year++) {
+                    Map<Integer, List<MatchInfo>> map = new MatchLoader(cty, year).getYearMatchMap();
+                    new DiffReportMaker().make(year, cty, map, new RateLoader(cty, year));
                 }
-            }
-        } else if (TYPE == 2) {
-            for (Country cty : Country.LEAGUE_COUNTRY) {
-                for (int year = BEGIN_YEAR; year <= END_YEAR; year++) {
-                    RateLoader rateLoader = new RateLoader(cty, year);
-
-                    LeagueMatchLoader league = new LeagueMatchLoader(cty, 2014, 2014);
-                    Map<Integer, List<MatchInfo>> yearMatchMap = league.getYearMatchMap();
-
-                    MatchRuleMgr matchRuleMgr = new MatchRuleMgr();
-
-                    ReportMaker.makeLeagueMatchReport(cty, yearMatchMap, rateLoader, matchRuleMgr);
+                break;
+            case 2:
+                for (int year = YEAR_RANGE[0]; year <= YEAR_RANGE[1]; year++) {
+                    Map<Integer, List<MatchInfo>> map = new MatchLoader(cty, year).getYearMatchMap();
+                    new ReportMaker().make(cty, map, new RateLoader(cty, year), new MatchRuleMgr());
                 }
-            }
-        } else if (TYPE == 3) {
-            for (int year = BEGIN_YEAR; year <= END_YEAR; year++) {
-                MatchReportMaker maker = new MatchReportMaker(Country.JPN_B, year);
-                maker.analyzeMatch();
-                maker.analyzeRate();
-                maker.exportExcel();
-                // maker.generateRateFiles();
+                break;
+            case 1:
+                for (int year = YEAR_RANGE[0]; year <= YEAR_RANGE[1]; year++) {
+                    Map<Integer, List<MatchInfo>> map = new LeagueMatchLoader(cty, YEAR_RANGE[0], YEAR_RANGE[1])
+                            .getYearMatchMap();
+                    new ReportMaker().makeLeague(cty, map, new RateLoader(cty, year), new MatchRuleMgr());
+                }
+                break;
+            case 0:
+                for (int year = YEAR_RANGE[0]; year <= YEAR_RANGE[1]; year++) {
+                    MatchReportMaker maker = new MatchReportMaker(cty, year);
+                    maker.analyzeMatch();
+                    maker.analyzeRate();
+                    maker.make();
+                }
+                break;
+            default:
+                break;
             }
         }
     }
