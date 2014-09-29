@@ -1,1 +1,0 @@
-input file download from http://saishi.zgzcw.com/soccer
