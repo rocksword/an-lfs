@@ -16,7 +16,7 @@ import com.an.lfs.vo.TeamMgr;
 
 //jpn_b_2014.txt
 public class MatchLoader {
-    private static final Logger logger = LoggerFactory.getLogger(MatchLoader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MatchLoader.class);
     private Country country;
 
     // Year ->
@@ -35,7 +35,7 @@ public class MatchLoader {
         String filepath = LfsUtil.getInputFilePath(country, year);
         File f = new File(filepath);
         if (!f.exists()) {
-            logger.warn("Not found " + filepath);
+            LOGGER.warn("Not found {}", filepath);
             return;
         }
         List<MatchInfo> matchList = new ArrayList<>();
@@ -54,13 +54,13 @@ public class MatchLoader {
                         mi.setGuest(TeamMgr.getName(country, strs[4].trim(), year));
                         matchList.add(mi);
                     } else {
-                        logger.error("strs.length: " + strs.length);
-                        logger.error("Invalid line: " + line);
+                        LOGGER.error("strs.length: " + strs.length);
+                        LOGGER.error("Invalid line: " + line);
                     }
                 }
             }
         } catch (Exception e) {
-            logger.error("Invalid line: " + line);
+            LOGGER.error("Invalid line: " + line);
             e.printStackTrace();
             return;
         }

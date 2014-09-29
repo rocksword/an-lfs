@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.an.lfs.db.BoardPo;
 import com.an.lfs.enu.Country;
 import com.an.lfs.tool.FileLineIterator;
 import com.an.lfs.vo.BoardTeam;
-import com.an.lfs.vo.TeamMgr;
 
 /**
  * Load score board from bra.txt
@@ -23,45 +23,71 @@ import com.an.lfs.vo.TeamMgr;
  * 
  */
 public class BoardLoader {
-    private static final Log logger = LogFactory.getLog(BoardLoader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BoardLoader.class);
     private Country country;
+    //
+    private List<BoardPo> boardPoList = new ArrayList<>();
+    //
     private Map<Integer, List<BoardTeam>> boardTeamMap = new HashMap<>();
 
     private void load() {
         String filepath = LfsUtil.getInputFilePath(country);
-        logger.info("filepath: " + filepath);
+        LOGGER.info("filepath: {}", filepath);
         File f = new File(filepath);
         if (!f.exists()) {
-            logger.debug("Not found " + filepath);
+            LOGGER.debug("Not found {}", filepath);
             return;
         }
         String line = null;
-        Integer year = null;
-        List<BoardTeam> teamList = null;
+        Integer playYear = null;
+        List<BoardTeam> btList = null;
+
         try (FileLineIterator iter = new FileLineIterator(filepath);) {
             while ((line = iter.nextLine()) != null) {
                 line = line.trim();
                 if (!line.isEmpty()) {
                     if (line.startsWith("year:")) {
-                        year = Integer.parseInt(line.substring(line.indexOf(":") + 1));
-                        teamList = new ArrayList<>();
+                        playYear = Integer.parseInt(line.substring(line.indexOf(":") + 1));
+                        btList = new ArrayList<>();
                     } else if (line.startsWith("end")) {
-                        boardTeamMap.put(year, teamList);
+                        boardTeamMap.put(playYear, btList);
                     } else {
                         String[] strs = line.split(",");
                         if (strs.length != 15) {
-                            logger.info("Invalid line: " + line);
+                            LOGGER.info("Invalid line: {}", line);
                             continue;
                         }
+
+                        int rank = Integer.parseInt(strs[0].trim());
+                        String team = strs[1].trim();
+                        int matchCnt = Integer.parseInt(strs[2].trim());
+                        int winCnt = Integer.parseInt(strs[3].trim());
+                        int drawCnt = Integer.parseInt(strs[4].trim());
+                        int loseCnt = Integer.parseInt(strs[5].trim());
+                        int goalIn = Integer.parseInt(strs[6].trim());
+                        int goalAgainst = Integer.parseInt(strs[7].trim());
+                        BoardPo bp = new BoardPo();
+                        bp.setPlayYear(playYear);
+                        bp.setLeague(country.name());
+                        bp.setRank(rank);
+                        bp.setTeam(team);
+                        bp.setMatchCnt(matchCnt);
+                        bp.setWinCnt(winCnt);
+                        bp.setDrawCnt(drawCnt);
+                        bp.setLoseCnt(loseCnt);
+                        bp.setGoalIn(goalIn);
+                        bp.setGoalAgainst(goalAgainst);
+                        boardPoList.add(bp);
+
                         BoardTeam bt = new BoardTeam();
-                        bt.setRank(Integer.parseInt(strs[0].trim()));
-                        bt.setTeam(TeamMgr.getName(country, strs[1].trim(), year));
-                        bt.setTotal(Integer.parseInt(strs[2].trim()));
-                        bt.setWin(Integer.parseInt(strs[3].trim()));
-                        bt.setDraw(Integer.parseInt(strs[4].trim()));
-                        bt.setLose(Integer.parseInt(strs[5].trim()));
-                        bt.setGoalFor(Integer.parseInt(strs[6].trim()));
-                        bt.setGoalAgainst(Integer.parseInt(strs[7].trim()));
+                        bt.setRank(rank);
+                        bt.setTeam(team);
+                        bt.setTotal(matchCnt);
+                        bt.setWin(winCnt);
+                        bt.setDraw(drawCnt);
+                        bt.setLose(loseCnt);
+                        bt.setGoalFor(goalIn);
+                        bt.setGoalAgainst(goalAgainst);
                         bt.setGoalNet(Integer.parseInt(strs[8].trim()));
                         bt.setAvgFor(Float.parseFloat(strs[9].trim()));
                         bt.setAvgAgainst(Float.parseFloat(strs[10].trim()));
@@ -69,13 +95,13 @@ public class BoardLoader {
                         bt.setDrawPer(Float.parseFloat(strs[12].trim().substring(0, strs[12].length() - 1)));
                         bt.setLosePer(Float.parseFloat(strs[13].trim().substring(0, strs[13].length() - 1)));
                         bt.setScore(Integer.parseInt(strs[14].trim()));
-                        teamList.add(bt);
+                        btList.add(bt);
                     }
                 }
             }
         } catch (Exception e) {
-            logger.error("Error :" + e);
-            logger.info("Invalid line: " + line);
+            LOGGER.error("Error :", e);
+            LOGGER.info("Invalid line: {}", line);
         }
     }
 
@@ -86,6 +112,10 @@ public class BoardLoader {
 
     public Map<Integer, List<BoardTeam>> getBoardTeamMap() {
         return boardTeamMap;
+    }
+
+    public List<BoardPo> getBoardPoList() {
+        return boardPoList;
     }
 
     public Map<String, Integer> getTeamRank(int year) {
@@ -105,8 +135,8 @@ public class BoardLoader {
                 String team = list.get(i).getTeam();
                 ret.add(team);
             } catch (Exception e) {
-                logger.error(year + ", " + list);
-                logger.error(e);
+                LOGGER.error("{} , {}", year, list);
+                LOGGER.error("Error: ", e);
             }
         }
         return ret;
