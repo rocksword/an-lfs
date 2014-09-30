@@ -32,6 +32,7 @@ public class LfsUtil {
     private static final Logger logger = LoggerFactory.getLogger(LfsUtil.class);
 
     public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("##0.00");
+    public static final DecimalFormat DECIMAL_FORMAT_1 = new DecimalFormat("##0.0");
 
     public static final String LFS_HOME = "LFS_HOME";
     public static int CURRENT_YEAR = 2014;

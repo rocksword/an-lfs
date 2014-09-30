@@ -1,4 +1,4 @@
-package com.an.lfs.db;
+package com.an.lfs.vo;
 
 /**
  * @author Anthony

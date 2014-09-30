@@ -11,9 +11,9 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.an.lfs.db.BoardPo;
 import com.an.lfs.enu.Country;
 import com.an.lfs.tool.FileLineIterator;
+import com.an.lfs.vo.BoardPo;
 import com.an.lfs.vo.BoardTeam;
 
 /**
@@ -68,7 +68,7 @@ public class BoardLoader {
                         int goalAgainst = Integer.parseInt(strs[7].trim());
                         BoardPo bp = new BoardPo();
                         bp.setPlayYear(playYear);
-                        bp.setLeague(country.name());
+                        bp.setLeague(country.getVal());
                         bp.setRank(rank);
                         bp.setTeam(team);
                         bp.setMatchCnt(matchCnt);

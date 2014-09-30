@@ -23,7 +23,6 @@ public enum Country {
     NOR(LfsUtil.NOR), //
     NED(LfsUtil.NED), //
     NED_B(LfsUtil.NED_B), //
-    KOR(LfsUtil.KOR), //
     SWE(LfsUtil.SWE), //
     USA(LfsUtil.USA), //
     CL(LfsUtil.CL), //
@@ -47,7 +46,6 @@ public enum Country {
         countryMap.put(LfsUtil.NED, NED);
         countryMap.put(LfsUtil.NED_B, NED_B);
         countryMap.put(LfsUtil.NOR, NOR);
-        countryMap.put(LfsUtil.KOR, KOR);
         countryMap.put(LfsUtil.SWE, SWE);
         countryMap.put(LfsUtil.USA, USA);
         countryMap.put(LfsUtil.CL, CL);

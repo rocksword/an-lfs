@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.an.lfs.vo.BoardPo;
+
 @Component
 @Scope("singleton")
 public class SussDaoImpl implements SussDao {
@@ -36,7 +38,7 @@ public class SussDaoImpl implements SussDao {
                                 + " VALUES ('%s', %s, %s, '%s', %s, %s, %s, %s, %s, %s);", TBL_BOARD, b.getLeague(),
                         b.getPlayYear(), b.getRank(), b.getTeam(), b.getMatchCnt(), b.getWinCnt(), b.getDrawCnt(),
                         b.getLoseCnt(), b.getGoalIn(), b.getGoalAgainst());
-                LOGGER.info("Execute sql: " + sql);
+                LOGGER.debug("Execute sql: " + sql);
                 try {
                     st.executeUpdate(sql);
                     conn.commit();
@@ -72,11 +74,11 @@ public class SussDaoImpl implements SussDao {
     }
 
     @Override
-    public void getAllBoards(List<BoardPo> boards) {
+    public void getBoardByLeague(String league, List<BoardPo> boards) {
         String sql = String
-                .format("SELECT id, league, playyear, rank, team, matchcnt, wincnt, drawcnt, losecnt, goalin, goalagainst FROM %s",
-                        TBL_BOARD);
-        LOGGER.info("Execute sql: " + sql);
+                .format("SELECT id, playyear, rank, team, matchcnt, wincnt, drawcnt, losecnt, goalin, goalagainst FROM %s WHERE league='%s'",
+                        TBL_BOARD, league);
+        LOGGER.debug("Execute sql: " + sql);
 
         try (Connection conn = ds.getConnection();
                 Statement st = conn.createStatement();
@@ -84,7 +86,6 @@ public class SussDaoImpl implements SussDao {
 
             while (rs.next()) {
                 int id = rs.getInt("id");
-                String league = rs.getString("league");
                 int playYear = rs.getInt("playyear");
                 int rank = rs.getInt("rank");
                 String team = rs.getString("team");
@@ -113,7 +114,7 @@ public class SussDaoImpl implements SussDao {
             boards.clear();
             LOGGER.error("Error while executing sql {}, exception: {}", sql, e.getMessage());
         }
-        LOGGER.info("boards size {}", boards.size());
+        LOGGER.debug("boards size {}", boards.size());
     }
 
     @Override

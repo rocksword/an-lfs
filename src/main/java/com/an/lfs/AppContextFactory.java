@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.an.lfs.db.SussDao;
+import com.an.lfs.service.BoardService;
 
 /**
  * @author Anthony
@@ -31,7 +32,10 @@ public class AppContextFactory {
     }
 
     public static SussDao getDao() {
-        SussDao ret = (SussDao) appContext.getBean("sussDaoImpl");
-        return ret;
+        return (SussDao) appContext.getBean("sussDaoImpl");
+    }
+
+    public static BoardService getBoardService() {
+        return (BoardService) appContext.getBean("boardServiceImpl");
     }
 }
